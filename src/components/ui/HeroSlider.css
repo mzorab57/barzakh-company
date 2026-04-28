@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+.slider-main-wrapper {
+  width: 100%;
+  background: black;
+}
+
+.hero-slider-fixed {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  width: 100%;
+  z-index: 10;
+  height: 7em;
+  font-family: "Inter", sans-serif;
+  letter-spacing: 0.5em;
+  pointer-events: none; /* بۆ ئەوەی ڕێگری لە سکڕۆڵ نەکات */
+}
+
+.header nav {
+  pointer-events: auto;
+  display: flex;
+  gap: 20px;
+}
+
+.header nav a {
+  color: #fff;
+  text-decoration: none;
+  font-family: "Nunito Sans", sans-serif;
+  opacity: 0.5;
+  transition: 0.3s;
+}
+
+.header nav a.active {
+  opacity: 1;
+  text-shadow: 0 0 10px white;
+}
+
+/* Clipping logic */
+.section {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  top: 0px;
+  left: 0;
+  visibility: hidden;
+}
+
+.wrapper-outer, .wrapper-inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Gradient overlay from your code */
+.background::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.3) 100%);
+  z-index: 1;
+}
+
+.section-title {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(1.5rem, 5vw, 5rem);
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.5em;
+  color: hsl(0, 0, 80%);
+  text-transform: uppercase;
+}

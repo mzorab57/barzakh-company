@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-import HeroSlider from '../components/HeroSlider';
+import Hero from '../components/Hero';
 import InternationalSection from '../components/InternationalSection';
 import UpcomingEvents from '../components/UpcomingEvents';
 import Guests from '../components/Guests';
@@ -12,7 +12,7 @@ const Home = () => {
   
   return (
     <div className="">
-      <HeroSlider />
+      <Hero />
       <InternationalSection />
       <UpcomingEvents />
       <Guests />

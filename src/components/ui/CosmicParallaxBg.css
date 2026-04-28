@@ -1,0 +1,122 @@
+:root {
+  --animation-iteration: infinite;
+}
+
+/* بنچینەی گشتی باکگراوند */
+.cosmic-parallax-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #000; /* ڕەنگی ڕەشی تێر بۆ ئاسمان */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ئەنیمەیشنی ئەستێرەکان */
+@keyframes animStar {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-2000px); }
+}
+
+.cosmic-stars, .cosmic-stars-medium, .cosmic-stars-large {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  animation: animStar 150s linear infinite;
+  z-index: 1; /* ئەستێرەکان لە پشتەوەن */
+}
+
+.cosmic-stars-medium { width: 2px; height: 2px; animation-duration: 40s; }
+.cosmic-stars-large { width: 3px; height: 3px; animation-duration: 100s; }
+
+/* ڕووناکی ناوەڕاست (Glow behind the sphere) */
+.cosmic-nebula-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, var(--cosmic-primary) 0%, transparent 70%);
+  filter: blur(80px);
+  opacity: 0.4;
+  z-index: 2;
+}
+
+/* بازنە گەورەکە (The Sphere/Earth from image) */
+.cosmic-horizon-container {
+  position: absolute;
+  bottom: -60vh; /* دابەزاندنی بۆ ئەوەی تەنها بەشێکی دەربکەوێت وەک ئاسۆ */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.cosmic-main-sphere {
+  width: 180vw; /* زۆر پان بۆ ئەوەی لەم سەر بۆ ئەو سەری شاشە بێت */
+  height: 60vw;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% -30%, 
+    var(--cosmic-secondary) 0%, 
+    var(--cosmic-primary) 0%, 
+    #000 60%
+  );
+  box-shadow: 0 -20px 100px color-mix(in srgb, var(--cosmic-secondary) 40%, transparent);
+  filter: brightness(1.2);
+}
+
+/* بەشی تێکستەکان */
+.cosmic-content-overlay {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+}
+
+.cosmic-title-main {
+  font-size: clamp(3rem, 10vw, 7.5rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -2px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.cosmic-subtitle-list {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  color: #fff;
+  opacity: 0.9;
+}
+
+/* ئەنیمەیشنی تێکستەکان وەک دیزاینە ئەسڵییەکە */
+.cosmic-sub-part {
+  display: inline-block;
+  animation: animSubtitle 6s ease-in-out infinite;
+}
+
+@keyframes animSubtitle {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .cosmic-main-sphere {
+    width: 250vw;
+    height: 180vw;
+  }
+  .cosmic-horizon-container {
+    bottom: -40vh;
+  }
+}

@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 const countries = [
   {
     name: 'United Kingdom',
-    flag: 'https://ext.same-assets.com/1954549727/1487444151.png',
+    flag: 'http://lightuponlight.co.uk/wp-content/uploads/2024/11/Philippines-600x338.png',
     link: '#uk',
   },
   {
@@ -13,12 +13,12 @@ const countries = [
   },
   {
     name: 'Philippines',
-    flag: 'https://ext.same-assets.com/1954549727/3881489899.png',
+    flag: 'https://lightuponlight.co.uk/wp-content/uploads/2024/05/UK-600x338.png',
     link: '#philippines',
   },
   {
     name: 'Turkiye',
-    flag: 'https://ext.same-assets.com/1954549727/427552738.png',
+    flag: 'https://lightuponlight.co.uk/wp-content/uploads/2025/08/south-africa-600x338.png',
     link: '#turkiye',
   },
   {

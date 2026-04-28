@@ -4,31 +4,31 @@ import { useState, useEffect } from 'react';
 const pastEvents = [
   {
     title: 'Winter Conference',
-    image: 'https://ext.same-assets.com/1954549727/209598957.jpeg',
+    image: '../assets/images/hero3.jpg',
     year: '2024',
     category: 'Winter Conference',
   },
   {
     title: 'An Evening With',
-       image: 'https://ext.same-assets.com/1954549727/1158522046.jpeg',
+       image: '../assets/images/hero4.jpg',
     year: '2024',
     category: 'Motivational Evening',
   },
   {
     title: 'Light Upon Light Monrovia',
-    image: 'https://ext.same-assets.com/1954549727/3637383729.jpeg',
+    image: '../assets/images/hero2.jpg',  
     year: '2024',
     category: 'Featured Event',
   },
   {
     title: 'Winter Conference',
-     image: 'https://ext.same-assets.com/1954549727/927536669.jpeg',
+     image: '../assets/images/hero1.jpg',
     year: '2024',
     category: 'Winter Conference',
   },
   {
     title: 'An Evening With',
-      image: 'https://ext.same-assets.com/1954549727/2157669074.jpeg',
+      image: '../assets/images/hero4.jpg',
     year: '2024',
     category: 'Motivational Evening',
   }

@@ -1,0 +1,135 @@
+.parallax {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg, #211a0f 0%, #3d2e16 42%, #f7f0dc 100%);
+  overflow: hidden;
+}
+
+.parallax__header {
+  position: relative;
+  min-height: 100vh;
+}
+
+.parallax__visuals {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.parallax__black-line-overflow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(18, 13, 6, 0.1) 0%, rgba(18, 13, 6, 0.72) 100%),
+    radial-gradient(circle at top, rgba(198, 183, 142, 0.24), transparent 42%);
+}
+
+.parallax__layers {
+  position: relative;
+  height: 120vh;
+  width: 100%;
+}
+
+.parallax__layer-img,
+.parallax__layer-title {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.parallax__layer-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.parallax__title {
+  margin: 0;
+  color: #fff8e6;
+  /* بەکارهێنانی فۆنتێکی زۆر ئەستوور */
+  font-size: clamp(3rem, 15vw, 102rem); 
+  font-weight: 700; /* زۆر ئەستوور */
+  letter-spacing: 0.01em; /* پیتەکان لەیەک نزیک بکەرەوە */
+  line-height: 0.8;
+  text-transform: uppercase;
+  /* سێبەرێکی کەم بۆ دیاربوونی لەسەر چیاکە */
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.parallax__layer-title {
+  z-index: 2; /* لەپێش چیاکە */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+/* دڵنیابوونەوە لەوەی کەسەکە لەسەرووی دەقەکەیە */
+[data-parallax-layer="4"] {
+  z-index: 3;
+}
+
+.parallax__eyebrow {
+  margin: 0 0 1rem;
+  color: #d8c98f;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+
+.parallax__fade {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 5;
+  /* height: 20vh; */
+  background: linear-gradient(180deg, rgba(247, 240, 220, 0) 0%, #f7f0dc 100%);
+}
+
+.parallax__content {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 5;
+  color: rgba(255, 248, 230, 0.8);
+}
+
+.osmo-icon-svg {
+  width: 64px;
+  height: 64px;
+}
+
+@media (max-width: 768px) {
+  .parallax__header,
+  .parallax__visuals {
+    min-height: 72vh;
+    height: 72vh;
+  }
+
+  .parallax__layers {
+    height: 92vh;
+  }
+
+  .parallax__eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+  }
+
+  .parallax__title {
+    font-size: clamp(2.2rem, 16vw, 4.5rem);
+    letter-spacing: 0.06em;
+  }
+
+  .parallax__content {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .osmo-icon-svg {
+    width: 48px;
+    height: 48px;
+  }
+}

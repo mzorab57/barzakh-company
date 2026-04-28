@@ -1,0 +1,285 @@
+.staggered-menu-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+}
+
+.staggered-menu-wrapper.fixed-wrapper {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sm-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #e9e9ef;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1;
+  overflow: visible;
+  z-index: 60;
+}
+
+.sm-toggle:focus-visible {
+  outline: 2px solid #ffffffaa;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.sm-toggle-textWrap {
+  position: relative;
+  display: inline-block;
+  height: 2em;
+  overflow: hidden;
+}
+
+.sm-toggle-textInner {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.sm-toggle-line {
+  display: block;
+  height: 3em;
+}
+
+.sm-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+
+.sm-icon-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+}
+
+.sm-icon-line-v {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.sm-prelayers {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 45;
+}
+
+.sm-prelayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.staggered-menu-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(720px, 100vw);
+  height: 100vh;
+  background: #0f1014;
+  color: #f5f7fb;
+  z-index: 50;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.25);
+}
+
+.staggered-menu-wrapper[data-position='left'] .staggered-menu-panel {
+  left: 0;
+  right: auto;
+}
+
+.staggered-menu-wrapper[data-position='left'] .sm-prelayer {
+  transform-origin: left center;
+}
+
+.staggered-menu-wrapper[data-position='right'] .sm-prelayer {
+  transform-origin: right center;
+}
+
+.sm-panel-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 7rem 2rem 2rem;
+}
+
+.sm-panel-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: smItem;
+}
+
+.sm-panel-itemWrap {
+  overflow: hidden;
+}
+
+.sm-panel-item {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: clamp(2rem, 6vw, 4.6rem);
+  line-height: 0.95;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+  padding: 0.08em 0 0.14em;
+}
+
+.sm-panel-itemLabel {
+  display: inline-block;
+  will-change: transform;
+}
+
+.sm-panel-item:hover .sm-panel-itemLabel,
+.sm-panel-item:focus-visible .sm-panel-itemLabel {
+  color: var(--sm-accent, #5227ff);
+}
+
+.sm-panel-item:focus-visible {
+  outline: none;
+}
+
+.sm-socials {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.sm-socials-title {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #cfd3dc;
+}
+
+.sm-socials-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0;
+  margin: 0;
+}
+
+.sm-socials-item {
+  margin: 0;
+}
+
+.sm-socials-link {
+  color: #f5f7fb;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.sm-socials-link:hover,
+.sm-socials-link:focus-visible {
+  color: var(--sm-accent, #5227ff);
+}
+
+.sm-panel-list[data-numbering] .sm-panel-item::after {
+  counter-increment: smItem;
+  content: counter(smItem, decimal-leading-zero);
+  position: absolute;
+  top: 0.1em;
+  right: 2.8em;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--sm-accent, #5227ff);
+  pointer-events: none;
+  user-select: none;
+  opacity: var(--sm-num-opacity, 0);
+}
+
+/* زیادکردنی ئەم بەشانە بۆ ناو فایلی CSSەکە */
+
+.sm-back-button {
+  background: none;
+  border: none;
+  color: var(--sm-accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.3s;
+}
+
+.sm-back-button:hover {
+  opacity: 0.7;
+}
+
+.sm-item-arrow {
+  font-size: 0.5em;
+  vertical-align: middle;
+  opacity: 0.5;
+  transition: transform 0.3s;
+}
+
+.sm-panel-item:hover .sm-item-arrow {
+  transform: translate(5px, -5px);
+  opacity: 1;
+}
+
+/* دڵنیابەرەوە کە ئەمە لە CSS هەبێت بۆ داخستنی مینیو */
+.staggered-menu-wrapper[data-open] {
+  pointer-events: auto;
+}
+
+@media (max-width: 1024px) {
+  .staggered-menu-panel {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .sm-toggle {
+    font-size: 0.875rem;
+  }
+
+  .sm-panel-inner {
+    padding: 6rem 1.5rem 1.5rem;
+  }
+
+  .sm-panel-item {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .sm-panel-list[data-numbering] .sm-panel-item::after {
+    right: 0;
+    top: -0.6rem;
+    font-size: 14px;
+  }
+}

@@ -1,67 +1,67 @@
 const guests = [
   {
     name: 'Mufti Menk',
-    image: 'https://ext.same-assets.com/1954549727/1654697526.jpeg',
+    image: '../assets/images/hero1.jpg',
   },
   {
     name: 'Sheikh Omar Suleiman',
-    image: 'https://ext.same-assets.com/1954549727/1367427224.jpeg',
+    image: '../assets/images/hero2.jpg',
   },
   {
     name: 'Akhi Ayman',
-    image: 'https://ext.same-assets.com/1954549727/2374289309.jpeg',
+    image: '../assets/images/hero4.jpg',
   },
   {
     name: 'Sheikh Abu Bakr Zoud',
-    image: 'https://ext.same-assets.com/1954549727/1691365782.jpeg',
+    image: '../assets/images/hero3.jpg',
   },
   {
     name: 'Ustadh Munir Amour',
-    image: 'https://ext.same-assets.com/1954549727/2551564372.jpeg',
+    image: '../assets/images/hero1.jpg',
   },
   {
     name: 'Qari Hazza Al Balushi',
-    image: 'https://ext.same-assets.com/1954549727/3687726817.jpeg',
+    image: '../assets/images/hero2.jpg',
   },
   {
     name: 'Sheikh Ali Hammuda',
-    image: 'https://ext.same-assets.com/1954549727/533245950.jpeg',
+    image: '../assets/images/hero3.jpg',
   },
   {
     name: 'Sheikh Wael Ibrahim',
-    image: 'https://ext.same-assets.com/1954549727/3604447796.jpeg',
+    image: '../assets/images/hero4.jpg',
   },
   {
     name: 'Dr. Muhammad Salah',
-    image: 'https://ext.same-assets.com/1954549727/2483541163.jpeg',
+    image: '../assets/images/hero1.jpg',
   },
   {
     name: 'Sheikh Zahir Mahmood',
-    image: 'https://ext.same-assets.com/1954549727/3331470062.jpeg',
+    image: '../assets/images/hero2.jpg',
   },
   {
     name: 'Sheikh Asim Khan',
-    image: 'https://ext.same-assets.com/1954549727/3180968103.jpeg',
+    image: '../assets/images/hero3.jpg',
   },
   {
     name: 'Sheikh Murtaza Khan',
-    image: 'https://ext.same-assets.com/1954549727/3477956713.jpeg',
+    image: '../assets/images/hero4.jpg',
   },
   {
     name: 'Sheikh Adnaan Menk',
-    image: 'https://ext.same-assets.com/1954549727/2013914389.jpeg',
+    image: '../assets/images/hero1.jpg',
   },
   {
     name: 'Sheikh Yunus Dudhwala',
-    image: 'https://ext.same-assets.com/1954549727/644425640.jpeg',
+    image: '../assets/images/hero2.jpg',
   },
   {
     name: 'Sheikh Wahaj Tarin',
-    image: 'https://ext.same-assets.com/1954549727/3618403170.jpeg',
+    image: '../assets/images/hero3.jpg',
   },
   {
     name: 'Sheikh Belal Assaad',
-    image: 'https://ext.same-assets.com/1954549727/2901715729.jpeg',
+    image: '../assets/images/hero4.jpg',
   },
 ];
 
