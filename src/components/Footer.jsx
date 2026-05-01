@@ -1,4 +1,5 @@
-import { Mail, Facebook, Instagram } from 'lucide-react';
+import { Mail, Facebook, Instagram, Send, Globe, ExternalLink } from 'lucide-react';
+import { CosmicParallaxBg } from './ui/parallax-cosmic-background';
 
 export default function Footer() {
   const usefulLinks = [
@@ -21,59 +22,71 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="">
-      <div className="container max-w-6xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {/* Contact */}
-          <div>
-            <h3 className="font-bold text-gray-900 text-xl mb-4">CONTACT</h3>
-            <a
-              href="mailto:info@lightuponlight.co.uk"
-              className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
-            >
-              <Mail className="h-4 w-4 text-primary" />
-              info@lightuponlight.co.uk
-            </a>
-            <div className="mt-6">
-              <h3 className="font-bold text-gray-900 text-xl mb-4">SOCIAL LINKS</h3>
-              <div className="space-y-2">
-                <a
-                  href="#facebook"
-                  className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
-                >
-                  <Facebook className="h-4 w-4 text-primary" />
-                  Facebook
-                </a>
-                <a
-                  href="#instagram"
-                  className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
-                >
-                  <Instagram className="h-4 w-4 text-primary" />
-                  Instagram
-                </a>
-                <a
-                  href="#tiktok"
-                  className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
-                >
-                  <svg className="h-4 w-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                  </svg>
-                  TikTok
-                </a>
+    <footer className="relative w-full overflow-hidden text-white">
+      {/* بەشی باکگراوەند - Cosmic Background */}
+      <div className="absolute inset-0 z-0">
+        <CosmicParallaxBg
+          head=""
+          text=""
+          loop={true}
+          className="h-full w-full"
+          primaryColor="#88743e"
+          secondaryColor="#C5B78E"
+        />
+        {/* ئەفێکتێکی کاڵ بۆ سەر باکگراوەندەکە بۆ ئەوەی دەقەکان باشتر بخوێندرێنەوە */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+      </div>
+
+      {/* بەشی ناوەڕۆک - Content */}
+      <div className="relative z-10 container max-w-7xl mx-auto px-3 pt-20 lg:py-40">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          
+          {/* ١. پەیوەندی و سۆشیاڵ - CONTACT & SOCIAL */}
+          <div className="space-y-8 ">
+            <div>
+              <h3 className="text-[#C5B78E] font-black lg:text-4xl text-2xl mb-6 tracking-widest uppercase">Contact</h3>
+              <a
+                href="mailto:info@nukhbaglobal.com"
+                className="group flex items-center gap-1  text-[#b2a47e] transition-all duration-300"
+              >
+                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#88743e]/20">
+                  <Mail className="h-5 w-5" />
+                </div>
+                <span className="lg:text-lg text-base font-medium">info@nukhbagloabal.com</span>
+              </a>
+            </div>
+
+            <div>
+              <h3 className="text-[#C5B78E] font-black text-2xl lg:text-4xl mb-6 tracking-widest uppercase">Follow Us</h3>
+              <div className="flex gap-4">
+                {[
+                  { icon: <Facebook size={20} />, link: '#facebook' },
+                  { icon: <Instagram size={20} />, link: '#instagram' },
+                  { icon: <Globe size={20} />, link: '#web' }
+                ].map((social, i) => (
+                  <a
+                    key={i}
+                    href={social.link}
+                    className="w-10 h-10  flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-[#88743e] hover:border-[#88743e] transition-all duration-500"
+                  >
+                    {social.icon}
+                  </a>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Useful Links */}
+          {/* ٢. لینکە بەسوودەکان - USEFUL LINKS */}
           <div>
-            <h3 className="font-extrabold text-gray-900 text-xl mb-4">USEFUL LINKS</h3>
-            <ul className="space-y-2">
+            <h3 className="text-[#C5B78E] font-black lg:text-4xl text-2xl mb-6 tracking-widest uppercase">Useful Links</h3>
+            <ul className="space-y-3">
               {usefulLinks.map((link) => (
                 <li key={link}>
                   <a
                     href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-gray-600 hover:text-primary transition-colors text-sm"
+                    className=" hover:translate-x-2 hover:text-gray-400 text-[#b2a47e] flex items-center gap-2 transition-all duration-300 text-base group"
                   >
+                    {/* <div className="w-1 h-1 text-base font-medium  bg-[#88743e] rounded-full group-hover:w-3 transition-all" /> */}
                     {link}
                   </a>
                 </li>
@@ -81,15 +94,15 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* LUL International */}
+          {/* ٣. جیهانی - INTERNATIONAL */}
           <div>
-            <h3 className="font-bold text-gray-900 text-xl mb-4">LUL INTERNATIONAL</h3>
-            <ul className="space-y-2">
+            <h3 className="text-[#C5B78E] font-black text-2xl lg:text-4xl mb-6 tracking-widest uppercase">International</h3>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-3">
               {international.map((country) => (
                 <li key={country}>
                   <a
                     href={`#${country.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-gray-600 hover:text-primary transition-colors text-sm"
+                    className="hover:text-gray-400 text-[#b2a47e]  transition-colors text-base  font-medium uppercase tracking-tighter"
                   >
                     {country}
                   </a>
@@ -98,51 +111,31 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Newsletter */}
-          <div>
-            <h3 className="font-bold text-gray-900 text-xl mb-4">Newsletter</h3>
-            <p className="text-gray-600 text-sm mb-4">
-              Be notified for upcoming events
-            </p>
-            <form className="flex flex-col gap-2">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-primary"
-              />
-              <button
-                type="submit"
-                className="px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
+         
         </div>
 
-        {/* Bottom Info */}
-        <div className="border-t border-gray-200 pt-8 max-w-xl">
-          <p className="text-xs text-gray-500 mb-4">
-            Light Upon Light is a brand name and project of Eman Channel Limited.
-            Eman Channel Limited (Companies House number: 09792399) is registered in
-            England and Wales with its registered office at Unit 8 Murihead Quay,
-            Barking, London, England, IG11 7BG
-          </p>
-      
-        </div>
-           <div className="mt-12 pt-6 border-t border-gray-700 uppercase text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Barzakh Company. all rights reserved.</p>
-          <p className="mt-2">
-            Powered by{" "}
-            <a 
-              href="https://wa.me/96407701411893"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              Al-Code
-            </a>
-          </p>
+        {/* بەشی خوارەوە - Footer Bottom */}
+        <div className="  border-t pb-4 border-white/10 flex flex-col items-center gap-4 text-center">
+          <div className="bg-red-100">
+
+          </div>
+
+          <div className="flex justify-between w-full  items-center gap-2">
+            <p className="text-sm font-bold  uppercase text-gray-400">
+              © {new Date().getFullYear()} <span className="text-[#C5B78E]">Barzakh Company</span>. 
+            </p>
+            <div className="flex items-center uppercase gap-2 text-xs text-gray-500 mt-2 ">
+              <span className='flex gap-x-1'>Powered by <a 
+                href="https://wa.me/96407701411893"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#C5B78E]  hover:scale-110 transition-transform flex items-center gap-1"
+              >
+                AL-CODE
+              </a></span>
+              
+            </div>
+          </div>
         </div>
       </div>
     </footer>

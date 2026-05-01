@@ -227,7 +227,7 @@ export default function MigrationRoutePage() {
         <div className=" ">
           <video
             className="h-full w-full object-cover"
-            src="https://pub-8090965640ca4bd1b63bf23a3ab20377.r2.dev/heroV.mp4"
+            src="https://pub-8090965640ca4bd1b63bf23a3ab20377.r2.dev/regay_hijray.mp4"
             autoPlay
             muted
             loop

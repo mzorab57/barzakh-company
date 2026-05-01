@@ -1,0 +1,165 @@
+.guests-scroll-wrapper {
+  /* This wrapper creates the scrolling space */
+  position: relative;
+  width: 100%;
+  /* Make it tall enough to scroll through all items */
+  height: 200vh;
+
+}
+
+.guests-sticky-container {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.guests-header {
+  /* position: absolute;
+  top: 12%;
+  left: 0%; */
+  /* transform: translateX(40%);*/
+  /* transform: translatey(68%);  */
+  text-align: start;
+  
+  z-index: 0;
+  
+  pointer-events: none;
+}
+
+.carousel-wrapper {
+  position: relative;
+  width: 35vmin;
+  height: 35vmin;
+  min-width: 250px;
+  min-height: 250px;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guest-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  /* Reflection effect using webkit-box-reflect */
+  -webkit-box-reflect: below 0px linear-gradient(transparent 50%, rgba(255,255,255,0.4) 100%);
+  
+  /* The dynamic transform values come from inline style variables set by React */
+  transform: 
+    translateX(var(--translateX))
+    translateZ(var(--translateZ))
+    rotateY(var(--rotateY));
+    
+  transition: transform 0.1s ease-out, opacity 0.1s ease-out, z-index 0.1s;
+  cursor: pointer;
+  /* Hide the back of the card if it rotates too far */
+  backface-visibility: hidden;
+}
+
+.guest-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The image itself does not need border-radius if it's like a CD cover, but let's add a tiny one */
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Optional overlay for non-centered items to make them darker */
+.guest-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: black;
+  opacity: var(--overlay-opacity, 0);
+  transition: opacity 0.1s ease-out;
+  border-radius: 4px;
+}
+
+.guest-info {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  opacity: var(--info-opacity, 0);
+  transition: opacity 0.2s ease-out;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+  padding-top: 20px;
+  padding-bottom: 10px;
+  border-radius: 0 0 4px 4px;
+  pointer-events: none;
+}
+
+.guest-info h3 {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.guest-info p {
+  color: #C5B78E;
+  font-size: 0.75rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.guest-controls {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  z-index: 300;
+  pointer-events: none;
+}
+
+.guest-controls button {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  outline: transparent;
+  cursor: pointer;
+  background: none;
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: transform 0.2s, background 0.2s;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(4px);
+}
+
+.guest-controls button:hover {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.6);
+}
+
+.guest-controls button svg {
+  height: 40%;
+  fill: white;
+}
+
+.guest-controls .guest-prev svg {
+  transform: rotate(180deg);
+}
+
+/* Hide scrollbar for cleaner look if you want, but the user will scroll the body */

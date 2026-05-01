@@ -105,7 +105,7 @@ const About = () => {
     >
       <CosmicParallaxBg
   head="About Us"
-  text="Faith, Knowledge, Community"
+  text="AL-NUKHBA Gloabal"
   loop={true}
   className="h-screen"
   primaryColor="#88743e" // ڕەنگی زێڕینی تۆخ

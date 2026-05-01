@@ -210,7 +210,7 @@ export default function TurkeyEventPage() {
         description="Step away from the noise of daily life and enter the tranquility of Antalya, Turkiye. A spiritually uplifting atmosphere."
         date="April 2nd - April 6th, 2026"
         location="Antalya, Turkiye"
-        centerImage="/assets/images/hero1.jpg"
+        centerImage="/assets/images/hero4.jpg"
         mobileCenterImage="https://lightuponlight.co.uk/wp-content/uploads/2026/04/summer-conference-2-819x1024.jpg"
         parallaxImages={parallaxImages}
       />

@@ -7,11 +7,31 @@ import "./HeroSlider.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const slides = [
-  { id: "first", title: "City Skyline", nav: "One", img: "https://images.unsplash.com/photo-1695634930904-e20e04b7be24?q=85" },
-  { id: "second", title: "Flowers of friendship", nav: "Two", img: "https://images.unsplash.com/photo-1697369574152-58c8e59e35d4?q=85" },
-  { id: "third", title: "Waves in the Ocean", nav: "Three", img: "https://images.unsplash.com/photo-1617438817509-70e91ad264a5?q=75&w=1920" },
-  { id: "fourth", title: "New York City", nav: "Four", img: "https://images.unsplash.com/photo-1617412327653-c29093585207?q=75&w=1920" },
-  { id: "fifth", title: "Dark side of the moon", nav: "Five", img: "https://images.unsplash.com/photo-1617141636403-f511e2d5dc17?q=75&w=1920" },
+  {
+    id: "first",
+    title: "",
+    nav: "One",
+    img: "../assets/images/hero1.jpg",
+    // 
+    // mobileImg: "https://lightuponlight.co.uk/wp-content/uploads/2026/04/Ali-summer-conference-copy.jpg",
+    mobileImg: "../assets/images/hero4.jpg",
+  },
+  {
+    id: "second",
+    title: "",
+    nav: "Two",
+    img: "../assets/images/hero2.jpg",
+    mobileImg: "https://lightuponlight.co.uk/wp-content/uploads/2026/04/Ali-summer-conference-copy.jpg",
+  },
+  {
+    id: "third",
+    title: "",
+    nav: "Three",
+    img: "../assets/images/hero3.jpg",
+    mobileImg: "https://lightuponlight.co.uk/wp-content/uploads/2025/06/Umrah-2026-Package-Included-1-819x1024.jpg",
+  },
+  { id: "fourth", title: "", nav: "Four", img: "https://lightuponlight.co.uk/wp-content/uploads/2025/07/Khalilah.jpg" },
+  { id: "fifth", title: "", nav: "Five", img: "../assets/images/hero4.jpg" },
 ];
 
 const StickyHeroSlider = () => {
@@ -71,8 +91,8 @@ const StickyHeroSlider = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="slider-main-wrapper ">
-      <div ref={sliderRef} className="hero-slider-fixed">
+    <div ref={containerRef} className="slider-main-wrapper overflow-hidden ">
+      <div ref={sliderRef} className="hero-slider-fixed overflow-hidden">
         {/* <header className="header">
           <nav>
             {slides.map((s, i) => (
@@ -87,7 +107,13 @@ const StickyHeroSlider = () => {
           <section key={slide.id} className={`section ${slide.id}`}>
             <div className="wrapper-outer">
               <div className="wrapper-inner">
-                <div className="background" style={{ backgroundImage: `url(${slide.img})` }}>
+                <div
+                  className="background"
+                  style={{
+                    "--desktop-bg": `url(${slide.img})`,
+                    "--mobile-bg": `url(${slide.mobileImg || slide.img})`,
+                  }}
+                >
                   <h2 className="section-title">{slide.title}</h2>
                 </div>
               </div>

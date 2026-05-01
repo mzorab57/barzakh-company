@@ -1,5 +1,6 @@
 import { Calendar, Tag, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import './Guests.css';
 
 const pastEvents = [
   {
@@ -55,11 +56,17 @@ export default function PastEvents() {
 
   return (
     <section className="py-16 bg-white">
-      <div className="container max-w-6xl mx-auto px-4">
+      <div className=" max-w-6xl mx-auto px-4">
         
          <h2 className="text-3xl uppercase md:text-3xl  font-extrabold text-gray-800  ">
-          Past Events
-          <div className='h-1.5 w-32 my-5 bg-primary'></div>
+         <div className=" max-w-md lg:max-w-4xl py-10 w-full px-4   ">
+           <span className="inline-block text-start  rounded-full uppercase py-1.5 text-sm font-bold tracking-[0.4em] text-[#C5B78E]">
+              our event
+            </span>
+            <h2 className="mt-4 text-4xl font-extrabold uppercase text-[#6d5423] leading-tight sm:text-4xl lg:text-6xl text-start">
+              <span className='text-[#C5B78E]'>Past events</span> in the world
+            </h2>
+        </div>
         </h2>
 
         <div className="relative">

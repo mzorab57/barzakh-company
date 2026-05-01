@@ -7,13 +7,16 @@ import UpcomingEvents from '../components/UpcomingEvents';
 import Guests from '../components/Guests';
 import PastEvents from '../components/PastEvents';
 import HeroVideoSection from '../components/VideoSection';
+import AboutSection from '../components/AboutSection';
 
 const Home = () => {
   
   return (
     <div className="">
       <Hero />
-      <InternationalSection />
+      {/* <InternationalSection /> */}
+   
+      <AboutSection />
       <UpcomingEvents />
       <Guests />
       <HeroVideoSection />

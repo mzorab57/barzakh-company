@@ -71,8 +71,15 @@
   height: 100%;
   width: 100%;
   top: 0px;
+  background-image: var(--desktop-bg);
   background-size: cover;
   background-position: center;
+}
+
+@media (max-width: 768px) {
+  .background {
+    background-image: var(--mobile-bg, var(--desktop-bg));
+  }
 }
 
 /* Gradient overlay from your code */
