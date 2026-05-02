@@ -18,8 +18,8 @@ const Home = () => {
    
       <AboutSection />
       <UpcomingEvents />
-      <Guests />
       <HeroVideoSection />
+      <Guests />
       <PastEvents />
     </div>
   )

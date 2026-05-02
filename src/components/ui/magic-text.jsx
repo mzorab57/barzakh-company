@@ -18,7 +18,7 @@ export const MagicText = ({ text, className = "" }) => {
   const container = useRef(null);
   const { scrollYProgress } = useScroll({
     target: container,
-    offset: ["start 0.9", "start 0.25"],
+    offset: ["start 0.7", "start 0.25"],
   });
   
   const words = text.split(" ");

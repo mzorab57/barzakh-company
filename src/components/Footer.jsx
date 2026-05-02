@@ -22,7 +22,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative w-full overflow-hidden text-white">
+    <footer className="relative w-full overflow-hidden bg-[#88743e] text-white">
       {/* بەشی باکگراوەند - Cosmic Background */}
       <div className="absolute inset-0 z-0">
         <CosmicParallaxBg
@@ -38,13 +38,13 @@ export default function Footer() {
       </div>
 
       {/* بەشی ناوەڕۆک - Content */}
-      <div className="relative z-10 container max-w-7xl mx-auto px-3 pt-20 lg:py-40">
+      <div className="relative z-10 container max-w-7xl mx-auto px-3 lg:py-40">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           
           {/* ١. پەیوەندی و سۆشیاڵ - CONTACT & SOCIAL */}
-          <div className="space-y-8 ">
+          <div className="space-y-4  ">
             <div>
-              <h3 className="text-[#C5B78E] font-black lg:text-4xl text-2xl mb-6 tracking-widest uppercase">Contact</h3>
+              <h3 className="text-[#C5B78E] mt-6 font-black lg:text-4xl text-2xl mb-6 tracking-widest uppercase">Contact</h3>
               <a
                 href="mailto:info@nukhbaglobal.com"
                 className="group flex items-center gap-1  text-[#b2a47e] transition-all duration-300"
@@ -120,11 +120,11 @@ export default function Footer() {
 
           </div>
 
-          <div className="flex justify-between w-full  items-center gap-2">
+          {/* <div className="flex justify-between w-full  items-center gap-2">
             <p className="text-sm font-bold  uppercase text-gray-400">
               © {new Date().getFullYear()} <span className="text-[#C5B78E]">Barzakh Company</span>. 
             </p>
-            <div className="flex items-center uppercase gap-2 text-xs text-gray-500 mt-2 ">
+            <div className="flex items-center uppercase  text-xs text-gray-500 mt-2 ">
               <span className='flex gap-x-1'>Powered by <a 
                 href="https://wa.me/96407701411893"
                 target="_blank"
@@ -135,7 +135,7 @@ export default function Footer() {
               </a></span>
               
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>
