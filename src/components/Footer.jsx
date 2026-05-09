@@ -1,29 +1,136 @@
-import { Mail, Facebook, Instagram, Send, Globe, ExternalLink } from 'lucide-react';
+'use client';
+import { 
+  Mail, Facebook, Instagram, Send, Globe, ExternalLink, 
+  MapPin, Phone, ArrowUpRight, Sparkles, Heart, Award 
+} from 'lucide-react';
+import { useState, useRef, useLayoutEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CosmicParallaxBg } from './ui/parallax-cosmic-background';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [hoveredSocial, setHoveredSocial] = useState(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  const footerRef = useRef(null);
+  const brandRef = useRef(null);
+  const linksRef = useRef([]);
+  const statsRef = useRef(null);
+
+  // Track mouse position for magnetic effect
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  // GSAP Animations
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      // Brand section - slide in from left
+      gsap.fromTo(
+        brandRef.current,
+        { opacity: 0, x: -80 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
+
+      // Links - stagger from bottom
+      linksRef.current.forEach((link, index) => {
+        gsap.fromTo(
+          link,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: index * 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: 'top 75%',
+            },
+          }
+        );
+      });
+
+      // Stats - scale in
+      gsap.fromTo(
+        statsRef.current,
+        { opacity: 0, scale: 0.9 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          ease: 'back.out(1.4)',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 70%',
+          },
+        }
+      );
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const usefulLinks = [
-    'Event Calendar',
-    'Event Map',
-    'Volunteer',
-    'Terms and Conditions',
-    'Privacy Policy',
+    { name: 'Event Calendar', href: '#calendar', icon: '📅' },
+    { name: 'Event Map', href: '#map', icon: '🗺️' },
+    { name: 'Volunteer', href: '#volunteer', icon: '🤝' },
+    { name: 'Terms & Conditions', href: '#terms', icon: '📋' },
+    { name: 'Privacy Policy', href: '#privacy', icon: '🔒' },
   ];
 
   const international = [
-    'United Kingdom',
-    'Philippines',
-    'Liberia',
-    'Saudi Arabia',
-    'United States',
-    'Canada',
-    'Indonesia',
-    'Zanzibar',
+    { name: 'United Kingdom', code: 'UK', flag: '🇬🇧' },
+    { name: 'Philippines', code: 'PH', flag: '🇵🇭' },
+    // { name: 'Liberia', code: 'LR', flag: '🇱🇷' },
+    { name: 'Saudi Arabia', code: 'SA', flag: '🇸🇦' },
+    // { name: 'United States', code: 'US', flag: '🇺🇸' },
+    // { name: 'Canada', code: 'CA', flag: '🇨🇦' },
+    { name: 'Indonesia', code: 'ID', flag: '🇮🇩' },
+    // { name: 'Zanzibar', code: 'TZ', flag: '🇹🇿' },
   ];
 
+  const socialLinks = [
+    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook', color: 'hover:bg-[#1877F2]' },
+    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram', color: 'hover:bg-gradient-to-br hover:from-[#405DE6] hover:to-[#E1306C]' },
+    { icon: Globe, href: '#', label: 'Website', color: 'hover:bg-[#C5B78E]' },
+  ];
+
+  const stats = [
+    { number: '50+', label: 'Events Hosted', icon: Award },
+   
+  ];
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    console.log('Subscribed:', email);
+    setEmail('');
+  };
+
   return (
-    <footer className="relative w-full overflow-hidden bg-[#88743e] text-white">
-      {/* بەشی باکگراوەند - Cosmic Background */}
+    <footer 
+      ref={footerRef}
+      className="relative w-full overflow-hidden bg-[#050403] text-white"
+      onMouseMove={handleMouseMove}
+    >
+      
+      {/* === Ultra Premium Background === */}
       <div className="absolute inset-0 z-0">
         <CosmicParallaxBg
           head=""
@@ -33,111 +140,287 @@ export default function Footer() {
           primaryColor="#88743e"
           secondaryColor="#C5B78E"
         />
-        {/* ئەفێکتێکی کاڵ بۆ سەر باکگراوەندەکە بۆ ئەوەی دەقەکان باشتر بخوێندرێنەوە */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+        
+        {/* Multi-layer Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#050403]/40 via-[#0a0805]/70 to-[#050403]/95" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(197,183,142,0.08),transparent_50%)]" />
+        
+        {/* Animated Grid Pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)] animate-pulse-slow" />
+        
+        {/* Noise Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.015] mix-blend-overlay" />
       </div>
 
-      {/* بەشی ناوەڕۆک - Content */}
-      <div className="relative z-10 container max-w-7xl mx-auto px-3 lg:py-40">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+      {/* === Main Content === */}
+      <div className="relative z-10 container max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-12">
+        
+        {/* Top Section: Hero Newsletter */}
+        <div className="pt-24 sm:pt-32 lg:pt-40 pb-20 lg:pb-28 border-b border-white/5">
           
-          {/* ١. پەیوەندی و سۆشیاڵ - CONTACT & SOCIAL */}
-          <div className="space-y-4  ">
-            <div>
-              <h3 className="text-[#C5B78E] mt-6 font-black lg:text-4xl text-2xl mb-6 tracking-widest uppercase">Contact</h3>
-              <a
-                href="mailto:info@nukhbaglobal.com"
-                className="group flex items-center gap-1  text-[#b2a47e] transition-all duration-300"
-              >
-                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-[#88743e]/20">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <span className="lg:text-lg text-base font-medium">info@nukhbagloabal.com</span>
-              </a>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            
+            {/* Left: Mega Brand Section */}
+            <div ref={brandRef} className="lg:col-span-7 space-y-10">
+              
+              {/* Premium Badge */}
+              <div className="inline-flex items-center gap-3">
+               
+                <div className="h-[1px] w-20 bg-gradient-to-r from-[#C5B78E] to-transparent" />
+                <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.5em] text-[#C5B78E]">
+                  Global Community
+                </span>
+              </div>
+
+              {/* Mega Typography */}
+              <div>
+                <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light uppercase leading-[0.9] tracking-tighter mb-4">
+                  <span className="block font-black text-white">Stay</span>
+                  <span className="block font-black text-white">Connected</span>
+                </h2>
+                <p className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl  font-normal lowercase tracking-tight">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5B78E] via-[#E6D6A3] to-[#b59e5f]">
+                    to the journey.
+                  </span>
+                </p>
+              </div>
+
+              {/* Description */}
+              <div className="flex items-start gap-6 max-w-2xl">
+                <div className="hidden sm:block w-[2px] h-32 bg-gradient-to-b from-[#C5B78E] to-transparent" />
+                <p className="text-lg sm:text-xl text-white/50 font-light leading-relaxed">
+                  Join thousands of believers worldwide in receiving exclusive updates, spiritual insights, and transformative event announcements directly to your inbox.
+                </p>
+              </div>
+
             </div>
 
-            <div>
-              <h3 className="text-[#C5B78E] font-black text-2xl lg:text-4xl mb-6 tracking-widest uppercase">Follow Us</h3>
-              <div className="flex gap-4">
-                {[
-                  { icon: <Facebook size={20} />, link: '#facebook' },
-                  { icon: <Instagram size={20} />, link: '#instagram' },
-                  { icon: <Globe size={20} />, link: '#web' }
-                ].map((social, i) => (
-                  <a
-                    key={i}
-                    href={social.link}
-                    className="w-10 h-10  flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-[#88743e] hover:border-[#88743e] transition-all duration-500"
-                  >
-                    {social.icon}
-                  </a>
-                ))}
+            {/* Right: Premium Newsletter Form */}
+            <div className="lg:col-span-5">
+              <div className="relative group">
+                
+                {/* Decorative Background Card */}
+                <div className="absolute -inset-4 bg-gradient-to-br from-[#C5B78E]/10 to-transparent rounded-[2.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                
+                <div className="relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 sm:p-10 hover:border-[#C5B78E]/30 transition-all duration-700">
+                  
+                  <h3 className="text-2xl font-bold mb-6 text-white/90">
+                    Subscribe to Our Newsletter
+                  </h3>
+
+                  <form onSubmit={handleSubscribe} className="space-y-5">
+                    {/* Email Input */}
+                    <div className="relative group/input">
+                      <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30 pointer-events-none transition-colors group-focus-within/input:text-[#C5B78E]" strokeWidth={1.5} />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your@email.com"
+                        required
+                        className="w-full pl-14 pr-5 py-5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:bg-white/10 focus:border-[#C5B78E]/50 focus:outline-none transition-all duration-300"
+                      />
+                    </div>
+
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      className="group/btn w-full flex items-center justify-center gap-3 py-5 bg-gradient-to-r from-[#C5B78E] to-[#b59e5f] text-black rounded-2xl font-bold text-sm uppercase tracking-wider shadow-[0_10px_40px_rgba(197,183,142,0.3)] transition-all duration-500 hover:shadow-[0_20px_60px_rgba(197,183,142,0.5)] hover:scale-[1.02] active:scale-95"
+                    >
+                      <span>Subscribe Now</span>
+                      <Send className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" strokeWidth={1.5} />
+                    </button>
+                  </form>
+
+                  <p className="mt-5 text-xs text-white/30 font-light text-center">
+                    ✓ No spam, ever. Unsubscribe anytime.
+                  </p>
+
+                </div>
               </div>
             </div>
+
           </div>
 
-          {/* ٢. لینکە بەسوودەکان - USEFUL LINKS */}
-          <div>
-            <h3 className="text-[#C5B78E] font-black lg:text-4xl text-2xl mb-6 tracking-widest uppercase">Useful Links</h3>
-            <ul className="space-y-3">
+        </div>
+
+        {/* Stats Section (Floating Cards) */}
+        <div ref={statsRef} className="py-16 lg:py-20">
+          <div className="grid grid-cols-1  gap-6 lg:gap-8">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={index}
+                  className="group relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(197,183,142,0.1)]"
+                >
+                  
+                  
+                  {/* Number */}
+                  {/* <div className="text-5xl font-black text-white mb-2 transition-colors group-hover:text-[#C5B78E]">
+                    {stat.number}
+                  </div> */}
+                  
+                  {/* Label */}
+                  <div className="text-sm font-light uppercase tracking-[0.2em] text-white/50">
+                    nukhba global
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Links Grid Section */}
+        <div className="py-16 lg:py-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16 border-t border-white/5">
+          
+          {/* Useful Links */}
+          <div ref={(el) => (linksRef.current[0] = el)} className="space-y-8">
+            <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
+              Quick Links
+            </h4>
+            <ul className="space-y-4">
               {usefulLinks.map((link) => (
-                <li key={link}>
+                <li key={link.name}>
                   <a
-                    href={`#${link.toLowerCase().replace(/\s+/g, '-')}`}
-                    className=" hover:translate-x-2 hover:text-gray-400 text-[#b2a47e] flex items-center gap-2 transition-all duration-300 text-base group"
+                    href={link.href}
+                    className="group flex items-center gap-3 text-white/60 hover:text-white transition-all duration-300"
                   >
-                    {/* <div className="w-1 h-1 text-base font-medium  bg-[#88743e] rounded-full group-hover:w-3 transition-all" /> */}
-                    {link}
+                    {/* <span className="text-xl">{link.icon}</span> */}
+                    <span className="text-base font-light group-hover:translate-x-2 transition-transform">
+                      {link.name}
+                    </span>
+                    <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity ml-auto" strokeWidth={1.5} />
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* ٣. جیهانی - INTERNATIONAL */}
-          <div>
-            <h3 className="text-[#C5B78E] font-black text-2xl lg:text-4xl mb-6 tracking-widest uppercase">International</h3>
-            <ul className="grid grid-cols-2 gap-x-4 gap-y-3">
+          {/* International Presence */}
+          <div ref={(el) => (linksRef.current[1] = el)} className="space-y-8">
+            <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
+              Global Reach
+            </h4>
+            <ul className="grid grid-cols-2 gap-4">
               {international.map((country) => (
-                <li key={country}>
+                <li key={country.code}>
                   <a
-                    href={`#${country.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="hover:text-gray-400 text-[#b2a47e]  transition-colors text-base  font-medium uppercase tracking-tighter"
+                    href={`#${country.code.toLowerCase()}`}
+                    className="group flex flex-col items-start gap-2 p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-300"
                   >
-                    {country}
+                    <span className="text-2xl">{country.flag}</span>
+                    <span className="text-sm font-light text-white/60 group-hover:text-white transition-colors">
+                      {country.name}
+                    </span>
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-         
-        </div>
+          {/* Contact & Social */}
+          <div ref={(el) => (linksRef.current[2] = el)} className="space-y-8">
+            <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
+              Connect
+            </h4>
+            
+            {/* Email */}
+            <a
+              href="mailto:info@nukhbaglobal.com"
+              className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-300"
+            >
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#C5B78E]/10 border border-[#C5B78E]/20 group-hover:bg-[#C5B78E] group-hover:scale-110 transition-all duration-300">
+                <Mail className="w-5 h-5 text-white" strokeWidth={1.5} />
+              </div>
+              <span className="text-sm font-light text-white/70 group-hover:text-white transition-colors">
+                info@nukhbaglobal.com
+              </span>
+            </a>
 
-        {/* بەشی خوارەوە - Footer Bottom */}
-        <div className="  border-t pb-4 border-white/10 flex flex-col items-center gap-4 text-center">
-          <div className="bg-red-100">
+            {/* Social Links */}
+            <div className="space-y-4">
+              <h5 className="text-sm font-bold uppercase tracking-[0.3em] text-white/40">
+                Follow Us
+              </h5>
+              <div className="flex gap-3">
+                {socialLinks.map((social, i) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={i}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onMouseEnter={() => setHoveredSocial(i)}
+                      onMouseLeave={() => setHoveredSocial(null)}
+                      className={`
+                        group/social relative flex items-center justify-center w-14 h-14 rounded-full 
+                        bg-white/5 border border-white/10 backdrop-blur-xl
+                        transition-all duration-500
+                        hover:scale-110 hover:-translate-y-2
+                        ${social.color}
+                      `}
+                      aria-label={social.label}
+                    >
+                      <Icon 
+                        className="w-6 h-6 text-white transition-transform group-hover/social:scale-110" 
+                        strokeWidth={1.5} 
+                      />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
 
           </div>
 
-          {/* <div className="flex justify-between w-full  items-center gap-2">
-            <p className="text-sm font-bold  uppercase text-gray-400">
-              © {new Date().getFullYear()} <span className="text-[#C5B78E]">Barzakh Company</span>. 
-            </p>
-            <div className="flex items-center uppercase  text-xs text-gray-500 mt-2 ">
-              <span className='flex gap-x-1'>Powered by <a 
-                href="https://wa.me/96407701411893"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#C5B78E]  hover:scale-110 transition-transform flex items-center gap-1"
-              >
-                AL-CODE
-              </a></span>
-              
-            </div>
-          </div> */}
         </div>
+
+        {/* Bottom Bar */}
+        <div className="py-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+          
+          {/* Copyright */}
+          <p className="text-sm text-white/30 font-light text-center md:text-left">
+            © {new Date().getFullYear()}{' '}
+            <span className="text-[#C5B78E] font-medium">Nukhba Global</span>. 
+            All rights reserved.
+          </p>
+
+          {/* Credits */}
+          <div className="flex items-center gap-2 text-xs text-white/20">
+            <span>Designed & Developed with</span>
+            
+            <span>by</span>
+            <a
+              href="https://wa.me/9647701411893"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-1 text-[#C5B78E] hover:text-white transition-colors"
+            >
+              <span className="font-bold">AL-CODE</span>
+              <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.5} />
+            </a>
+          </div>
+
+        </div>
+
       </div>
+
+      {/* Decorative Bottom Gradient Line */}
+      <div className="relative z-10 h-1 bg-gradient-to-r from-transparent via-[#C5B78E] to-transparent opacity-50" />
+
+      {/* Custom Animations */}
+      <style jsx global>{`
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 8s ease-in-out infinite;
+        }
+      `}</style>
+
     </footer>
   );
 }

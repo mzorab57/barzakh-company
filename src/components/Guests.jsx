@@ -1,183 +1,277 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './Guests.css';
+'use client';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowUpRight, Sparkles } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const guests = [
-  { 
+  {
+    image: '/assets/images/hero1.jpg',
     name: 'Mufti Menk',
-     image: '../assets/images/hero1.jpg', 
-    //  role: 'Grand Guest' 
-    },
-  { 
-    // name: 'Sheikh Omar Suleiman',
-     image: '../assets/images/hero2.jpg', 
-    //  role: 'Scholar' 
-    },
-  { 
-    // name: 'Akhi Ayman',
-     image: '../assets/images/hero4.jpg', 
-    //  role: 'Speaker' 
-    },
-  { 
-    // name: 'Sheikh Abu Bakr Zoud',
-     image: '../assets/images/hero3.jpg', 
-    //  role: 'Scholar' 
-    },
-  { 
-    // name: 'Ustadh Munir Amour',
-     image: '../assets/images/hero1.jpg', 
-    //  role: 'Educator'
-     },
-  { 
-    // name: 'Qari Hazza Al Balushi',
-     image: '../assets/images/hero2.jpg', 
-    //  role: 'Qari' 
-     },
-
-     { 
-    // name: 'Sheikh Ali Hammuda',
-     image: '../assets/images/hero3.jpg', 
-    //  role: 'Lecturer'
-     },
-  { 
-    // name: 'Sheikh Wael Ibrahim',
-     image: '../assets/images/hero4.jpg', 
-    //  role: 'Speaker' 
-    },
-  // Duplicate for infinite loop illusion or just let it be finite. 
-  // We will keep it finite like a normal gallery for better UX without JS loops.
+    title: 'Grand Mufti of Zimbabwe',
+    role: 'Keynote Speaker',
+    year: '2024',
+    // Hero - گەورەترین کارد
+    span: 'col-span-2 md:col-span-7 lg:col-span-8 md:row-span-2',
+    height: 'h-[450px] md:h-[700px]'
+  },
+  {
+    image: '/assets/images/hero4.jpg',
+    name: 'Omar Suleiman',
+    title: 'Founder & President, Yaqeen Institute',
+    role: 'Featured Scholar',
+    year: '2024',
+    span: 'col-span-1 md:col-span-5 lg:col-span-4',
+    height: 'h-[280px] md:h-[338px]'
+  },
+  {
+    image: '/assets/images/hero3.jpg',
+    name: 'Yasmin Mogahed',
+    title: 'Author & International Speaker',
+    role: 'Spiritual Guide',
+    year: '2023',
+    span: 'col-span-1 md:col-span-5 lg:col-span-4',
+    height: 'h-[280px] md:h-[338px]'
+  },
+  {
+    image: '/assets/images/hero1.jpg',
+    name: 'Nouman Ali Khan',
+    title: 'Founder & CEO, Bayyinah Institute',
+    role: 'Quranic Scholar',
+    year: '2023',
+    span: 'col-span-2 md:col-span-6',
+    height: 'h-[350px] md:h-[420px]'
+  },
+  {
+    image: '/assets/images/hero2.jpg',
+    name: 'Hamza Yusuf',
+    title: 'President, Zaytuna College',
+    role: 'Islamic Scholar',
+    year: '2022',
+    span: 'col-span-2 md:col-span-6',
+    height: 'h-[350px] md:h-[420px]'
+  },
 ];
 
 export default function Guests() {
-  const [isDesktop, setIsDesktop] = useState(() =>
-    typeof window === 'undefined' ? true : window.innerWidth >= 1024
-  );
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const wrapperRef = useRef(null);
+  const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const cardsRef = useRef([]);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
+  useLayoutEffect(() => {
+    let ctx = gsap.context(() => {
+      // ئەنیمەیشنی Header - fade in from left
+      gsap.fromTo(
+        headerRef.current.children,
+        { opacity: 0, x: -60 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 1.2,
+          stagger: 0.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: headerRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
+      // ئەنیمەیشنی کاردەکان - Curtain reveal effect
+      cardsRef.current.forEach((card, index) => {
+        // Create a mask/reveal animation
+        gsap.fromTo(
+          card,
+          { 
+            opacity: 0,
+            clipPath: 'inset(100% 0% 0% 0%)', // پەردە لە خوارەوە داخراوە
+            y: 40 
+          },
+          {
+            opacity: 1,
+            clipPath: 'inset(0% 0% 0% 0%)', // پەردەکە بە تەواوی دەکرێتەوە
+            y: 0,
+            duration: 1.2,
+            delay: index * 0.12,
+            ease: 'expo.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 85%',
+            },
+          }
+        );
+      });
+    }, sectionRef);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => ctx.revert();
   }, []);
 
-  useEffect(() => {
-    if (!isDesktop) {
-      setScrollProgress(0);
-      return undefined;
-    }
-
-    const handleScroll = () => {
-      if (!wrapperRef.current) return;
-      const rect = wrapperRef.current.getBoundingClientRect();
-      
-      // Calculate how much we have scrolled inside the wrapper
-      // rect.top is 0 when wrapper hits top of viewport
-      const scrollY = -rect.top;
-      // scrollable height is total height minus viewport height
-      const maxScroll = rect.height - window.innerHeight;
-      
-      if (scrollY >= 0 && scrollY <= maxScroll) {
-        // Progress from 0 to 1
-        setScrollProgress(scrollY / maxScroll);
-      } else if (scrollY < 0) {
-        setScrollProgress(0);
-      } else if (scrollY > maxScroll) {
-        setScrollProgress(1);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial check
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isDesktop]);
-
-  // Determine the active index based on progress
-  // progress * (length - 1) gives us a continuous number from 0 to 7
-  const continuousIndex = scrollProgress * (guests.length - 1);
-
-  const scrollToIndex = (index) => {
-    if (!wrapperRef.current || !isDesktop) return;
-    const rect = wrapperRef.current.getBoundingClientRect();
-    const maxScroll = wrapperRef.current.scrollHeight - window.innerHeight;
-    const targetProgress = index / (guests.length - 1);
-    
-    // Calculate the absolute Y position on the page
-    const absoluteY = window.scrollY + rect.top + (targetProgress * maxScroll);
-    
-    window.scrollTo({
-      top: absoluteY,
-      behavior: 'smooth'
-    });
-  };
-
   return (
-    <section ref={wrapperRef} className="guests-scroll-wrapper bg-[#f4f2e7]">
-      <div className="guests-header sticky top-28 z-10 w-full bg-[#f4f2e7] px-4 duration-700 ease-in-out lg:top-32">
-        <h2 className="text-4xl font-extrabold uppercase leading-tight text-[#6d5423] sm:text-4xl lg:text-center lg:text-6xl xl:text-7xl">
-          <span className="text-[#C5B78E]">Past Guests</span> Distinguished
-        </h2>
-      </div>
+    <section 
+      ref={sectionRef} 
+      className="relative bg-[#FAFAF8] py-20 sm:py-28 lg:py-36 overflow-hidden selection:bg-[#1a1814] selection:text-[#E6D6A3]"
+    >
+      {/* Ambient Background Effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(230,214,163,0.08),transparent_50%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-multiply pointer-events-none" />
+      
+      {/* Decorative floating orbs */}
+      <div className="absolute top-[10%] right-[15%] w-[400px] h-[400px] rounded-full bg-[#E6D6A3]/5 blur-[100px] animate-pulse-slow pointer-events-none" />
 
-      <div className="guests-mobile-strip">
-        <div className="guests-mobile-track">
+      <div className="mx-auto max-w-[95rem] px-4 sm:px-6 lg:px-10 xl:px-12 relative z-10">
+        
+        {/* === Luxurious Header === */}
+        <div ref={headerRef} className="max-w-4xl mb-16 md:mb-24 lg:mb-32">
+          
+          
+
+          {/* Ultra-Fashion Typography */}
+          <h2 className="mb-10">
+            {/* Large Number Watermark */}
+            <span className="block text-[20vw] sm:text-[15vw] md:text-[12rem] font-black leading-none tracking-tighter text-[#1a1814]/[0.03] pointer-events-none">
+              27
+            </span>
+            <span className="block -mt-20 sm:-mt-28 md:-mt-32 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium uppercase leading-[0.9] tracking-tight text-[#594d33]">
+              Distinguished
+            </span>
+            <span className="block mt-3   font-normal lowercase text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b59e5f] via-[#d4b976] to-[#8a7340]">
+                voices & visionaries.
+              </span>
+            </span>
+          </h2>
+
+          {/* Description with elegant border */}
+          <div className="flex items-start gap-6 max-w-2xl">
+            <div className="hidden sm:block w-[2px] h-24 bg-gradient-to-b from-[#b59e5f] to-transparent mt-1" />
+            <p className="text-base sm:text-lg lg:text-xl text-[#1a1814]/60 font-light leading-relaxed">
+              A curated collection of transformative leaders, scholars, and innovators who have graced our stages—each bringing wisdom, inspiration, and profound impact to our global community.
+            </p>
+          </div>
+
+        </div>
+
+        {/* === Premium Bento Grid === */}
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4 md:gap-6 auto-rows-auto">
           {guests.map((guest, index) => (
-            <article key={index} className="guests-mobile-card">
-              <img
-                src={guest.image}
-                alt={guest.name || `Guest ${index + 1}`}
-                className="guests-mobile-image"
-              />
+            <article
+              key={index}
+              ref={(el) => (cardsRef.current[index] = el)}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className={`
+                group relative overflow-hidden bg-[#0a0805] cursor-pointer
+                rounded-[1.5rem] sm:rounded-[2rem] md:rounded-[2.5rem]
+                ${guest.span} ${guest.height}
+                transition-all duration-700 ease-out
+                hover:scale-[1.02] hover:z-10
+                shadow-[0_8px_30px_rgba(0,0,0,0.04)]
+                hover:shadow-[0_20px_60px_rgba(181,158,95,0.15)]
+              `}
+            >
+              {/* Premium Image with Advanced Effects */}
+              <div className="absolute inset-0 w-full h-full overflow-hidden">
+                <div className="relative w-full h-full">
+                  {/* Base Image */}
+                  <img
+                    src={guest.image}
+                    alt={guest.name}
+                    className={`
+                      w-full h-full object-cover
+                      transition-all duration-[2s] ease-out
+                      ${hoveredIndex === index 
+                        ? 'scale-110 grayscale-0 opacity-100 brightness-100' 
+                        : 'scale-105  brightness-90 opacity-85'
+                      }
+                    `}
+                    loading="lazy"
+                  />
+                  
+                  {/* Color Overlay for Depth */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#b59e5f]/10 via-transparent to-[#1a1814]/20 opacity-40 transition-opacity duration-700 group-hover:opacity-0" />
+                </div>
+              </div>
+
+              {/* Multi-layer Elegant Gradients */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 transition-opacity duration-700 group-hover:opacity-90" />
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/30" />
+
+              {/* Delicate Inner Border */}
+              <div className="absolute inset-3 sm:inset-4 border  rounded-[1.2rem] sm:rounded-[1.5rem] md:rounded-[2rem] pointer-events-none transition-all duration-700 border-[#b59e5f]/40 shadow-[inset_0_0_40px_rgba(181,158,95,0.1)] z-20" />
+
+              {/* Year Badge - Top Right */}
+              <div className="absolute top-4 sm:top-6 right-4 sm:right-6 z-30">
+                <span className="inline-flex items-center gap-2 rounded-full bg-black/30 border border-white/10 backdrop-blur-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[10px] font-mono tracking-[0.25em] uppercase text-white/70 transition-all duration-500 group-hover:bg-[#b59e5f]/20 group-hover:border-[#b59e5f]/50 group-hover:text-white">
+                  {guest.year}
+                </span>
+              </div>
+
+              {/* Content Overlay */}
+              <div className="absolute inset-0 p-5 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-end z-30">
+                
+                {/* Role Tag - appears on hover */}
+                <div className={`
+                  mb-3 sm:mb-4 transition-all duration-500 ease-out
+                  ${hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
+                `}>
+                  <span className="inline-block text-[#E6D6A3] font-light text-xs sm:text-sm tracking-[0.25em] uppercase">
+                    {guest.role}
+                  </span>
+                </div>
+
+                {/* Name & Title */}
+                <div className={`
+                  transition-all duration-500 ease-out
+                  ${hoveredIndex === index ? 'translate-y-0' : 'translate-y-3'}
+                `}>
+                  <h3 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-tight leading-tight mb-2">
+                    {guest.name}
+                  </h3>
+                  <p className={`
+                    text-white/60 text-xs sm:text-sm md:text-base font-light leading-relaxed max-w-md
+                    transition-all duration-500 delay-100
+                    ${hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}
+                  `}>
+                    {guest.title}
+                  </p>
+                </div>
+
+                {/* Arrow Button - Hidden by default, slides in on hover */}
+                <div className={`
+                  absolute bottom-5 sm:bottom-6 md:bottom-8 lg:bottom-10 right-5 sm:right-6 md:right-8 lg:right-10
+                  flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full 
+                  bg-white text-black
+                  transition-all duration-500 ease-out
+                  ${hoveredIndex === index 
+                    ? 'translate-x-0 opacity-100 rotate-0' 
+                    : 'translate-x-6 opacity-0 rotate-45'
+                  }
+                `}>
+                  <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />
+                </div>
+
+              </div>
             </article>
           ))}
         </div>
+
+       
+
       </div>
 
-      <div className="guests-sticky-container flex">
-        <div className="carousel-wrapper">
-          {guests.map((guest, index) => {
-            const offset = index - continuousIndex;
-            const isCenter = Math.abs(offset) < 0.5;
-            const absOffset = Math.abs(offset);
-            const translateX = offset * 105;
-            const translateZ = absOffset === 0 ? 100 : -Math.abs(offset) * 300;
-            const overlayOpacity = Math.min(absOffset * 0.4, 0.7);
-            const zIndex = guests.length - Math.round(absOffset * 10);
-
-            return (
-              <div
-                key={index}
-                className="guest-box"
-                style={{
-                  '--translateX': `${translateX}%`,
-                  '--translateZ': `${translateZ}px`,
-                  '--rotateY': '0deg',
-                  '--overlay-opacity': overlayOpacity,
-                  '--info-opacity': isCenter ? 1 : 0,
-                  zIndex: zIndex,
-                }}
-                onClick={() => scrollToIndex(index)}
-              >
-                <img src={guest.image} alt={guest.name || `Guest ${index + 1}`} />
-                <div className="guest-info">
-                  <h3>{guest.name || `Guest ${index + 1}`}</h3>
-                  <p>{guest.role || ''}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      {/* Custom Animations */}
+      <style jsx global>{`
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.05); }
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 8s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 }

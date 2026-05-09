@@ -11,10 +11,10 @@ const slides = [
     id: "first",
     title: "",
     nav: "One",
-    img: "../assets/images/hero1.jpg",
+    img: "../assets/images/event-turkia.jpg",
     // 
     // mobileImg: "https://lightuponlight.co.uk/wp-content/uploads/2026/04/Ali-summer-conference-copy.jpg",
-    mobileImg: "../assets/images/hero4.jpg",
+    mobileImg: "../assets/images/event-turkia.jpg",
   },
   {
     id: "second",
@@ -23,13 +23,7 @@ const slides = [
     img: "../assets/images/hero2.jpg",
     mobileImg: "https://lightuponlight.co.uk/wp-content/uploads/2026/04/Ali-summer-conference-copy.jpg",
   },
-  {
-    id: "third",
-    title: "",
-    nav: "Three",
-    img: "../assets/images/hero3.jpg",
-    mobileImg: "https://lightuponlight.co.uk/wp-content/uploads/2025/06/Umrah-2026-Package-Included-1-819x1024.jpg",
-  },
+ 
   { id: "fourth", title: "", nav: "Four", img: "https://lightuponlight.co.uk/wp-content/uploads/2025/07/Khalilah.jpg" },
   { id: "fifth", title: "", nav: "Five", img: "../assets/images/hero4.jpg" },
 ];

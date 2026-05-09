@@ -35,7 +35,7 @@ function App() {
   return (
     <Router>
       <ScrollToHash />
-      <div className="min-h-screen ">
+      <div className="min-h-screen overflow-hidden">
         <Header />
         <main>
           <Routes>

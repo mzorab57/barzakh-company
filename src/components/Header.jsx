@@ -1,7 +1,7 @@
 import StaggeredMenu from './StaggeredMenu';
-import malazadaLogo from '/assets/images/logo/malazadar.png';
+// import malazadaLogo from '/assets/images/logo/malazadar.png';
 import alnukhbaLogo from '/assets/images/logo/alnukhbar.png';
-import barzakhLogo from '/assets/images/logo/barzakhr.png';
+// import barzakhLogo from '/assets/images/logo/barzakhr.png';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
@@ -33,7 +33,7 @@ export default function Header() {
 
   return (
     <header className="bg-[#88743e] shadow-sm sticky top-0 z-50">
-      <div className="max-w-[1600px] lg:py-2 mx-auto px-1">
+      <div className="max-w-[1600px] py-2 mx-auto px-1">
         <div className="flex items-center justify-between h-20">
          
          <Link onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to="/">
