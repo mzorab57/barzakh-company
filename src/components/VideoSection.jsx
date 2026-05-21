@@ -89,7 +89,7 @@ const HeroVideoSection = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-[#0a0805] via-transparent to-transparent lg:bg-gradient-to-r lg:from-[#0a0805] lg:via-[#0a0805]/60 lg:to-transparent" />
             
             {/* Film Grain Overlay */}
-            <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+            <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay bg-[url('/noise.svg')]" />
 
             {/* Cinematic Center Play Button */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -120,7 +120,7 @@ const HeroVideoSection = () => {
       </div>
 
       {/* Embedded Styles for the specific animations */}
-      <style jsx>{`
+      <style>{`
         .animate-fade-in-up {
           opacity: 0;
           animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;

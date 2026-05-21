@@ -205,13 +205,13 @@ export default function TurkeyEventPage() {
      <div className="bg-[linear-gradient(180deg,#fbf6e9_0%,#f7f0dc_35%,#ffffff_100%)] text-[#2f2611]">
      
         <SmoothScrollHero
-        eyebrow="Islamic Retreat Experience"
+        eyebrow=""
         title="Antalya, Turkey - 2026"
         description="Step away from the noise of daily life and enter the tranquility of Antalya, Turkiye. A spiritually uplifting atmosphere."
         date="April 2nd - April 6th, 2026"
         location="Antalya, Turkiye"
-        centerImage="/assets/images/hero4.jpg"
-        mobileCenterImage="https://lightuponlight.co.uk/wp-content/uploads/2026/04/summer-conference-2-819x1024.jpg"
+        centerImage="../assets/images/event-turkia.jpg"
+        mobileCenterImage="../assets/images/event-turkia-mobile.jpg"
         parallaxImages={parallaxImages}
       />
       

@@ -174,14 +174,14 @@ export default function UpcomingEvents() {
             </span>
           </div>
 
-          <h1 className="space-y-1">
-            <span className="block text-5xl sm:text-6xl font-light tracking-tight text-[#1a1814]">
+          <h1 className="space-y-1 uppercase">
+            <span className="block text-5xl sm:text-6xl font-semibold tracking-tight text-[#1a1814]">
               Our
             </span>
-            <span className="block text-5xl sm:text-6xl font-light tracking-tight text-[#1a1814]">
+            <span className="block text-5xl sm:text-6xl font-semibold tracking-tight text-[#1a1814]">
               Upcoming
             </span>
-            <span className="block text-5xl sm:text-6xl font-serif italic font-normal lowercase tracking-tight text-[#88743e]">
+            <span className="block text-5xl sm:text-6xl font-serif  font-normal lowercase tracking-tight text-[#88743e]">
               journeys.
             </span>
           </h1>

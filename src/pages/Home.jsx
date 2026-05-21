@@ -12,7 +12,7 @@ import AboutSection from '../components/AboutSection';
 const Home = () => {
   
   return (
-    <div className="">
+    <div className="overflow-hidden">
       <Hero />
       {/* <InternationalSection /> */}
    

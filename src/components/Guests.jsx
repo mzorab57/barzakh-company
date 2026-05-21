@@ -2,7 +2,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -116,7 +116,7 @@ export default function Guests() {
     >
       {/* Ambient Background Effects */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(230,214,163,0.08),transparent_50%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-multiply pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.02] mix-blend-multiply pointer-events-none" />
       
       {/* Decorative floating orbs */}
       <div className="absolute top-[10%] right-[15%] w-[400px] h-[400px] rounded-full bg-[#E6D6A3]/5 blur-[100px] animate-pulse-slow pointer-events-none" />
@@ -263,7 +263,7 @@ export default function Guests() {
       </div>
 
       {/* Custom Animations */}
-      <style jsx global>{`
+      <style>{`
         @keyframes pulse-slow {
           0%, 100% { opacity: 0.3; transform: scale(1); }
           50% { opacity: 0.5; transform: scale(1.05); }

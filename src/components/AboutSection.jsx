@@ -16,7 +16,7 @@ broad and moderate Islamic thought.
   `;
 
   return (
-    <section className="bg-[#1a150a] text-[#efe7cf] py-40">
+    <section className="bg-[#1a150a] text-[#efe7cf] py-10">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* تایتڵی سەرەکی */}

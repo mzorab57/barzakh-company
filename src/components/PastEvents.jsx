@@ -2,7 +2,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Calendar, Tag, ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -195,7 +195,7 @@ export default function PastEvents() {
       </div>
 
       {/* Global CSS to hide the scrollbar but keep the scrolling functionality */}
-      <style jsx global>{`
+      <style>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
         }

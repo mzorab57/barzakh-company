@@ -230,9 +230,8 @@ export const StaggeredMenu = ({
               ))}
             </ul>
           </div>
-
           {displaySocials && currentMenu.type === 'main' && (
-            <div className="sm-socials">
+            <div className="sm-socials  h-32">
               <h3 className="sm-socials-title">Socials</h3>
               <ul className="sm-socials-list">
                 {socialItems.map((s, i) => (
@@ -241,6 +240,7 @@ export const StaggeredMenu = ({
               </ul>
             </div>
           )}
+
         </div>
       </aside>
     </div>

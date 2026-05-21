@@ -149,7 +149,7 @@ export default function Footer() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)] animate-pulse-slow" />
         
         {/* Noise Texture */}
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.015] mix-blend-overlay" />
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.015] mix-blend-overlay" />
       </div>
 
       {/* === Main Content === */}
@@ -411,7 +411,7 @@ export default function Footer() {
       <div className="relative z-10 h-1 bg-gradient-to-r from-transparent via-[#C5B78E] to-transparent opacity-50" />
 
       {/* Custom Animations */}
-      <style jsx global>{`
+      <style>{`
         @keyframes pulse-slow {
           0%, 100% { opacity: 0.5; }
           50% { opacity: 0.8; }

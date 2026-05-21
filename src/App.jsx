@@ -10,6 +10,7 @@ import MedinaStayPage from './pages/MedinaStayPage';
 import MenuLandingPage from './pages/MenuLandingPage';
 import MigrationRoutePage from './pages/MigrationRoutePage';
 import TurkeyEventPage from './pages/TurkeyEventPage';
+import VolunteerRegistrationPage from './pages/VolunteerRegistrationPage';
 
 
 function ScrollToHash() {
@@ -35,7 +36,7 @@ function App() {
   return (
     <Router>
       <ScrollToHash />
-      <div className="min-h-screen overflow-hidden">
+      <div className="min-h-screen ">
         <Header />
         <main>
           <Routes>
@@ -54,18 +55,7 @@ function App() {
             />
             <Route
               path="/apply-to-volunteer"
-              element={
-                <MenuLandingPage
-                  eyebrow="Get Involved"
-                  title="Apply to Volunteer"
-                  description="Start your volunteer journey with Barzakh Company and learn what roles, requirements, and timelines are available."
-                  highlights={[
-                    'Volunteer roles and responsibilities',
-                    'Application process and requirements',
-                    'Important timelines and contact details',
-                  ]}
-                />
-              }
+              element={<VolunteerRegistrationPage />}
             />
             <Route
               path="/stalls"

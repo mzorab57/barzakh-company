@@ -111,7 +111,7 @@ const About = () => {
   primaryColor="#88743e" // ڕەنگی زێڕینی تۆخ
   secondaryColor="#C5B78E" // ڕەنگی زێڕینی کاڵ
 />
-      <section className="relative isolate min-h-screen">
+      <section className="relative isolate min-h-screen overflow-hidden">
        
 
         {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,6,12,0.16)_0%,rgba(6,6,12,0.44)_42%,rgba(247,241,223,0.96)_100%)]" /> */}

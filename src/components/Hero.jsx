@@ -3,7 +3,7 @@ import HeroSlider from '../components/ui/HeroSlider';
 
 const Hero = () => {
   return (
-    <div className=''>
+    <div className='overflow-hidden'>
         <HeroSlider />
 
     </div>

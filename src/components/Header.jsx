@@ -12,8 +12,8 @@ export default function Header() {
       label: 'Events', 
       isParent: true, // ئاماژەیە بۆ ئەوەی ئەمە مینیوی تێدایە
       children: [
-        { label: 'Turkey 2027', link: '/events/turkey-2027' },
         { label: 'The Migration Route', link: '/events/migration-route' },
+        { label: 'Turkey 2027', link: '/events/turkey-2027' },
         { label: '3-Month Stay in Medina', link: '/events/medina-stay' },
       ]
     },
@@ -29,11 +29,12 @@ export default function Header() {
     { label: 'Facebook', link: 'https://www.facebook.com/share/1EBGUTWSKp/' },
     { label: 'Instagram', link: 'https://www.instagram.com/barzakh.company?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==' },
     { label: 'WhatsApp', link: 'https://chat.whatsapp.com/FCvEFdvkQV5E65LngTwywf?mode=ems_copy_t&utm_source=ig&utm_medium=social&utm_content=link_in_bio' },
+    { label: 'Telegram', link: 'https://t.me/qonaghiyakam' },
   ];
 
   return (
-    <header className="bg-[#88743e] shadow-sm sticky top-0 z-50">
-      <div className="max-w-[1600px] py-2 mx-auto px-1">
+    <header className="bg-[#88743e] shadow-sm sticky top-0 z-50 ">
+      <div className="max-w-[1600px] lg:py-2 mx-auto px-1 ">
         <div className="flex items-center justify-between h-20">
          
          <Link onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} to="/">
