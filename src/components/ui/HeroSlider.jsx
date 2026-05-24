@@ -9,7 +9,8 @@ const sliderData = [
     // title: 'An Evening With',
     // category: 'Motivational Evening',
     desktopImg: '../assets/images/event-turkia.jpg',
-    mobileImg: '../assets/images/event-turkia-mobile.jpg',
+    mobileImg: '../src/assets/images/event/turkia.jpg',
+    
   },
   {
     id: 2,
