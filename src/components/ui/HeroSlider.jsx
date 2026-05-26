@@ -8,8 +8,8 @@ const sliderData = [
     id: 1,
     // title: 'An Evening With',
     // category: 'Motivational Evening',
-    desktopImg: '../assets/images/event-turkia.jpg',
-    mobileImg: '../src/assets/images/event/turkia.jpg',
+    desktopImg: '../src/assets/images/event/event-turkia.webp',
+    mobileImg: '../src/assets/images/event/event-turkia-mobile.webp',
     
   },
   {
