@@ -15,142 +15,19 @@ import {
   Waves,
 } from 'lucide-react';
 import { SmoothScrollHero } from '@/components/ui/modern-hero';
+import { turkeyEventPageContent } from '@/data/pageContent';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const retreatHighlights = [
-  {
-    icon: Sparkles,
-    title: 'Inspiring Speakers',
-    description:
-      'Inspirational discussions with Mufti Menk, Shaykh Abu Bakr Zoud, and Aussie Mammoth.',
-  },
-  {
-    icon: Users,
-    title: 'Family Activities',
-    description:
-      'Faith-based sessions and engaging activities for children in a welcoming family environment.',
-  },
-  {
-    icon: Hotel,
-    title: 'Premium Halal Resort',
-    description:
-      'A luxury halal resort with private beaches and three VIP open-buffet meals every day.',
-  },
-];
-
-const eventFeatures = [
-  {
-    icon: Sparkles,
-    title: 'World-Class Speakers',
-    description:
-      'Daily workshops and sessions led by world-renowned scholars designed to inspire and revive the heart and soul.',
-  },
-  {
-    icon: Coffee,
-    title: 'Interactive Sessions',
-    description:
-      'Small group discussions and unique meet-and-greet coffee break sessions with global scholars, including Mufti Menk.',
-  },
-  {
-    icon: Users,
-    title: 'Family and Children’s Fun',
-    description:
-      'A wide range of activities for all ages, including an Aqua Park, archery, bowling, crafts, and games.',
-  },
-  {
-    icon: Coffee,
-    title: 'Full Board VIP Dining',
-    description:
-      'Open buffet service for all three daily meals with diverse options, children’s menus, and all-day coffee and food stands.',
-  },
-  {
-    icon: Waves,
-    title: 'Private Beaches',
-    description:
-      'Access to dedicated beach areas for families, men, and women while maintaining privacy and Islamic values.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Professional Childcare',
-    description:
-      'Daily expert supervision for children from 10:00 AM to 6:00 PM so parents can benefit from sessions and relax.',
-  },
-  {
-    icon: Dumbbell,
-    title: 'Health and Wellness',
-    description:
-      'A healthy atmosphere with a fitness hall, sports areas, sauna, and steam room for complete relaxation.',
-  },
-  {
-    icon: BedDouble,
-    title: 'Premium Accommodation',
-    description:
-      'Stay at the 5-star Wome Deluxe hotel, offering comfort, tranquility, and an elevated halal hospitality experience.',
-  },
-];
-
-const scheduleDetails = [
-  { label: 'Dates', value: 'April 2nd to April 6th, 2026' },
-  { label: 'Duration', value: '4 nights' },
-  { label: 'Registration', value: 'Enrollment is limited and rooms are specifically designated.' },
-  {
-    label: 'Contact Info',
-    value: 'Mamosta Arkan: 0771 970 9647, 0771 385 7171, 0751 385 7171',
-  },
-];
-
-const accommodationOptions = [
-  {
-    title: 'Family Suite (Large Wing)',
-    details: [
-      'Capacity: Suitable for 4 to 5 people.',
-      'Layout: One room with a king-size bed and another room with two single beds.',
-      'Size: 70 to 107 square meters.',
-      'View: Forest view.',
-    ],
-  },
-  {
-    title: 'Double Room',
-    details: [
-      'Capacity: 2 people.',
-      'Layout: One king-size bed or two double beds.',
-      'Size: 43 square meters.',
-      'View: Dense forests and the deep blue sea.',
-      'Extra bed available upon request.',
-    ],
-  },
-];
-
-const organizerPoints = [
-  'Mission: An annual Islamic event in Turkiye with a high-level tourism experience.',
-  'Service: Hosted at a 5-star hotel committed to Islamic values and privacy.',
-  'Experience: Seminars and workshops by international scholars for a beneficial and memorable stay.',
-  'Check-in: 3:00 PM | Check-out: 12:00 PM',
-];
-  const parallaxImages = [
-    {
-      src: '/assets/images/hero1.jpg',
-      alt: 'Coast',
-      start: -200,
-      end: 100,
-      className: 'w-1/2 lg:w-1/3 rounded-xl ml-auto',
-    },
-    {
-      src: '/assets/images/hero2.jpg',
-      alt: 'Earth',
-      start: 200,
-      end: -250,
-      className: 'mx-auto w-3/4 lg:w-2/3 rounded-xl',
-    },
-    {
-      src: '/assets/images/hero3.jpg',
-      alt: 'Stage',
-      start: -200,
-      end: 200,
-      className: 'ml-1 lg:w-80 w-1/2  rounded-xl',
-    },
-  ];
+const turkeyIconMap = {
+  BedDouble,
+  Coffee,
+  Dumbbell,
+  Hotel,
+  ShieldCheck,
+  Sparkles,
+  Users,
+  Waves,
+};
 
 export default function TurkeyEventPage() {
   const rootRef = useRef(null);
@@ -205,14 +82,14 @@ export default function TurkeyEventPage() {
      <div className="bg-[linear-gradient(180deg,#fbf6e9_0%,#f7f0dc_35%,#ffffff_100%)] text-[#2f2611]">
      
         <SmoothScrollHero
-        eyebrow=""
-        title="Antalya, Turkey - 2026"
-        description="Step away from the noise of daily life and enter the tranquility of Antalya, Turkiye. A spiritually uplifting atmosphere."
-        date="April 2nd - April 6th, 2026"
-        location="Antalya, Turkiye"
-        centerImage="../assets/images/event-turkia.jpg"
-        mobileCenterImage="../assets/images/event-turkia-mobile.jpg"
-        parallaxImages={parallaxImages}
+        eyebrow={turkeyEventPageContent.hero.eyebrow}
+        title={turkeyEventPageContent.hero.title}
+        description={turkeyEventPageContent.hero.description}
+        date={turkeyEventPageContent.hero.date}
+        location={turkeyEventPageContent.hero.location}
+        centerImage={turkeyEventPageContent.hero.centerImage}
+        mobileCenterImage={turkeyEventPageContent.hero.mobileCenterImage}
+        parallaxImages={turkeyEventPageContent.hero.parallaxImages}
       />
       
       <section className="relative isolate overflow-hidden">
@@ -223,27 +100,25 @@ export default function TurkeyEventPage() {
                 className="mb-5 text-sm font-semibold uppercase tracking-[0.38em] text-[#88743e]"
               >
                 <p className="text-sm font-semibold uppercase tracking-[0.34em] text-primary/90">
-                Islamic Retreat Experience
+                {turkeyEventPageContent.intro.eyebrow}
                 </p>
                 <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-                Islamic Event in Antalya, Turkey - 2027
+                {turkeyEventPageContent.intro.title}
                 </h1>
                 <p className="mt-5 max-w-3xl text-base leading-8 text-white/86 sm:text-lg">
-                  Step away from the noise of daily life and enter the tranquility of Antalya,
-              Turkiye. This retreat is an opportunity to return to Allah through reflection,
-              companionship, and a spiritually uplifting setting.
+                  {turkeyEventPageContent.intro.description}
                 </p>
                 <div data-migration-hero className="mt-8 flex flex-wrap gap-4">
               <div className="flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-3 text-white backdrop-blur">
                 <CalendarDays className="h-5 w-5 text-[#867b50]" />
-                <span className="text-[#ac9f68]">April 2 - April 6, 2027</span>
+                <span className="text-[#ac9f68]">{turkeyEventPageContent.intro.date}</span>
               </div>
               <a
-                href="tel:07719709647"
+                href={`tel:${turkeyEventPageContent.intro.contactTel}`}
                 className="flex items-center gap-3 rounded-2xl bg-[#d8c98f]/50 px-5 py-3 text-[#fff6de] backdrop-blur transition hover:bg-[#d8c98f]/25"
               >
                 <Phone className="h-5 w-5 text-[#867b50]" />
-                <span className="text-[#ac9f68]">Antalya, Turkiye</span>
+                <span className="text-[#ac9f68]">{turkeyEventPageContent.intro.location}</span>
               </a>
             </div>
               </div>
@@ -260,35 +135,26 @@ export default function TurkeyEventPage() {
           <div className="rounded-[2rem] bg-white p-8 shadow-[0_20px_70px_rgba(91,69,18,0.10)] sm:p-10">
            
             <h2 className="mt-4 text-3xl font-bold text-[#231b0c] sm:text-4xl">
-              Rethink. Reflect. Recharge.
+              {turkeyEventPageContent.retreatOverview.title}
             </h2>
             <p className="mt-6 text-base leading-8 text-[#554522] sm:text-lg">
-              Step away from the noise of daily life and enter the tranquility of Antalya,
-              Turkiye. The Antalya 2026 event is your opportunity to return to Allah through
-              deep reflection and connection with like-minded Muslims from all over the world.
-              Create lasting memories in a serene and rejuvenating environment.
+              {turkeyEventPageContent.retreatOverview.paragraphs[0]}
             </p>
             <p className="mt-6 text-base leading-8 text-[#554522] sm:text-lg">
-              This event is located at one of the best halal resorts in Antalya, perfectly
-              suited for believers and designed to offer comfort, privacy, and benefit in one
-              beautiful setting.
+              {turkeyEventPageContent.retreatOverview.paragraphs[1]}
             </p>
           </div>
 
           <div className="rounded-[2rem] bg-[#2f2611] p-8 text-[#f7f1df] shadow-[0_24px_80px_rgba(47,38,17,0.20)] sm:p-10">
             <p className="text-sm font-semibold uppercase tracking-[0.32em] text-[#d6c68d]">
-              Event Snapshot
+              {turkeyEventPageContent.snapshot.label}
             </p>
             <ul className="mt-6 space-y-4">
-              <li className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm leading-7 text-[#efe7cf]">
-                Special guest participation by Shaykh Raad Al-Kurdi.
-              </li>
-              <li className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm leading-7 text-[#efe7cf]">
-                Hosted at the 5-star Wome Deluxe hotel with a blend of comfort and tranquility.
-              </li>
-              <li className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm leading-7 text-[#efe7cf]">
-                For more information or to register, contact the organizers at `07719709647`.
-              </li>
+              {turkeyEventPageContent.snapshot.items.map((item) => (
+                <li key={item} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm leading-7 text-[#efe7cf]">
+                  {item}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -299,8 +165,8 @@ export default function TurkeyEventPage() {
         className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8 lg:py-8"
       >
         <div className="grid gap-6 md:grid-cols-3">
-          {retreatHighlights.map((item) => {
-            const Icon = item.icon;
+          {turkeyEventPageContent.retreatHighlights.map((item) => {
+            const Icon = turkeyIconMap[item.iconKey];
             return (
               <div
                 key={item.title}
@@ -324,16 +190,16 @@ export default function TurkeyEventPage() {
       >
         <div className="mb-10 max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[#88743e]">
-            Page 3
+            {turkeyEventPageContent.features.pageLabel}
           </p>
           <h2 className="mt-4 text-3xl font-bold text-[#241b08] sm:text-4xl">
-            Event Features and Activities
+            {turkeyEventPageContent.features.title}
           </h2>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {eventFeatures.map((item) => {
-            const Icon = item.icon;
+          {turkeyEventPageContent.features.items.map((item) => {
+            const Icon = turkeyIconMap[item.iconKey];
             return (
               <div
                 key={item.title}
@@ -358,10 +224,10 @@ export default function TurkeyEventPage() {
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-[2rem] bg-[#2f2611] p-8 text-[#f8f1dd] shadow-[0_20px_70px_rgba(47,38,17,0.18)] sm:p-10">
             <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[#d4c287]">
-              Event Schedule & Registration
+              {turkeyEventPageContent.schedule.label}
             </p>
             <div className="mt-6 space-y-5">
-              {scheduleDetails.map((item) => (
+              {turkeyEventPageContent.schedule.details.map((item) => (
                 <div key={item.label} className="rounded-2xl border border-white/10 bg-white/5 p-5">
                   <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#d7c994]">
                     {item.label}
@@ -374,10 +240,10 @@ export default function TurkeyEventPage() {
 
           <div className="rounded-[2rem] border border-[#eadfbe] bg-white p-8 shadow-[0_20px_70px_rgba(91,69,18,0.10)] sm:p-10">
             <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[#88743e]">
-              Accommodation Details
+              {turkeyEventPageContent.accommodation.label}
             </p>
             <div className="mt-6 grid gap-5 md:grid-cols-2">
-              {accommodationOptions.map((option) => (
+              {turkeyEventPageContent.accommodation.options.map((option) => (
                 <div
                   key={option.title}
                   data-event-card
@@ -402,10 +268,10 @@ export default function TurkeyEventPage() {
       >
         <div className="rounded-[2.2rem] border border-[#eadfbe] bg-[linear-gradient(135deg,#fffdf7_0%,#f3ead0_100%)] p-8 shadow-[0_20px_70px_rgba(112,88,32,0.12)] sm:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[#88743e]">
-            About the Organizers
+            {turkeyEventPageContent.organizers.label}
           </p>
           <div className="mt-8 grid gap-5 lg:grid-cols-2">
-            {organizerPoints.map((item) => (
+            {turkeyEventPageContent.organizers.points.map((item) => (
               <div
                 key={item}
                 data-event-card
@@ -420,15 +286,15 @@ export default function TurkeyEventPage() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#d5c48a]">
-                  Registration Contact
+                  {turkeyEventPageContent.organizers.registration.label}
                 </p>
                 <p className="mt-2 text-lg font-semibold text-white">
-                  Mamosta Arkan and team are available for questions and room registration.
+                  {turkeyEventPageContent.organizers.registration.description}
                 </p>
               </div>
               <div className="flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-3 text-sm text-[#f6eed8]">
                 <Phone className="h-4 w-4 text-primary" />
-                <span>0771 970 9647</span>
+                <span>{turkeyEventPageContent.organizers.registration.phone}</span>
               </div>
             </div>
           </div>
@@ -437,5 +303,4 @@ export default function TurkeyEventPage() {
     </div>
   );
 }
-
 

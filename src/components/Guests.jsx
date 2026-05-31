@@ -3,57 +3,9 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-react';
+import { guestsSectionContent } from '@/data/componentContent';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const guests = [
-  {
-    image: '/assets/images/hero1.jpg',
-    name: 'Mufti Menk',
-    title: 'Grand Mufti of Zimbabwe',
-    role: 'Keynote Speaker',
-    year: '2024',
-    // Hero - گەورەترین کارد
-    span: 'col-span-2 md:col-span-7 lg:col-span-8 md:row-span-2',
-    height: 'h-[450px] md:h-[700px]'
-  },
-  {
-    image: '/assets/images/hero4.jpg',
-    name: 'Omar Suleiman',
-    title: 'Founder & President, Yaqeen Institute',
-    role: 'Featured Scholar',
-    year: '2024',
-    span: 'col-span-1 md:col-span-5 lg:col-span-4',
-    height: 'h-[280px] md:h-[338px]'
-  },
-  {
-    image: '/assets/images/hero3.jpg',
-    name: 'Yasmin Mogahed',
-    title: 'Author & International Speaker',
-    role: 'Spiritual Guide',
-    year: '2023',
-    span: 'col-span-1 md:col-span-5 lg:col-span-4',
-    height: 'h-[280px] md:h-[338px]'
-  },
-  {
-    image: '/assets/images/hero1.jpg',
-    name: 'Nouman Ali Khan',
-    title: 'Founder & CEO, Bayyinah Institute',
-    role: 'Quranic Scholar',
-    year: '2023',
-    span: 'col-span-2 md:col-span-6',
-    height: 'h-[350px] md:h-[420px]'
-  },
-  {
-    image: '/assets/images/hero2.jpg',
-    name: 'Hamza Yusuf',
-    title: 'President, Zaytuna College',
-    role: 'Islamic Scholar',
-    year: '2022',
-    span: 'col-span-2 md:col-span-6',
-    height: 'h-[350px] md:h-[420px]'
-  },
-];
 
 export default function Guests() {
   const sectionRef = useRef(null);
@@ -128,18 +80,16 @@ export default function Guests() {
           
           
 
-          {/* Ultra-Fashion Typography */}
           <h2 className="mb-10">
-            {/* Large Number Watermark */}
             <span className="block text-[20vw] sm:text-[15vw] md:text-[12rem] font-black leading-none tracking-tighter text-[#1a1814]/[0.03] pointer-events-none">
-              27
+              {guestsSectionContent.header.watermark}
             </span>
             <span className="block -mt-20 sm:-mt-28 md:-mt-32 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium uppercase leading-[0.9] tracking-tight text-[#594d33]">
-              Distinguished
+              {guestsSectionContent.header.titleLineOne}
             </span>
             <span className="block mt-3   font-normal lowercase text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b59e5f] via-[#d4b976] to-[#8a7340]">
-                voices & visionaries.
+                {guestsSectionContent.header.titleLineTwo}
               </span>
             </span>
           </h2>
@@ -148,7 +98,7 @@ export default function Guests() {
           <div className="flex items-start gap-6 max-w-2xl">
             <div className="hidden sm:block w-[2px] h-24 bg-gradient-to-b from-[#b59e5f] to-transparent mt-1" />
             <p className="text-base sm:text-lg lg:text-xl text-[#1a1814]/60 font-light leading-relaxed">
-              A curated collection of transformative leaders, scholars, and innovators who have graced our stages—each bringing wisdom, inspiration, and profound impact to our global community.
+              {guestsSectionContent.header.description}
             </p>
           </div>
 
@@ -156,7 +106,7 @@ export default function Guests() {
 
         {/* === Premium Bento Grid === */}
         <div className="grid grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4 md:gap-6 auto-rows-auto">
-          {guests.map((guest, index) => (
+          {guestsSectionContent.guests.map((guest, index) => (
             <article
               key={index}
               ref={(el) => (cardsRef.current[index] = el)}

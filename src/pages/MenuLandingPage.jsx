@@ -1,14 +1,10 @@
-const defaultHighlights = [
-  'Detailed program information',
-  'Travel and logistics guidance',
-  'Registration updates and next steps',
-];
+import { menuLandingPageDefaults } from '@/data/pageContent';
 
 export default function MenuLandingPage({
-  eyebrow = 'Barzakh Company',
+  eyebrow = menuLandingPageDefaults.eyebrow,
   title,
   description,
-  highlights = defaultHighlights,
+  highlights = menuLandingPageDefaults.highlights,
 }) {
   return (
     <section className="min-h-[calc(100vh-10rem)] bg-[#f7f2e7] px-4 py-16 sm:px-6 lg:px-8">
@@ -27,7 +23,7 @@ export default function MenuLandingPage({
 
         <div className="w-full max-w-xl rounded-[2rem] bg-white p-8 shadow-[0_20px_60px_rgba(60,40,0,0.12)]">
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#88743e]">
-            Page Overview
+            {menuLandingPageDefaults.overviewLabel}
           </p>
           <div className="mt-4 h-1.5 w-24 rounded-full bg-[#c6b78e]" />
           <ul className="mt-8 space-y-4">

@@ -1,0 +1,56 @@
+export const guestsSectionData = {
+  header: {
+    watermark: '27',
+    titleLineOne: 'Distinguished',
+    titleLineTwo: 'voices & visionaries.',
+    description:
+      'A curated collection of transformative leaders, scholars, and innovators who have graced our stages—each bringing wisdom, inspiration, and profound impact to our global community.',
+  },
+  guests: [
+    {
+      image: '/assets/images/hero1.jpg',
+      name: 'Mufti Menk',
+      title: 'Grand Mufti of Zimbabwe',
+      role: 'Keynote Speaker',
+      year: '2024',
+      span: 'col-span-2 md:col-span-7 lg:col-span-8 md:row-span-2',
+      height: 'h-[450px] md:h-[700px]',
+    },
+    {
+      image: '/assets/images/hero4.jpg',
+      name: 'Omar Suleiman',
+      title: 'Founder & President, Yaqeen Institute',
+      role: 'Featured Scholar',
+      year: '2024',
+      span: 'col-span-1 md:col-span-5 lg:col-span-4',
+      height: 'h-[280px] md:h-[338px]',
+    },
+    {
+      image: '/assets/images/hero3.jpg',
+      name: 'Yasmin Mogahed',
+      title: 'Author & International Speaker',
+      role: 'Spiritual Guide',
+      year: '2023',
+      span: 'col-span-1 md:col-span-5 lg:col-span-4',
+      height: 'h-[280px] md:h-[338px]',
+    },
+    {
+      image: '/assets/images/hero1.jpg',
+      name: 'Nouman Ali Khan',
+      title: 'Founder & CEO, Bayyinah Institute',
+      role: 'Quranic Scholar',
+      year: '2023',
+      span: 'col-span-2 md:col-span-6',
+      height: 'h-[350px] md:h-[420px]',
+    },
+    {
+      image: '/assets/images/hero2.jpg',
+      name: 'Hamza Yusuf',
+      title: 'President, Zaytuna College',
+      role: 'Islamic Scholar',
+      year: '2022',
+      span: 'col-span-2 md:col-span-6',
+      height: 'h-[350px] md:h-[420px]',
+    },
+  ],
+};

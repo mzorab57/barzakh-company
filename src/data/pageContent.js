@@ -1,0 +1,638 @@
+export const aboutPageContent = {
+  cosmic: {
+    head: 'About Us',
+    text: 'AL-NUKHBA Gloabal',
+    loop: true,
+    className: 'h-screen',
+    primaryColor: '#88743e',
+    secondaryColor: '#C5B78E',
+  },
+  heroImage: '/assets/images/hero4.jpg',
+  hero: {
+    eyebrow: 'About Us',
+    title: 'We create inspiring Islamic events that connect hearts, ideas, and community.',
+    description:
+      'We organize inspiring Islamic conferences for hundreds of our fellow Kurds, building spaces where learning feels uplifting, thoughtful, and deeply connected to everyday life.',
+    imageAlt: 'Barzakh inspirational gathering',
+  },
+  mission: {
+    label: 'Our Mission',
+    description:
+      'Our goal is to bridge the gap and provide benefit to the community by introducing diverse and world-renowned speakers and businesses that serve society. By the grace of God, we have benefited hundreds of people, both Muslims and non-Muslims alike, by creating opportunities to learn through broad and moderate Islamic thought.',
+  },
+  story: {
+    label: 'Our Story',
+    intro:
+      'We started with small gatherings in a hall in Sulaymaniyah, featuring well-known speakers. Due to high demand, we expanded to national events. Our events are designed to be engaging and interactive, offering attendees opportunities for learning, growth, and inspiration in their journey of faith.',
+    body:
+      'We believe in providing a platform for learning through a variety of voices and perspectives. We are proud that some of the most famous scholars, artists, and prominent figures in the Muslim community have spoken at our events.',
+  },
+  communityVision: {
+    label: 'Community Vision',
+    quote:
+      'Our work is about making knowledge feel alive, accessible, and transformative for the community we serve.',
+  },
+  motivational: {
+    label: 'Motivational Evening',
+    title: 'A spiritual experience shaped with wisdom, reflection, and practical direction.',
+    paragraphs: [
+      'Our motivational events are carefully designed to immerse attendees in the beauty of Islamic teachings while also providing practical guidance for success in all aspects of life. Imagine a peaceful learning environment, led by a global and local community of expert speakers and peers, all seeking spiritual enlightenment and personal growth.',
+      "Mufti Menk, along with other guest speakers, shares deep knowledge and inspiring words that illuminate the path of the community through captivating and engaging speeches. Their wisdom reaches deep within the soul, encouraging individuals to overcome life's challenges and unlock their true potential as strong Muslims.",
+    ],
+  },
+  lastingGift: {
+    label: 'A Lasting Gift',
+    description:
+      'We prioritize spiritual development and growth, which is why participants receive a special gift. A high-value copy of Mufti Menk\'s latest book, "The Best of Mufti Menk," is presented after the activities conclude, offering guidance, inspiration, and a deeper connection to Islamic teachings long after the event ends.',
+  },
+  storyHighlights: [
+    'Started from intimate gatherings in Sulaymaniyah and grew into national events.',
+    'Connects the community with world-renowned speakers, artists, and impactful businesses.',
+    'Creates engaging spaces for learning, spiritual growth, and thoughtful discussion.',
+  ],
+  impactPoints: [
+    {
+      value: 'Hundreds',
+      label: 'People reached through meaningful conferences and learning experiences.',
+    },
+    {
+      value: 'Global Voices',
+      label: 'Scholars, speakers, and creatives brought together on one platform.',
+    },
+    {
+      value: 'Living Faith',
+      label: 'Programs designed to turn inspiration into action in daily life.',
+    },
+  ],
+  motivationalPoints: [
+    'A peaceful learning atmosphere that encourages reflection, connection, and growth.',
+    'Practical guidance for success in spiritual life, mindset, and personal development.',
+    'Inspiring talks from Mufti Menk and guest speakers that awaken confidence and purpose.',
+    'A thoughtful post-event gift: "The Best of Mufti Menk" for continued benefit.',
+  ],
+};
+
+export const contactPageContent = {
+  title: 'Contact',
+};
+
+export const menuLandingPageDefaults = {
+  eyebrow: 'Barzakh Company',
+  overviewLabel: 'Page Overview',
+  highlights: [
+    'Detailed program information',
+    'Travel and logistics guidance',
+    'Registration updates and next steps',
+  ],
+};
+
+export const medinaStayPageContent = {
+  parallax: {
+    title: 'Medina',
+    subtitle: '3-Month Stay',
+  },
+  hero: {
+    eyebrow: '3-Month Stay In Medina Spiritual Living Program',
+    title: 'Live three months in the holy city of Medina.',
+    description:
+      'A unique spiritual and educational immersion designed to help you live with intention, build healthier routines, and grow closer to Allah in the city of the Prophet (PBUH).',
+  },
+  overviewStats: [
+    { label: 'Duration', value: 'Three Months', iconKey: 'CalendarDays' },
+    { label: 'Location', value: 'Holy City Of Medina', iconKey: 'MapPin' },
+    { label: 'Price', value: '$2,000', iconKey: 'Sparkles' },
+  ],
+  programOverview: {
+    label: 'Program Overview',
+    title: 'Three months of living, learning, and spiritual reorganization.',
+    paragraphs: [
+      'Duration: three months. Location: live in the holy city of Medina. Price: $2,000, equivalent to 20 waraqa or $100 bills.',
+      'All operations are conducted under the guidelines of the General Directorate of Hajj and Umrah for the 3-month Medina Holy Group.',
+    ],
+  },
+  experienceAndLifestyleTitle: 'Experience and Lifestyle',
+  experiencePoints: [
+    'Live with us for three months in the holy city of Medina.',
+    'A unique spiritual and educational immersion in the city of the Prophet of Allah (PBUH).',
+    'Reorganize your life, improve sleep and diet, and engage in sports and travel activities.',
+    'Create an unparalleled spiritual experience in the heart through daily life in Medina.',
+  ],
+  personalGrowth: {
+    title: 'Personal Growth',
+    image: '/assets/images/medina.jpg',
+    imageAlt: 'Personal growth in Medina',
+    points: [
+      {
+        title: 'Inspiration',
+        description: 'Live in an inspiring place suitable for learning, reflection, and lasting change.',
+      },
+      {
+        title: 'Transformation',
+        description: 'A rare opportunity to give new meaning to your life through three months of focus.',
+      },
+      {
+        title: 'Focus',
+        description: 'A unique package for religious progress, better routines, and clear goal setting.',
+      },
+      {
+        title: 'Uniqueness',
+        description:
+          'By the grace of Allah, this program combines spirituality, learning, career opportunities, and modern comfort in one complete stay.',
+      },
+    ],
+  },
+  services: {
+    title: 'Services',
+    cards: [
+      {
+        iconKey: 'ShieldCheck',
+        title: 'Visa',
+        description: 'Provision of a three-month Saudi Arabian visa for the Medina program.',
+      },
+      {
+        iconKey: 'Bus',
+        title: 'Transportation',
+        description:
+          'Round-trip travel between Iraq and Saudi Arabia, including local trips to holy sites.',
+      },
+      {
+        iconKey: 'BedDouble',
+        title: 'Accommodation',
+        description: 'Stay in modern apartments in Medina for 3 months with comfort and tranquility.',
+      },
+      {
+        iconKey: 'HeartHandshake',
+        title: 'Agency',
+        description: 'Organized through Malazada Hajj & Umrah with trusted supervision and care.',
+      },
+      {
+        iconKey: 'CheckCircle2',
+        title: 'Cleaning',
+        description: 'Weekly cleaning services for the accommodation to maintain comfort throughout the stay.',
+      },
+      {
+        iconKey: 'Utensils',
+        title: 'Dining',
+        description: 'Full breakfast during the stay and the required support for dinner arrangements.',
+      },
+      {
+        iconKey: 'Globe',
+        title: 'Internet',
+        description: 'Free internet for the full 3 months to stay connected with loved ones.',
+      },
+    ],
+  },
+  support: {
+    pageLabel: 'Page 6',
+    title: 'Religious and Lifestyle Support',
+    items: [
+      {
+        title: 'Three Guided Umrahs',
+        description: 'Perform 3 Umrahs with a special guide, one every month.',
+      },
+      {
+        title: 'Inter-City Travel',
+        description: 'Bus transportation is provided between Medina and Mecca during the program.',
+      },
+      {
+        title: 'Stay In Mecca',
+        description: 'Two nights in a hotel or villa in Mecca, subject to availability.',
+      },
+      {
+        title: 'Time Management',
+        description: 'Support in organizing sleep, daily planning, and beneficial time habits.',
+      },
+      {
+        title: 'Healthy Living',
+        description: 'Assistance in regulating schedules, improving routines, and building a healthier life.',
+      },
+    ],
+  },
+  education: {
+    pageLabel: 'Page 7',
+    title: 'Education and Contact',
+    points: [
+      'Assistance in studying and learning the Holy Quran throughout the stay.',
+      'A goal of memorizing 5 Juz, while recognizing that progress depends on personal effort.',
+      'An environment designed for focus, learning, discipline, and spiritual consistency.',
+    ],
+    contactLabel: 'Contact Information',
+    contacts: ['0770-538-7171', '0751-538-7171'],
+  },
+};
+
+export const migrationRoutePageContent = {
+  hero: {
+    eyebrow: 'The Migration Route',
+    title: 'Join us on the path of Hijrah from Mecca to Medina.',
+    description:
+      'Walk in the path of the Prophet (PBUH), retrace the migration from Mecca to Medina, and experience a journey shaped by sacrifice, tawakkul, and history.',
+    date: 'November 5, 2027',
+    contactText: 'Contact us for more information',
+    phone: '07719709647',
+  },
+  tripDetails: [
+    {
+      iconKey: 'CalendarDays',
+      title: 'Date',
+      description:
+        'November 5, 2025 Capacity is limited to only 45 participants for a focused and meaningful experience.',
+    },
+    {
+      iconKey: 'ShieldCheck',
+      title: 'Trip Format',
+      description: 'An all-inclusive, life-changing experience led with guidance, structure, and support.',
+    },
+    {
+      iconKey: 'MapPin',
+      title: 'Itinerary',
+      description:
+        'One night in a Mecca hotel, perform Umrah, then head to Mount Thawr in the evening before beginning the trek to Medina on foot.',
+    },
+  ],
+  parallaxIntro: {
+    eyebrow: 'Pages 3-7',
+    title: 'Relive each station of the Hijrah journey.',
+    description:
+      'Scroll through the sacred route from Mecca to Medina and explore each defining stop with reflection, history, and visual storytelling.',
+  },
+  journeyStages: [
+    {
+      title: 'Departure from Mecca',
+      location: 'Mecca',
+      year: '2027',
+      image: '/assets/images/hero1.jpg',
+      points: [
+        'The Prophet of Allah (PBUH) and Abu Bakr began their journey under the cover of night.',
+        'He disappeared from the Quraish, who had planned to kill the Prophet (PBUH).',
+        'Walk the same streets of Mecca where the Prophet lived and began his journey.',
+        'Gain insight into the challenges and courage that marked the first steps of Hijrah.',
+      ],
+    },
+    {
+      title: 'Cave of Thawr',
+      location: 'South of Mecca, Cave of Thawr',
+      year: '2027',
+      image: '/assets/images/hero4.jpg',
+      points: [
+        'The Prophet (PBUH) and Abu Bakr hid in this mountainous cave for three days.',
+        'The Quraish came close to the cave, but Allah protected them with divine care.',
+        'Climb the historical Cave of Thawr and experience the same seclusion that sheltered them.',
+        'Feel the depth of tawakkul, patience, and trust that carried the journey forward.',
+      ],
+    },
+    {
+      title: 'The Coastal Route',
+      location: 'Coastal Desert',
+      year: '2027',
+      image: '/assets/images/hero2.jpg',
+      points: [
+        'By taking the coastal path, the Prophet (PBUH) and his companion avoided pursuit and confused the Quraish.',
+        'They crossed difficult desert terrain with the help of a skilled and trusted guide.',
+        'Walk authentic coastal paths and experience the trek that helped spread this beautiful religion.',
+        'See how planning, resilience, and faith shaped every stage of the migration.',
+      ],
+    },
+    {
+      title: 'Akha Mountain',
+      location: 'Passing over Akha Mountain',
+      year: '2027',
+      image: '/assets/images/hero3.jpg',
+      points: [
+        'The Prophet (PBUH) and Abu Bakr (RA) briefly stopped at Akha Mountain along the secret Hijrah route.',
+        'It is a hidden point known by few, yet it carries the footsteps of sacred history.',
+        'Challenge yourself with the same mountain climb and feel both physical hardship and spiritual reward.',
+        'Reach a place where silence, effort, and remembrance come together in a powerful way.',
+      ],
+    },
+    {
+      title: 'Arrival in Medina',
+      location: 'Medina',
+      year: '2027',
+      image: '/assets/images/hero1.jpg',
+      points: [
+        'The triumphant arrival in Medina marked the beginning of a new era for Islam and the Islamic calendar.',
+        'The people of Holy Medina welcomed the Prophet (PBUH) with joy and celebration.',
+        "Enter Medina following the Prophet's path and reflect on this historic milestone.",
+        'Be welcomed as part of the first Kurdish group to retrace the Hijrah route from Mecca to Medina on foot.',
+      ],
+    },
+  ],
+  tripOverview: {
+    title: 'Trip Details',
+    description:
+      'Malazada Hajj & Umrah presents an all-inclusive, life-changing trip that helps you retrace the footsteps of the Prophet (PBUH) and Abu Bakr al-Siddiq (RA) with purpose, preparation, and spiritual depth.',
+    itineraryLabel: 'Main Itinerary',
+    itinerary:
+      'One night stay in a Mecca hotel, perform Umrah, then head to Mount Thawr in the evening to spend the night before starting the trek to Medina on foot.',
+  },
+  seerah: {
+    title: 'Living the Seerah',
+    points: [
+      {
+        iconKey: 'BookOpen',
+        title: 'Live with the Seerah',
+        description:
+          "Walk the Prophet's path from Mecca to Medina, feel the sacrifice, and enjoy the adventure with deeper reflection.",
+      },
+      {
+        iconKey: 'Mountain',
+        title: 'Step-by-Step History',
+        description:
+          'Experience the journey that changed history one stage at a time, with meaning attached to every stop.',
+      },
+      {
+        iconKey: 'Backpack',
+        title: 'Walk Light',
+        description:
+          'A dedicated vehicle transports all luggage throughout the journey so you can focus on the spiritual experience.',
+      },
+    ],
+  },
+  supportAndAmenities: {
+    title: 'Support and Amenities',
+    cards: [
+      {
+        iconKey: 'Users',
+        title: 'Full Support Team',
+        description: 'Guides, first aid, and drivers accompany you across the route from start to finish.',
+      },
+      {
+        iconKey: 'Bus',
+        title: 'Assistance on the Route',
+        description: 'A support vehicle is available whenever needed so you can rest and continue safely.',
+      },
+      {
+        iconKey: 'Tent',
+        title: 'VIP Tents',
+        description: 'Camping is arranged along the journey with premium tents ready at designated rest points.',
+      },
+      {
+        iconKey: 'Camera',
+        title: 'Professional Recording',
+        description:
+          'Drone footage and professional photos document the Hijrah experience so you can relive it later without relying on your phone.',
+      },
+    ],
+    registration: {
+      label: 'Registration Contact',
+      title:
+        'Contact us to ask questions, confirm details, and reserve one of the limited places on the journey.',
+      phone: '0771 970 9647',
+      tel: '07719709647',
+    },
+  },
+};
+
+export const turkeyEventPageContent = {
+  hero: {
+    eyebrow: '',
+    title: 'Antalya, Turkey - 2026',
+    description:
+      'Step away from the noise of daily life and enter the tranquility of Antalya, Turkiye. A spiritually uplifting atmosphere.',
+    date: 'April 2nd - April 6th, 2026',
+    location: 'Antalya, Turkiye',
+    centerImage: '../assets/images/event-turkia.jpg',
+    mobileCenterImage: '../assets/images/event-turkia-mobile.jpg',
+    parallaxImages: [
+      {
+        src: '/assets/images/hero1.jpg',
+        alt: 'Coast',
+        start: -200,
+        end: 100,
+        className: 'w-1/2 lg:w-1/3 rounded-xl ml-auto',
+      },
+      {
+        src: '/assets/images/hero2.jpg',
+        alt: 'Earth',
+        start: 200,
+        end: -250,
+        className: 'mx-auto w-3/4 lg:w-2/3 rounded-xl',
+      },
+      {
+        src: '/assets/images/hero3.jpg',
+        alt: 'Stage',
+        start: -200,
+        end: 200,
+        className: 'ml-1 lg:w-80 w-1/2 rounded-xl',
+      },
+    ],
+  },
+  intro: {
+    eyebrow: 'Islamic Retreat Experience',
+    title: 'Islamic Event in Antalya, Turkey - 2027',
+    description:
+      'Step away from the noise of daily life and enter the tranquility of Antalya, Turkiye. This retreat is an opportunity to return to Allah through reflection, companionship, and a spiritually uplifting setting.',
+    date: 'April 2 - April 6, 2027',
+    location: 'Antalya, Turkiye',
+    contactTel: '07719709647',
+  },
+  retreatOverview: {
+    title: 'Rethink. Reflect. Recharge.',
+    paragraphs: [
+      'Step away from the noise of daily life and enter the tranquility of Antalya, Turkiye. The Antalya 2026 event is your opportunity to return to Allah through deep reflection and connection with like-minded Muslims from all over the world. Create lasting memories in a serene and rejuvenating environment.',
+      'This event is located at one of the best halal resorts in Antalya, perfectly suited for believers and designed to offer comfort, privacy, and benefit in one beautiful setting.',
+    ],
+  },
+  snapshot: {
+    label: 'Event Snapshot',
+    items: [
+      'Special guest participation by Shaykh Raad Al-Kurdi.',
+      'Hosted at the 5-star Wome Deluxe hotel with a blend of comfort and tranquility.',
+      'For more information or to register, contact the organizers at `07719709647`.',
+    ],
+  },
+  retreatHighlights: [
+    {
+      iconKey: 'Sparkles',
+      title: 'Inspiring Speakers',
+      description:
+        'Inspirational discussions with Mufti Menk, Shaykh Abu Bakr Zoud, and Aussie Mammoth.',
+    },
+    {
+      iconKey: 'Users',
+      title: 'Family Activities',
+      description:
+        'Faith-based sessions and engaging activities for children in a welcoming family environment.',
+    },
+    {
+      iconKey: 'Hotel',
+      title: 'Premium Halal Resort',
+      description:
+        'A luxury halal resort with private beaches and three VIP open-buffet meals every day.',
+    },
+  ],
+  features: {
+    pageLabel: 'Page 3',
+    title: 'Event Features and Activities',
+    items: [
+      {
+        iconKey: 'Sparkles',
+        title: 'World-Class Speakers',
+        description:
+          'Daily workshops and sessions led by world-renowned scholars designed to inspire and revive the heart and soul.',
+      },
+      {
+        iconKey: 'Coffee',
+        title: 'Interactive Sessions',
+        description:
+          'Small group discussions and unique meet-and-greet coffee break sessions with global scholars, including Mufti Menk.',
+      },
+      {
+        iconKey: 'Users',
+        title: "Family and Children's Fun",
+        description:
+          'A wide range of activities for all ages, including an Aqua Park, archery, bowling, crafts, and games.',
+      },
+      {
+        iconKey: 'Coffee',
+        title: 'Full Board VIP Dining',
+        description:
+          "Open buffet service for all three daily meals with diverse options, children's menus, and all-day coffee and food stands.",
+      },
+      {
+        iconKey: 'Waves',
+        title: 'Private Beaches',
+        description:
+          'Access to dedicated beach areas for families, men, and women while maintaining privacy and Islamic values.',
+      },
+      {
+        iconKey: 'ShieldCheck',
+        title: 'Professional Childcare',
+        description:
+          'Daily expert supervision for children from 10:00 AM to 6:00 PM so parents can benefit from sessions and relax.',
+      },
+      {
+        iconKey: 'Dumbbell',
+        title: 'Health and Wellness',
+        description:
+          'A healthy atmosphere with a fitness hall, sports areas, sauna, and steam room for complete relaxation.',
+      },
+      {
+        iconKey: 'BedDouble',
+        title: 'Premium Accommodation',
+        description:
+          'Stay at the 5-star Wome Deluxe hotel, offering comfort, tranquility, and an elevated halal hospitality experience.',
+      },
+    ],
+  },
+  schedule: {
+    label: 'Event Schedule & Registration',
+    details: [
+      { label: 'Dates', value: 'April 2nd to April 6th, 2026' },
+      { label: 'Duration', value: '4 nights' },
+      { label: 'Registration', value: 'Enrollment is limited and rooms are specifically designated.' },
+      {
+        label: 'Contact Info',
+        value: 'Mamosta Arkan: 0771 970 9647, 0771 385 7171, 0751 385 7171',
+      },
+    ],
+  },
+  accommodation: {
+    label: 'Accommodation Details',
+    options: [
+      {
+        title: 'Family Suite (Large Wing)',
+        details: [
+          'Capacity: Suitable for 4 to 5 people.',
+          'Layout: One room with a king-size bed and another room with two single beds.',
+          'Size: 70 to 107 square meters.',
+          'View: Forest view.',
+        ],
+      },
+      {
+        title: 'Double Room',
+        details: [
+          'Capacity: 2 people.',
+          'Layout: One king-size bed or two double beds.',
+          'Size: 43 square meters.',
+          'View: Dense forests and the deep blue sea.',
+          'Extra bed available upon request.',
+        ],
+      },
+    ],
+  },
+  organizers: {
+    label: 'About the Organizers',
+    points: [
+      'Mission: An annual Islamic event in Turkiye with a high-level tourism experience.',
+      'Service: Hosted at a 5-star hotel committed to Islamic values and privacy.',
+      'Experience: Seminars and workshops by international scholars for a beneficial and memorable stay.',
+      'Check-in: 3:00 PM | Check-out: 12:00 PM',
+    ],
+    registration: {
+      label: 'Registration Contact',
+      description: 'Mamosta Arkan and team are available for questions and room registration.',
+      phone: '0771 970 9647',
+    },
+  },
+};
+
+export const volunteerRegistrationPageContent = {
+  whatsappNumber: '9647713857171',
+  hero: {
+    eyebrow: 'Get Involved',
+    title: 'Volunteer Registration Form',
+    description:
+      'Thank you for your interest in volunteering with us. All your information will be kept confidential. After submitting the form, we will contact you. Acceptance as a volunteer is subject to the approval of the Nukhba.global team.',
+  },
+  note: {
+    title: 'Important Note',
+    description:
+      'After being accepted as a volunteer, you will be added to the private Nukhba staff group. Through the group, you will receive:',
+    updates: [
+      'Preparation dates and times',
+      'Event and course schedules',
+      'All updates and announcements related to the organization',
+    ],
+  },
+  requirements: {
+    title: 'Requirements',
+    items: [
+      'Female volunteers are required to wear full Islamic dress and niqab during events and courses.',
+      'The official staff dress color for both men and women is black.',
+      'Volunteers must wear the official Nukhba Organization staff badge.',
+      'Applicants must be 18 years old or older.',
+      'Outstanding volunteers may later be selected for official paid roles based on qualifications and performance.',
+    ],
+  },
+  form: {
+    badge: 'Join The Team',
+    title: 'Apply Through WhatsApp',
+    personalInformationTitle: 'Personal Information',
+    volunteerInformationTitle: 'Volunteer Information',
+    confirmationTitle: 'Confirmation',
+    fields: {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      whatsappNumber: 'WhatsApp Number',
+      phoneNumber: 'Phone Number',
+      age: 'Age',
+      address: 'Address',
+      reason: 'Why do you want to become a volunteer?',
+      volunteeredBefore: 'Have you volunteered before?',
+      experience: 'If yes, please explain',
+      confirmCorrect: 'I confirm that all provided information is correct.',
+      agreeRules: 'I agree to the rules and conditions.',
+    },
+    radioOptions: ['Yes', 'No'],
+    submitLabel: 'Export Excel And Send To WhatsApp',
+    helperText:
+      'This form creates an Excel-compatible file, then sends or prepares it for WhatsApp to `0771-385-7171`.',
+    errors: {
+      confirm: 'Please confirm the information and agree to the rules before submitting.',
+      required: 'Please complete all required fields before submitting.',
+      shared: 'The Excel file is ready and shared. Please choose WhatsApp from the share sheet if it appears.',
+      canceled: 'Sharing was canceled. You can submit again to retry.',
+      downloaded:
+        'The Excel file has been downloaded. Please attach the downloaded file in WhatsApp and send it.',
+    },
+    excel: {
+      filePrefix: 'nukhba-volunteer',
+      title: 'Volunteer Registration Form',
+      followUpMessage: 'I have downloaded the Excel file and will attach it here.',
+      shareTitle: 'Nukhba Volunteer Registration',
+      emptyValue: 'N/A',
+    },
+  },
+};

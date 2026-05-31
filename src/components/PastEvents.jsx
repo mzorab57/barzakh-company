@@ -3,41 +3,9 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { pastEventsSectionContent } from '@/data/componentContent';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const pastEvents = [
-  {
-    title: 'Winter Conference',
-    image: '/assets/images/hero3.jpg',
-    year: '2024',
-    category: 'Annual Gathering',
-  },
-  {
-    title: 'An Evening With',
-    image: '/assets/images/hero4.jpg',
-    date: '15 Nov 2024',
-    category: 'Motivational',
-  },
-  {
-    title: 'Light Upon Light Monrovia',
-    image: '/assets/images/hero2.jpg',
-    year: '2023',
-    category: 'Featured Event',
-  },
-  {
-    title: 'Summer Retreat',
-    image: '/assets/images/hero1.jpg',
-    year: '2023',
-    category: 'Spiritual Retreat',
-  },
-  {
-    title: 'Youth Conference',
-    image: '/assets/images/hero4.jpg',
-    year: '2022',
-    category: 'Community',
-  }
-];
 
 export default function PastEvents() {
   const sectionRef = useRef(null);
@@ -94,15 +62,15 @@ export default function PastEvents() {
             <div className="flex items-center gap-4 mb-6">
               <div className="h-[1px] w-10 bg-[#E6D6A3]" />
               <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#E6D6A3]">
-                The Archives
+                {pastEventsSectionContent.badge}
               </span>
             </div>
             
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-light uppercase leading-[1.05] tracking-tight text-white">
-              <span className="block text-white/40 text-2xl sm:text-3xl tracking-[0.2em] mb-2">Relive Our</span>
-              <span className="block font-medium text-[#f6eac4]">Past Events</span>
+              <span className="block text-white/40 text-2xl sm:text-3xl tracking-[0.2em] mb-2">{pastEventsSectionContent.titleLines[0]}</span>
+              <span className="block font-medium text-[#f6eac4]">{pastEventsSectionContent.titleLines[1]}</span>
               <span className="block mt-1   font-normal lowercase text-[#faf7ee] text-5xl sm:text-6xl lg:text-7xl">
-                around the world.
+                {pastEventsSectionContent.titleLines[2]}
               </span>
             </h2>
           </div>
@@ -129,7 +97,7 @@ export default function PastEvents() {
           ref={sliderRef}
           className="flex gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory hide-scrollbar pl-5 sm:pl-8 lg:pl-12 pr-[10vw] pb-0"
         >
-          {pastEvents.map((event, index) => (
+          {pastEventsSectionContent.pastEvents.map((event, index) => (
             <article 
               key={index}
               className="group relative flex-shrink-0 w-[85vw] sm:w-[50vw] lg:w-[30vw] h-[55vh] sm:h-[60vh] lg:h-[65vh] max-h-[700px] overflow-hidden rounded-[2rem] bg-[#111] snap-center sm:snap-start cursor-pointer border border-white/5 transition-colors duration-500 hover:border-[#E6D6A3]/30"
@@ -172,7 +140,7 @@ export default function PastEvents() {
                   {/* Hover Revealed Button Line */}
                   <div className="flex items-center justify-between border-t border-white/15 pt-5 opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:border-[#E6D6A3]/30">
                     <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E6D6A3]">
-                      View Gallery
+                      {pastEventsSectionContent.ctaLabel}
                     </span>
                     <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-2 group-hover:bg-[#E6D6A3]">
                       <ArrowRight className="w-4 h-4 text-white group-hover:text-black" />
@@ -188,7 +156,7 @@ export default function PastEvents() {
         {/* Mobile Navigation Indicators (Visible only on mobile) */}
         <div className="flex sm:hidden items-center justify-center gap-4 mt-4 px-5 text-white/50">
           <ArrowLeft className="w-4 h-4" />
-          <span className="text-xs font-bold uppercase tracking-[0.2em]">Swipe to explore</span>
+          <span className="text-xs font-bold uppercase tracking-[0.2em]">{pastEventsSectionContent.mobileSwipeLabel}</span>
           <ArrowRight className="w-4 h-4" />
         </div>
 

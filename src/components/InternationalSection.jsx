@@ -1,69 +1,17 @@
 import { ArrowRight } from 'lucide-react';
-
-const countries = [
-  {
-    name: 'United Kingdom',
-    flag: 'http://lightuponlight.co.uk/wp-content/uploads/2024/11/Philippines-600x338.png',
-    link: '#uk',
-  },
-  {
-    name: 'South Africa',
-    flag: 'https://ext.same-assets.com/1954549727/3488853506.png',
-    link: '#south-africa',
-  },
-  {
-    name: 'Philippines',
-    flag: 'https://lightuponlight.co.uk/wp-content/uploads/2024/05/UK-600x338.png',
-    link: '#philippines',
-  },
-  {
-    name: 'Turkiye',
-    flag: 'https://lightuponlight.co.uk/wp-content/uploads/2025/08/south-africa-600x338.png',
-    link: '#turkiye',
-  },
-  {
-    name: 'Zanzibar',
-    flag: 'https://ext.same-assets.com/1954549727/535722978.png',
-    link: '#zanzibar',
-  },
-  {
-    name: 'Saudi Arabia',
-    flag: 'https://ext.same-assets.com/1954549727/2518531797.png',
-    link: '#saudi-arabia',
-  },
-  {
-    name: 'Liberia',
-    flag: 'https://ext.same-assets.com/1954549727/2576629059.png',
-    link: '#liberia',
-  },
-  {
-    name: 'Canada',
-    flag: 'https://ext.same-assets.com/1954549727/90597353.png',
-    link: '#canada',
-  },
-  {
-    name: 'United States',
-    flag: 'https://ext.same-assets.com/1954549727/2363930762.png',
-    link: '#usa',
-  },
-  {
-    name: 'Indonesia',
-    flag: 'https://ext.same-assets.com/1954549727/839244261.png',
-    link: '#indonesia',
-  },
-];
+import { internationalSectionContent } from '@/data/componentContent';
 
 export default function InternationalSection() {
   return (
     <section className="py-9 bg-white">
       <div className="container max-w-6xl mx-auto px-4">
         <h2 className="text-2xl lg:text-3xl font-extrabold text-gray-800  ">
-          LUL INTERNATIONAL
+          {internationalSectionContent.title}
           <div className='h-1.5 w-28 mt-3 bg-primary'></div>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-3 lg:px-6 pt-8 gap-4 lg:gap-7">
-          {countries.map((country) => (
+          {internationalSectionContent.countries.map((country) => (
             <a
               key={country.name}
               href={country.link}

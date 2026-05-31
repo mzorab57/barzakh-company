@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import './StaggeredMenu.css';
+import { staggeredMenuContent } from '@/data/componentContent';
 
 export const StaggeredMenu = ({
   position = 'right',
@@ -21,7 +22,6 @@ export const StaggeredMenu = ({
 }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const textLines = ['Menu', 'Close'];
   const [currentMenu, setCurrentMenu] = useState({ type: 'main', items: items });
   
   const openRef = useRef(false);
@@ -190,7 +190,7 @@ export const StaggeredMenu = ({
       >
         <span className="sm-toggle-textWrap">
           <span ref={textInnerRef} className="sm-toggle-textInner">
-            {textLines.map((line) => (
+            {staggeredMenuContent.toggleLabels.map((line) => (
               <span key={line} className="sm-toggle-line text-xl font-light">{line}</span>
             ))}
           </span>
@@ -205,7 +205,7 @@ export const StaggeredMenu = ({
           <div className="sm-menu-content">
             {currentMenu.type === 'sub' && (
               <button className="sm-back-button" onClick={goBack}>
-                ← Back to Menu
+                {`← ${staggeredMenuContent.backToMenuLabel}`}
               </button>
             )}
             
@@ -232,7 +232,7 @@ export const StaggeredMenu = ({
           </div>
           {displaySocials && currentMenu.type === 'main' && (
             <div className="sm-socials  h-32">
-              <h3 className="sm-socials-title">Socials</h3>
+              <h3 className="sm-socials-title">{staggeredMenuContent.socialsTitle}</h3>
               <ul className="sm-socials-list">
                 {socialItems.map((s, i) => (
                   <li key={i}><a href={s.link} className="sm-socials-link">{s.label}</a></li>

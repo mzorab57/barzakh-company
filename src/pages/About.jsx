@@ -2,38 +2,9 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CosmicParallaxBg } from '@/components/ui/parallax-cosmic-background';
+import { aboutPageContent } from '@/data/pageContent';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const storyHighlights = [
-  'Started from intimate gatherings in Sulaymaniyah and grew into national events.',
-  'Connects the community with world-renowned speakers, artists, and impactful businesses.',
-  'Creates engaging spaces for learning, spiritual growth, and thoughtful discussion.',
-];
-
-const impactPoints = [
-  {
-    value: 'Hundreds',
-    label: 'People reached through meaningful conferences and learning experiences.',
-  },
-  {
-    value: 'Global Voices',
-    label: 'Scholars, speakers, and creatives brought together on one platform.',
-  },
-  {
-    value: 'Living Faith',
-    label: 'Programs designed to turn inspiration into action in daily life.',
-  },
-];
-
-const motivationalPoints = [
-  'A peaceful learning atmosphere that encourages reflection, connection, and growth.',
-  'Practical guidance for success in spiritual life, mindset, and personal development.',
-  'Inspiring talks from Mufti Menk and guest speakers that awaken confidence and purpose.',
-  'A thoughtful post-event gift: "The Best of Mufti Menk" for continued benefit.',
-];
-
-const aboutHeroImage = '/assets/images/hero4.jpg';
 
 const About = () => {
   const rootRef = useRef(null);
@@ -104,13 +75,8 @@ const About = () => {
       className="overflow-hidden bg-[linear-gradient(180deg,#f7f1df_0%,#fbf8ef_35%,#ffffff_100%)] text-[#2f2611]"
     >
       <CosmicParallaxBg
-  head="About Us"
-  text="AL-NUKHBA Gloabal"
-  loop={true}
-  className="h-screen"
-  primaryColor="#88743e" // ڕەنگی زێڕینی تۆخ
-  secondaryColor="#C5B78E" // ڕەنگی زێڕینی کاڵ
-/>
+        {...aboutPageContent.cosmic}
+      />
       <section className="relative isolate min-h-screen overflow-hidden">
        
 
@@ -124,15 +90,13 @@ const About = () => {
                 className="mb-5 text-sm font-semibold uppercase tracking-[0.38em] text-[#88743e]"
               >
                 <p className="text-sm font-semibold uppercase tracking-[0.34em] text-primary/90">
-                  About Us
+                  {aboutPageContent.hero.eyebrow}
                 </p>
                 <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-                  We create inspiring Islamic events that connect hearts, ideas, and community.
+                  {aboutPageContent.hero.title}
                 </h1>
                 <p className="mt-5 max-w-3xl text-base leading-8 text-white/86 sm:text-lg">
-                  We organize inspiring Islamic conferences for hundreds of our fellow Kurds,
-                  building spaces where learning feels uplifting, thoughtful, and deeply
-                  connected to everyday life.
+                  {aboutPageContent.hero.description}
                 </p>
               </div>
 
@@ -141,8 +105,8 @@ const About = () => {
                 className="group relative overflow-hidden rounded-[2.2rem] border border-white/15 bg-black/25 shadow-[0_24px_80px_rgba(0,0,0,0.22)] backdrop-blur-xl"
               >
                 <img
-                  src={aboutHeroImage}
-                  alt="Barzakh inspirational gathering"
+                  src={aboutPageContent.heroImage}
+                  alt={aboutPageContent.hero.imageAlt}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1d1609]/85 via-[#1d1609]/20 to-transparent" />
@@ -158,15 +122,11 @@ const About = () => {
                 <div className="mb-6 flex items-center gap-4">
                   <div className="h-px flex-1 bg-[#d6c69b]" />
                   <span className="text-sm font-semibold uppercase tracking-[0.24em] text-[#8d7841]">
-                    Our Mission
+                    {aboutPageContent.mission.label}
                   </span>
                 </div>
                 <p className="text-base leading-8 text-[#44361a] sm:text-lg">
-                  Our goal is to bridge the gap and provide benefit to the community by
-                  introducing diverse and world-renowned speakers and businesses that serve
-                  society. By the grace of God, we have benefited hundreds of people, both
-                  Muslims and non-Muslims alike, by creating opportunities to learn through
-                  broad and moderate Islamic thought.
+                  {aboutPageContent.mission.description}
                 </p>
               </div>
 
@@ -174,7 +134,7 @@ const About = () => {
                 data-about-hero
                 className="grid gap-4 rounded-[2rem] bg-[#2f2611] p-6 text-[#f7f1df] shadow-[0_24px_80px_rgba(47,38,17,0.24)]"
               >
-                {impactPoints.map((item) => (
+                {aboutPageContent.impactPoints.map((item) => (
                   <div
                     key={item.value}
                     className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5"
@@ -196,24 +156,19 @@ const About = () => {
         <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="rounded-[2rem] bg-[#2f2611] p-8 text-[#f7f1df] shadow-[0_24px_70px_rgba(47,38,17,0.20)]">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#d5c48a]">
-              Our Story
+              {aboutPageContent.story.label}
             </p>
             <p className="mt-6 text-base leading-8 text-[#f4ecd7] sm:text-lg">
-              We started with small gatherings in a hall in Sulaymaniyah, featuring
-              well-known speakers. Due to high demand, we expanded to national events.
-              Our events are designed to be engaging and interactive, offering attendees
-              opportunities for learning, growth, and inspiration in their journey of faith.
+              {aboutPageContent.story.intro}
             </p>
             <div className="mt-8 h-px bg-white/10" />
             <p className="mt-8 text-base leading-8 text-[#efe4c5]">
-              We believe in providing a platform for learning through a variety of voices
-              and perspectives. We are proud that some of the most famous scholars,
-              artists, and prominent figures in the Muslim community have spoken at our events.
+              {aboutPageContent.story.body}
             </p>
           </div>
 
           <div className="grid gap-5">
-            {storyHighlights.map((item) => (
+            {aboutPageContent.storyHighlights.map((item) => (
               <div
                 key={item}
                 data-about-card
@@ -238,11 +193,10 @@ const About = () => {
       >
         <div className="rounded-[2.5rem] border border-[#e7dab4] bg-[linear-gradient(135deg,#fffdf7_0%,#f3ead0_100%)] p-8 shadow-[0_20px_70px_rgba(112,88,32,0.12)] sm:p-12">
           <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[#8c7741]">
-            Community Vision
+            {aboutPageContent.communityVision.label}
           </p>
           <blockquote className="mt-6 max-w-4xl text-2xl font-semibold leading-relaxed text-[#332812] sm:text-3xl">
-            “Our work is about making knowledge feel alive, accessible, and transformative for
-            the community we serve.”
+            "{aboutPageContent.communityVision.quote}"
           </blockquote>
         </div>
       </section>
@@ -254,28 +208,21 @@ const About = () => {
         <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[2.2rem] border border-[#eadfbe] bg-white p-8 shadow-[0_22px_70px_rgba(90,68,20,0.10)] sm:p-10">
             <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[#8d7841]">
-              Motivational Evening
+              {aboutPageContent.motivational.label}
             </p>
             <h2 className="mt-5 text-3xl font-bold leading-tight text-[#241b08] sm:text-4xl">
-              A spiritual experience shaped with wisdom, reflection, and practical direction.
+              {aboutPageContent.motivational.title}
             </h2>
             <p className="mt-6 text-base leading-8 text-[#554522] sm:text-lg">
-              Our motivational events are carefully designed to immerse attendees in the
-              beauty of Islamic teachings while also providing practical guidance for success
-              in all aspects of life. Imagine a peaceful learning environment, led by a
-              global and local community of expert speakers and peers, all seeking spiritual
-              enlightenment and personal growth.
+              {aboutPageContent.motivational.paragraphs[0]}
             </p>
             <p className="mt-6 text-base leading-8 text-[#554522] sm:text-lg">
-              Mufti Menk, along with other guest speakers, shares deep knowledge and inspiring
-              words that illuminate the path of the community through captivating and engaging
-              speeches. Their wisdom reaches deep within the soul, encouraging individuals to
-              overcome life&apos;s challenges and unlock their true potential as strong Muslims.
+              {aboutPageContent.motivational.paragraphs[1]}
             </p>
           </div>
 
           <div className="grid gap-5">
-            {motivationalPoints.map((item, index) => (
+            {aboutPageContent.motivationalPoints.map((item, index) => (
               <div
                 key={item}
                 data-about-card
@@ -295,13 +242,10 @@ const About = () => {
           className="mt-10 rounded-[2.2rem] border border-[#e7dab4] bg-[linear-gradient(135deg,#fffdf7_0%,#f3ead0_100%)] p-8 shadow-[0_20px_70px_rgba(112,88,32,0.12)] sm:p-10"
         >
           <p className="text-sm font-semibold uppercase tracking-[0.32em] text-[#0e0e0c]">
-            A Lasting Gift
+            {aboutPageContent.lastingGift.label}
           </p>
           <p className="mt-5 max-w-5xl text-base leading-8 text-[#746538] sm:text-lg">
-            We prioritize spiritual development and growth, which is why participants receive
-            a special gift. A high-value copy of Mufti Menk&apos;s latest book, “The Best of Mufti
-            Menk,” is presented after the activities conclude, offering guidance, inspiration,
-            and a deeper connection to Islamic teachings long after the event ends.
+            {aboutPageContent.lastingGift.description}
           </p>
         </div>
       </section>

@@ -1,3 +1,5 @@
+import { videoSectionContent } from '@/data/componentContent';
+
 const HeroVideoSection = () => {
   return (
     <section className="relative min-h-screen bg-[#050403] px-4 py-16 sm:px-6 lg:px-8 lg:py-24 flex items-center justify-center font-sans overflow-hidden">
@@ -27,7 +29,7 @@ const HeroVideoSection = () => {
                     <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#E6D6A3]"></span>
                   </div> */}
                   <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#E6D6A3]">
-                    Featured Experience
+                    {videoSectionContent.badge}
                   </span>
                 </div>
               </div>
@@ -35,20 +37,20 @@ const HeroVideoSection = () => {
               {/* Masterpiece Heading */}
               <h2 className="animate-fade-in-up text-5xl font-black uppercase leading-[1.1] tracking-tighter sm:text-6xl lg:text-[4rem] xl:text-[4.5rem]" style={{ animationDelay: '0.4s' }}>
                 <span className="block text-white/90 font-light tracking-tight">
-                  Relive The
+                  {videoSectionContent.headingLines[0]}
                 </span>
                 <span className="block mt-1 bg-clip-text text-transparent bg-gradient-to-r from-[#E6D6A3] via-[#fff5d6] to-[#b39e60] drop-shadow-[0_0_30px_rgba(230,214,163,0.3)]">
-                  Spirit Of
+                  {videoSectionContent.headingLines[1]}
                 </span>
                 {/* Outline Text Effect */}
                 <span className="block mt-1 text-transparent" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.8)' }}>
-                  Gatherings
+                  {videoSectionContent.headingLines[2]}
                 </span>
               </h2>
 
               {/* Description */}
               <p className="animate-fade-in-up text-base font-light leading-relaxed text-white/50 sm:text-lg max-w-md" style={{ animationDelay: '0.6s' }}>
-                Immerse yourself in a cinematic visual story. A journey of reflection, unity, and moments that transcend time.
+                {videoSectionContent.description}
               </p>
 
               {/* Luxury CTA & Tags Group */}
@@ -58,7 +60,7 @@ const HeroVideoSection = () => {
 
                 {/* Minimalist Tags */}
                 <div className="flex flex-wrap gap-4 border-t border-white/10 pt-8">
-                  {['Conferences', 'Retreats', 'Community'].map((tag) => (
+                  {videoSectionContent.tags.map((tag) => (
                     <span 
                       key={tag}
                       className="cursor-default text-[10px] font-medium uppercase tracking-[0.3em] text-white/40 transition-colors duration-300 hover:text-[#E6D6A3]"
@@ -78,7 +80,7 @@ const HeroVideoSection = () => {
             {/* The Video */}
             <video
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-[30s] ease-linear group-hover/card:scale-110"
-              src="https://pub-8090965640ca4bd1b63bf23a3ab20377.r2.dev/regay_hijray.mp4"
+              src={videoSectionContent.videoSrc}
               autoPlay
               muted
               loop
@@ -102,11 +104,11 @@ const HeroVideoSection = () => {
 
             {/* Cinematic Progress Bar & Timecode */}
             <div className="absolute bottom-6 left-6 right-6 lg:bottom-10 lg:left-10 lg:right-10 flex items-center gap-4 z-20">
-              <span className="text-[10px] font-mono text-white/50">00:00</span>
+              <span className="text-[10px] font-mono text-white/50">{videoSectionContent.progress.start}</span>
               <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-white/20 backdrop-blur-sm">
                 <div className="absolute top-0 left-0 h-full w-1/3 bg-[#E6D6A3] rounded-full shadow-[0_0_10px_#E6D6A3] animate-progress" />
               </div>
-              <span className="text-[10px] font-mono text-white/50">03:45</span>
+              <span className="text-[10px] font-mono text-white/50">{videoSectionContent.progress.end}</span>
             </div>
 
             {/* Top Right "REC" indicator */}

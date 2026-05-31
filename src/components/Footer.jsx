@@ -1,32 +1,29 @@
 'use client';
-import { 
-  Mail, Facebook, Instagram, Send, Globe, ExternalLink, 
-  MapPin, Phone, ArrowUpRight, Sparkles, Heart, Award 
-} from 'lucide-react';
+import { Mail, Facebook, Instagram, Send, Globe, ExternalLink, ArrowUpRight, Award } from 'lucide-react';
 import { useState, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CosmicParallaxBg } from './ui/parallax-cosmic-background';
+import { footerContent } from '@/data/componentContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
   const [email, setEmail] = useState('');
-  const [hoveredSocial, setHoveredSocial] = useState(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
+
   const footerRef = useRef(null);
   const brandRef = useRef(null);
   const linksRef = useRef([]);
   const statsRef = useRef(null);
 
-  // Track mouse position for magnetic effect
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+  const statIconMap = {
+    Award,
+  };
+
+  const socialIconMap = {
+    Facebook,
+    Instagram,
+    Globe,
   };
 
   // GSAP Animations
@@ -87,36 +84,6 @@ export default function Footer() {
     return () => ctx.revert();
   }, []);
 
-  const usefulLinks = [
-    { name: 'Event Calendar', href: '#calendar', icon: '📅' },
-    { name: 'Event Map', href: '#map', icon: '🗺️' },
-    { name: 'Volunteer', href: '#volunteer', icon: '🤝' },
-    { name: 'Terms & Conditions', href: '#terms', icon: '📋' },
-    { name: 'Privacy Policy', href: '#privacy', icon: '🔒' },
-  ];
-
-  const international = [
-    { name: 'United Kingdom', code: 'UK', flag: '🇬🇧' },
-    { name: 'Philippines', code: 'PH', flag: '🇵🇭' },
-    // { name: 'Liberia', code: 'LR', flag: '🇱🇷' },
-    { name: 'Saudi Arabia', code: 'SA', flag: '🇸🇦' },
-    // { name: 'United States', code: 'US', flag: '🇺🇸' },
-    // { name: 'Canada', code: 'CA', flag: '🇨🇦' },
-    { name: 'Indonesia', code: 'ID', flag: '🇮🇩' },
-    // { name: 'Zanzibar', code: 'TZ', flag: '🇹🇿' },
-  ];
-
-  const socialLinks = [
-    { icon: Facebook, href: 'https://facebook.com', label: 'Facebook', color: 'hover:bg-[#1877F2]' },
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram', color: 'hover:bg-gradient-to-br hover:from-[#405DE6] hover:to-[#E1306C]' },
-    { icon: Globe, href: '#', label: 'Website', color: 'hover:bg-[#C5B78E]' },
-  ];
-
-  const stats = [
-    { number: '50+', label: 'Events Hosted', icon: Award },
-   
-  ];
-
   const handleSubscribe = (e) => {
     e.preventDefault();
     console.log('Subscribed:', email);
@@ -127,7 +94,6 @@ export default function Footer() {
     <footer 
       ref={footerRef}
       className="relative w-full overflow-hidden bg-[#050403] text-white"
-      onMouseMove={handleMouseMove}
     >
       
       {/* === Ultra Premium Background === */}
@@ -168,19 +134,19 @@ export default function Footer() {
                
                 <div className="h-[1px] w-20 bg-gradient-to-r from-[#C5B78E] to-transparent" />
                 <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.5em] text-[#C5B78E]">
-                  Global Community
+                  {footerContent.badge}
                 </span>
               </div>
 
               {/* Mega Typography */}
               <div>
                 <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light uppercase leading-[0.9] tracking-tighter mb-4">
-                  <span className="block font-black text-white">Stay</span>
-                  <span className="block font-black text-white">Connected</span>
+                  <span className="block font-black text-white">{footerContent.titleLines[0]}</span>
+                  <span className="block font-black text-white">{footerContent.titleLines[1]}</span>
                 </h2>
                 <p className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl  font-normal lowercase tracking-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5B78E] via-[#E6D6A3] to-[#b59e5f]">
-                    to the journey.
+                    {footerContent.titleLines[2]}
                   </span>
                 </p>
               </div>
@@ -189,7 +155,7 @@ export default function Footer() {
               <div className="flex items-start gap-6 max-w-2xl">
                 <div className="hidden sm:block w-[2px] h-32 bg-gradient-to-b from-[#C5B78E] to-transparent" />
                 <p className="text-lg sm:text-xl text-white/50 font-light leading-relaxed">
-                  Join thousands of believers worldwide in receiving exclusive updates, spiritual insights, and transformative event announcements directly to your inbox.
+                  {footerContent.description}
                 </p>
               </div>
 
@@ -205,7 +171,7 @@ export default function Footer() {
                 <div className="relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 sm:p-10 hover:border-[#C5B78E]/30 transition-all duration-700">
                   
                   <h3 className="text-2xl font-bold mb-6 text-white/90">
-                    Subscribe to Our Newsletter
+                    {footerContent.newsletter.title}
                   </h3>
 
                   <form onSubmit={handleSubscribe} className="space-y-5">
@@ -216,7 +182,7 @@ export default function Footer() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="your@email.com"
+                        placeholder={footerContent.newsletter.placeholder}
                         required
                         className="w-full pl-14 pr-5 py-5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:bg-white/10 focus:border-[#C5B78E]/50 focus:outline-none transition-all duration-300"
                       />
@@ -227,13 +193,13 @@ export default function Footer() {
                       type="submit"
                       className="group/btn w-full flex items-center justify-center gap-3 py-5 bg-gradient-to-r from-[#C5B78E] to-[#b59e5f] text-black rounded-2xl font-bold text-sm uppercase tracking-wider shadow-[0_10px_40px_rgba(197,183,142,0.3)] transition-all duration-500 hover:shadow-[0_20px_60px_rgba(197,183,142,0.5)] hover:scale-[1.02] active:scale-95"
                     >
-                      <span>Subscribe Now</span>
+                      <span>{footerContent.newsletter.buttonLabel}</span>
                       <Send className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" strokeWidth={1.5} />
                     </button>
                   </form>
 
                   <p className="mt-5 text-xs text-white/30 font-light text-center">
-                    ✓ No spam, ever. Unsubscribe anytime.
+                    {footerContent.newsletter.note}
                   </p>
 
                 </div>
@@ -247,23 +213,19 @@ export default function Footer() {
         {/* Stats Section (Floating Cards) */}
         <div ref={statsRef} className="py-16 lg:py-20">
           <div className="grid grid-cols-1  gap-6 lg:gap-8">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
+            {footerContent.stats.map((stat, index) => {
+              const Icon = statIconMap[stat.iconKey];
               return (
                 <div
                   key={index}
                   className="group relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(197,183,142,0.1)]"
                 >
-                  
-                  
-                  {/* Number */}
-                  {/* <div className="text-5xl font-black text-white mb-2 transition-colors group-hover:text-[#C5B78E]">
+                  {Icon ? <Icon className="mx-auto mb-4 h-7 w-7 text-[#C5B78E]" strokeWidth={1.6} /> : null}
+                  <div className="text-4xl font-black text-white mb-2 transition-colors group-hover:text-[#C5B78E]">
                     {stat.number}
-                  </div> */}
-                  
-                  {/* Label */}
+                  </div>
                   <div className="text-sm font-light uppercase tracking-[0.2em] text-white/50">
-                    nukhba global
+                    {stat.label}
                   </div>
                 </div>
               );
@@ -277,16 +239,15 @@ export default function Footer() {
           {/* Useful Links */}
           <div ref={(el) => (linksRef.current[0] = el)} className="space-y-8">
             <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
-              Quick Links
+              {footerContent.quickLinksTitle}
             </h4>
             <ul className="space-y-4">
-              {usefulLinks.map((link) => (
+              {footerContent.usefulLinks.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
                     className="group flex items-center gap-3 text-white/60 hover:text-white transition-all duration-300"
                   >
-                    {/* <span className="text-xl">{link.icon}</span> */}
                     <span className="text-base font-light group-hover:translate-x-2 transition-transform">
                       {link.name}
                     </span>
@@ -300,16 +261,18 @@ export default function Footer() {
           {/* International Presence */}
           <div ref={(el) => (linksRef.current[1] = el)} className="space-y-8">
             <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
-              Global Reach
+              {footerContent.globalReachTitle}
             </h4>
             <ul className="grid grid-cols-2 gap-4">
-              {international.map((country) => (
+              {footerContent.international.map((country) => (
                 <li key={country.code}>
                   <a
                     href={`#${country.code.toLowerCase()}`}
                     className="group flex flex-col items-start gap-2 p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-300"
                   >
-                    <span className="text-2xl">{country.flag}</span>
+                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs font-semibold tracking-[0.24em] text-[#C5B78E]">
+                      {country.code}
+                    </span>
                     <span className="text-sm font-light text-white/60 group-hover:text-white transition-colors">
                       {country.name}
                     </span>
@@ -322,38 +285,36 @@ export default function Footer() {
           {/* Contact & Social */}
           <div ref={(el) => (linksRef.current[2] = el)} className="space-y-8">
             <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
-              Connect
+              {footerContent.connectTitle}
             </h4>
             
             {/* Email */}
             <a
-              href="mailto:info@nukhbaglobal.com"
+              href={`mailto:${footerContent.email}`}
               className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-300"
             >
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#C5B78E]/10 border border-[#C5B78E]/20 group-hover:bg-[#C5B78E] group-hover:scale-110 transition-all duration-300">
                 <Mail className="w-5 h-5 text-white" strokeWidth={1.5} />
               </div>
               <span className="text-sm font-light text-white/70 group-hover:text-white transition-colors">
-                info@nukhbaglobal.com
+                {footerContent.email}
               </span>
             </a>
 
             {/* Social Links */}
             <div className="space-y-4">
               <h5 className="text-sm font-bold uppercase tracking-[0.3em] text-white/40">
-                Follow Us
+                {footerContent.followUsLabel}
               </h5>
               <div className="flex gap-3">
-                {socialLinks.map((social, i) => {
-                  const Icon = social.icon;
+                {footerContent.socialLinks.map((social, i) => {
+                  const Icon = socialIconMap[social.iconKey];
                   return (
                     <a
                       key={i}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onMouseEnter={() => setHoveredSocial(i)}
-                      onMouseLeave={() => setHoveredSocial(null)}
                       className={`
                         group/social relative flex items-center justify-center w-14 h-14 rounded-full 
                         bg-white/5 border border-white/10 backdrop-blur-xl
@@ -363,10 +324,12 @@ export default function Footer() {
                       `}
                       aria-label={social.label}
                     >
-                      <Icon 
-                        className="w-6 h-6 text-white transition-transform group-hover/social:scale-110" 
-                        strokeWidth={1.5} 
-                      />
+                      {Icon ? (
+                        <Icon
+                          className="w-6 h-6 text-white transition-transform group-hover/social:scale-110"
+                          strokeWidth={1.5}
+                        />
+                      ) : null}
                     </a>
                   );
                 })}
@@ -383,22 +346,21 @@ export default function Footer() {
           {/* Copyright */}
           <p className="text-sm text-white/30 font-light text-center md:text-left">
             © {new Date().getFullYear()}{' '}
-            <span className="text-[#C5B78E] font-medium">Nukhba Global</span>. 
+            <span className="text-[#C5B78E] font-medium">{footerContent.copyrightName}</span>. 
             All rights reserved.
           </p>
 
           {/* Credits */}
           <div className="flex items-center gap-2 text-xs text-white/20">
-            <span>Designed & Developed with</span>
-            
-            <span>by</span>
+            <span>{footerContent.credits.prefix}</span>
+            <span>{footerContent.credits.by}</span>
             <a
-              href="https://wa.me/9647701411893"
+              href={footerContent.credits.href}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-1 text-[#C5B78E] hover:text-white transition-colors"
             >
-              <span className="font-bold">AL-CODE</span>
+              <span className="font-bold">{footerContent.credits.label}</span>
               <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.5} />
             </a>
           </div>
