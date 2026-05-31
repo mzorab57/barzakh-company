@@ -3,7 +3,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   BedDouble,
-  CalendarDays,
   Coffee,
   Dumbbell,
   Hotel,
@@ -14,8 +13,9 @@ import {
   Users,
   Waves,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { SmoothScrollHero } from '@/components/ui/modern-hero';
-import { turkeyEventPageContent } from '@/data/pageContent';
+import { getTurkeyEventPageContent } from '@/data/pageContent';
 
 gsap.registerPlugin(ScrollTrigger);
 const turkeyIconMap = {
@@ -31,6 +31,8 @@ const turkeyIconMap = {
 
 export default function TurkeyEventPage() {
   const rootRef = useRef(null);
+  const { t } = useTranslation();
+  const turkeyEventPageContent = getTurkeyEventPageContent(t);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -303,4 +305,3 @@ export default function TurkeyEventPage() {
     </div>
   );
 }
-

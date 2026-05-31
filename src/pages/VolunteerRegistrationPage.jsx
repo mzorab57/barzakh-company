@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CheckCircle2, ClipboardList, MessageCircle, ShieldCheck, Users } from 'lucide-react';
-import { volunteerRegistrationPageContent } from '@/data/pageContent';
+import { useTranslation } from 'react-i18next';
+import { getVolunteerRegistrationPageContent } from '@/data/pageContent';
 
 const initialForm = {
   firstName: '',
@@ -10,7 +11,7 @@ const initialForm = {
   age: '',
   address: '',
   reason: '',
-  hasVolunteeredBefore: 'No',
+  hasVolunteeredBefore: 'no',
   experience: '',
   confirmCorrect: false,
   agreeRules: false,
@@ -25,8 +26,9 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-function buildWhatsappMessage(form) {
-  const { fields, excel } = volunteerRegistrationPageContent.form;
+function buildWhatsappMessage(form, volunteerRegistrationPageContent) {
+  const { fields, excel, booleanLabels, radioOptions } = volunteerRegistrationPageContent.form;
+  const volunteeredBeforeLabel = radioOptions.find(option => option.value === form.hasVolunteeredBefore)?.label || '';
 
   return [
     excel.title,
@@ -39,16 +41,17 @@ function buildWhatsappMessage(form) {
     `${fields.address}: ${form.address}`,
     '',
     `${fields.reason}: ${form.reason}`,
-    `${fields.volunteeredBefore}: ${form.hasVolunteeredBefore}`,
+    `${fields.volunteeredBefore}: ${volunteeredBeforeLabel}`,
     `${fields.experience}: ${form.experience || excel.emptyValue}`,
     '',
-    `${fields.confirmCorrect}: ${form.confirmCorrect ? 'Yes' : 'No'}`,
-    `${fields.agreeRules}: ${form.agreeRules ? 'Yes' : 'No'}`,
+    `${fields.confirmCorrect}: ${form.confirmCorrect ? booleanLabels.yes : booleanLabels.no}`,
+    `${fields.agreeRules}: ${form.agreeRules ? booleanLabels.yes : booleanLabels.no}`,
   ].join('\n');
 }
 
-function buildExcelHtml(form) {
-  const { fields, excel } = volunteerRegistrationPageContent.form;
+function buildExcelHtml(form, volunteerRegistrationPageContent) {
+  const { fields, excel, booleanLabels, radioOptions } = volunteerRegistrationPageContent.form;
+  const volunteeredBeforeLabel = radioOptions.find(option => option.value === form.hasVolunteeredBefore)?.label || '';
   const rows = [
     [excel.title, ''],
     [fields.firstName, form.firstName],
@@ -58,10 +61,10 @@ function buildExcelHtml(form) {
     [fields.age, form.age],
     [fields.address, form.address],
     [fields.reason, form.reason],
-    [fields.volunteeredBefore, form.hasVolunteeredBefore],
+    [fields.volunteeredBefore, volunteeredBeforeLabel],
     [fields.experience, form.experience || excel.emptyValue],
-    [fields.confirmCorrect, form.confirmCorrect ? 'Yes' : 'No'],
-    [fields.agreeRules, form.agreeRules ? 'Yes' : 'No'],
+    [fields.confirmCorrect, form.confirmCorrect ? booleanLabels.yes : booleanLabels.no],
+    [fields.agreeRules, form.agreeRules ? booleanLabels.yes : booleanLabels.no],
   ];
 
   const tableRows = rows
@@ -76,7 +79,7 @@ function buildExcelHtml(form) {
   <head>
     <meta charset="UTF-8" />
     <meta name="ProgId" content="Excel.Sheet" />
-    <meta name="Generator" content="Nukhba Volunteer Form" />
+    <meta name="Generator" content="${escapeHtml(excel.shareTitle)}" />
   </head>
   <body>
     <table style="border-collapse:collapse;font-family:Arial,sans-serif;width:100%;max-width:960px;">
@@ -86,8 +89,8 @@ function buildExcelHtml(form) {
 </html>`;
 }
 
-function createExcelFile(form) {
-  const content = buildExcelHtml(form);
+function createExcelFile(form, volunteerRegistrationPageContent) {
+  const content = buildExcelHtml(form, volunteerRegistrationPageContent);
   const blob = new Blob([content], {
     type: 'application/vnd.ms-excel;charset=utf-8;',
   });
@@ -115,6 +118,8 @@ function downloadExcelFile(file) {
 }
 
 export default function VolunteerRegistrationPage() {
+  const { t } = useTranslation();
+  const volunteerRegistrationPageContent = getVolunteerRegistrationPageContent(t);
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
@@ -145,8 +150,8 @@ export default function VolunteerRegistrationPage() {
     setError('');
     setInfo('');
 
-    const file = createExcelFile(form);
-    const whatsappText = buildWhatsappMessage(form);
+    const file = createExcelFile(form, volunteerRegistrationPageContent);
+    const whatsappText = buildWhatsappMessage(form, volunteerRegistrationPageContent);
 
     if (navigator.canShare && navigator.share && navigator.canShare({ files: [file] })) {
       try {
@@ -256,9 +261,9 @@ export default function VolunteerRegistrationPage() {
                     <p className="mb-3 text-sm font-semibold text-[#2d230f]">{formContent.fields.volunteeredBefore}</p>
                     <div className="flex flex-wrap gap-3">
                       {formContent.radioOptions.map(option => (
-                        <label key={option} className="inline-flex items-center gap-2 rounded-full border border-[#e7dcc0] px-4 py-2 text-sm font-medium text-[#4e3f1d]">
-                          <input type="radio" name="hasVolunteeredBefore" value={option} checked={form.hasVolunteeredBefore === option} onChange={handleChange} />
-                          {option}
+                        <label key={option.value} className="inline-flex items-center gap-2 rounded-full border border-[#e7dcc0] px-4 py-2 text-sm font-medium text-[#4e3f1d]">
+                          <input type="radio" name="hasVolunteeredBefore" value={option.value} checked={form.hasVolunteeredBefore === option.value} onChange={handleChange} />
+                          {option.label}
                         </label>
                       ))}
                     </div>

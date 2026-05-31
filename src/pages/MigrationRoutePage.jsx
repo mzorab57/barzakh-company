@@ -15,8 +15,9 @@ import {
   Tent,
   Users,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-import { migrationRoutePageContent } from '@/data/pageContent';
+import { getMigrationRoutePageContent } from '@/data/pageContent';
 gsap.registerPlugin(ScrollTrigger);
 
 const migrationIconMap = {
@@ -32,19 +33,20 @@ const migrationIconMap = {
   Users,
 };
 
-const journeySections = migrationRoutePageContent.journeyStages.map((stage, index) => ({
-  title: stage.title,
-  description: stage.points.join(' '),
-  imageUrl: stage.image,
-  reverse: index % 2 === 1,
-  badge: stage.location,
-  eyebrow: `Page ${index + 3}`,
-  meta: `${stage.location} | ${stage.year}`,
-  tags: stage.points.slice(0, 2),
-}));
-
 export default function MigrationRoutePage() {
   const rootRef = useRef(null);
+  const { t } = useTranslation();
+  const migrationRoutePageContent = getMigrationRoutePageContent(t);
+  const journeySections = migrationRoutePageContent.journeyStages.map((stage, index) => ({
+    title: stage.title,
+    description: stage.points.join(' '),
+    imageUrl: stage.image,
+    reverse: index % 2 === 1,
+    badge: stage.location,
+    eyebrow: `${migrationRoutePageContent.journeyPagePrefix} ${index + 3}`,
+    meta: `${stage.location} | ${stage.year}`,
+    tags: stage.points.slice(0, 2),
+  }));
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {

@@ -1,7 +1,11 @@
 import { MagicText } from './ui/magic-text'; // دڵنیابەرەوە لە ناونیشانی فایلەکە
-import { aboutSectionContent } from '@/data/componentContent';
+import { useTranslation } from 'react-i18next';
+import { getAboutSectionContent } from '@/data/componentContent';
 
 export default function AboutSection() {
+  const { t } = useTranslation();
+  const aboutSectionContent = getAboutSectionContent(t);
+
   return (
     <section className="bg-[#1a150a] text-[#efe7cf] py-10">
       <div className="max-w-7xl mx-auto px-6">

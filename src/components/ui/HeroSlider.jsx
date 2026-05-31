@@ -1,12 +1,15 @@
 'use client';
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { heroSliderContent } from '@/data/componentContent';
+import { useTranslation } from 'react-i18next';
+import { getHeroSliderContent } from '@/data/componentContent';
 
 const Slider = () => {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
+  const { t } = useTranslation();
+  const heroSliderContent = getHeroSliderContent(t);
 
   const next = () => setCurrent((prev) => (prev + 1) % heroSliderContent.slides.length);
   const prev = () => setCurrent((prev) => (prev - 1 + heroSliderContent.slides.length) % heroSliderContent.slides.length);

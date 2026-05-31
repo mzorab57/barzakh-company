@@ -3,13 +3,16 @@ import { Mail, Facebook, Instagram, Send, Globe, ExternalLink, ArrowUpRight, Awa
 import { useState, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 import { CosmicParallaxBg } from './ui/parallax-cosmic-background';
-import { footerContent } from '@/data/componentContent';
+import { getFooterContent } from '@/data/componentContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
   const [email, setEmail] = useState('');
+  const { t } = useTranslation();
+  const footerContent = getFooterContent(t);
 
   const footerRef = useRef(null);
   const brandRef = useRef(null);
@@ -347,7 +350,7 @@ export default function Footer() {
           <p className="text-sm text-white/30 font-light text-center md:text-left">
             © {new Date().getFullYear()}{' '}
             <span className="text-[#C5B78E] font-medium">{footerContent.copyrightName}</span>. 
-            All rights reserved.
+            {footerContent.rightsReserved}
           </p>
 
           {/* Credits */}

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -32,9 +33,29 @@ function ScrollToHash() {
   return null;
 }
 
+function LanguageDocumentSync() {
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const language = i18n.resolvedLanguage || 'ku';
+    const isRtl = language === 'ku' || language === 'ar';
+
+    document.documentElement.lang = language;
+    document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+  }, [i18n.resolvedLanguage]);
+
+  return null;
+}
+
 function App() {
+  const { t } = useTranslation();
+  const stallsRoute = t('routes.stalls', { returnObjects: true });
+  const pastEventsRoute = t('routes.pastEvents', { returnObjects: true });
+  const faqRoute = t('routes.faq', { returnObjects: true });
+
   return (
     <Router>
+      <LanguageDocumentSync />
       <ScrollToHash />
       <div className="min-h-screen ">
         <Header />
@@ -61,14 +82,10 @@ function App() {
               path="/stalls"
               element={
                 <MenuLandingPage
-                  eyebrow="Participation"
-                  title="Stalls"
-                  description="Find information for vendors and stall applicants, including setup expectations, event fit, and booking details."
-                  highlights={[
-                    'Vendor application and booking details',
-                    'Stall setup expectations and guidance',
-                    'Event fit, availability, and next steps',
-                  ]}
+                  eyebrow={stallsRoute.eyebrow}
+                  title={stallsRoute.title}
+                  description={stallsRoute.description}
+                  highlights={stallsRoute.highlights}
                 />
               }
             />
@@ -77,14 +94,10 @@ function App() {
               path="/past-events"
               element={
                 <MenuLandingPage
-                  eyebrow="Archive"
-                  title="Past Events"
-                  description="Look back at previous Barzakh Company experiences, highlights, and the impact of earlier gatherings."
-                  highlights={[
-                    'Event highlights and memorable moments',
-                    'Featured speakers, guests, and experiences',
-                    'A look at how previous events were received',
-                  ]}
+                  eyebrow={pastEventsRoute.eyebrow}
+                  title={pastEventsRoute.title}
+                  description={pastEventsRoute.description}
+                  highlights={pastEventsRoute.highlights}
                 />
               }
             />
@@ -92,14 +105,10 @@ function App() {
               path="/faq"
               element={
                 <MenuLandingPage
-                  eyebrow="Support"
-                  title="FAQ"
-                  description="Review commonly asked questions about events, registration, travel planning, and participant support."
-                  highlights={[
-                    'General registration questions',
-                    'Travel and accommodation answers',
-                    'Support and contact guidance',
-                  ]}
+                  eyebrow={faqRoute.eyebrow}
+                  title={faqRoute.title}
+                  description={faqRoute.description}
+                  highlights={faqRoute.highlights}
                 />
               }
             />

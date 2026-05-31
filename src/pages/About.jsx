@@ -2,12 +2,15 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CosmicParallaxBg } from '@/components/ui/parallax-cosmic-background';
-import { aboutPageContent } from '@/data/pageContent';
+import { useTranslation } from 'react-i18next';
+import { getAboutPageContent } from '@/data/pageContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   const rootRef = useRef(null);
+  const { t } = useTranslation();
+  const aboutPageContent = getAboutPageContent(t);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {

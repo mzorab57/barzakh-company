@@ -1,7 +1,11 @@
 import { ArrowRight } from 'lucide-react';
-import { internationalSectionContent } from '@/data/componentContent';
+import { useTranslation } from 'react-i18next';
+import { getInternationalSectionContent } from '@/data/componentContent';
 
 export default function InternationalSection() {
+  const { t } = useTranslation();
+  const internationalSectionContent = getInternationalSectionContent(t);
+
   return (
     <section className="py-9 bg-white">
       <div className="container max-w-6xl mx-auto px-4">

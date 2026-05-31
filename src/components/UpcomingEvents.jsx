@@ -3,13 +3,16 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Calendar, MapPin, ArrowRight, MoveRight } from 'lucide-react';
-import { upcomingEventsSectionContent } from '@/data/componentContent';
+import { useTranslation } from 'react-i18next';
+import { getUpcomingEventsSectionContent } from '@/data/componentContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function UpcomingEvents() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
+  const { t } = useTranslation();
+  const upcomingEventsSectionContent = getUpcomingEventsSectionContent(t);
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
@@ -91,7 +94,7 @@ export default function UpcomingEvents() {
         <div className="absolute top-0 left-0 h-full w-full z-10 overflow-hidden">
           <div ref={trackRef} className="flex h-full will-change-transform pl-[42%]">
             {upcomingEventsSectionContent.events.map((event, index) => (
-              <EditorialCard key={index} event={event} index={index} />
+              <EditorialCard key={index} event={event} index={index} content={upcomingEventsSectionContent} />
             ))}
             <div className="w-32 flex-shrink-0" />
           </div>
@@ -126,7 +129,7 @@ export default function UpcomingEvents() {
 
         <div className="space-y-12 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-8">
           {upcomingEventsSectionContent.events.map((event, index) => (
-            <EditorialCard key={index} event={event} index={index} isMobile />
+            <EditorialCard key={index} event={event} index={index} isMobile content={upcomingEventsSectionContent} />
           ))}
         </div>
       </div>
@@ -134,7 +137,7 @@ export default function UpcomingEvents() {
   );
 }
 
-function EditorialCard({ event, index, isMobile = false }) {
+function EditorialCard({ event, index, isMobile = false, content }) {
   const cardRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -202,7 +205,7 @@ function EditorialCard({ event, index, isMobile = false }) {
             </h2>
 
             <p className="text-sm text-[#1a1814]/50 font-light tracking-wide">
-              {event.attendees}+ attending
+              {event.attendees}+ {content.attendeesLabel}
             </p>
           </div>
 
@@ -211,7 +214,7 @@ function EditorialCard({ event, index, isMobile = false }) {
               <Calendar className="w-4 h-4 text-[#88743e] flex-shrink-0 mt-1" strokeWidth={1.5} />
               <div className="flex-1">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1814]/40 mb-1 font-medium">
-                  {upcomingEventsSectionContent.fieldLabels.date}
+                  {content.fieldLabels.date}
                 </p>
                 <p className="text-sm text-[#1a1814] font-light">{event.date}</p>
               </div>
@@ -221,7 +224,7 @@ function EditorialCard({ event, index, isMobile = false }) {
               <MapPin className="w-4 h-4 text-[#88743e] flex-shrink-0 mt-1" strokeWidth={1.5} />
               <div className="flex-1">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-[#1a1814]/40 mb-1 font-medium">
-                  {upcomingEventsSectionContent.fieldLabels.location}
+                  {content.fieldLabels.location}
                 </p>
                 <p className="text-sm text-[#1a1814] font-light">{event.location}</p>
               </div>
@@ -229,7 +232,7 @@ function EditorialCard({ event, index, isMobile = false }) {
           </div>
 
           <button className="group/btn inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.2em] text-[#88743e] transition-all duration-300 hover:gap-4 border-b border-[#88743e]/30 pb-1 hover:border-[#88743e]">
-            <span>{upcomingEventsSectionContent.ctaLabel}</span>
+            <span>{content.ctaLabel}</span>
             <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" strokeWidth={1.5} />
           </button>
         </div>

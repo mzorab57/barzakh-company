@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
+import { useTranslation } from 'react-i18next';
 import './StaggeredMenu.css';
-import { staggeredMenuContent } from '@/data/componentContent';
+import { getStaggeredMenuContent } from '@/data/componentContent';
 
 export const StaggeredMenu = ({
   position = 'right',
@@ -21,6 +22,8 @@ export const StaggeredMenu = ({
   onMenuClose,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const staggeredMenuContent = getStaggeredMenuContent(t);
   const [open, setOpen] = useState(false);
   const [currentMenu, setCurrentMenu] = useState({ type: 'main', items: items });
   

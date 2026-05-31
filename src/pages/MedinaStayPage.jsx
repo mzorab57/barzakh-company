@@ -15,8 +15,9 @@ import {
   Sparkles,
   Utensils,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import ParallaxComponent from '../components/ui/parallax-scrolling';
-import { medinaStayPageContent } from '@/data/pageContent';
+import { getMedinaStayPageContent } from '@/data/pageContent';
 
 gsap.registerPlugin(ScrollTrigger);
 const medinaIconMap = {
@@ -34,6 +35,8 @@ const medinaIconMap = {
 
 export default function MedinaStayPage() {
   const rootRef = useRef(null);
+  const { t } = useTranslation();
+  const medinaStayPageContent = getMedinaStayPageContent(t);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {

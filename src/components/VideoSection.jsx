@@ -1,6 +1,10 @@
-import { videoSectionContent } from '@/data/componentContent';
+import { useTranslation } from 'react-i18next';
+import { getVideoSectionContent } from '@/data/componentContent';
 
 const HeroVideoSection = () => {
+  const { t } = useTranslation();
+  const videoSectionContent = getVideoSectionContent(t);
+
   return (
     <section className="relative min-h-screen bg-[#050403] px-4 py-16 sm:px-6 lg:px-8 lg:py-24 flex items-center justify-center font-sans overflow-hidden">
       

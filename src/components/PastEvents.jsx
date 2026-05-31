@@ -3,7 +3,8 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
-import { pastEventsSectionContent } from '@/data/componentContent';
+import { useTranslation } from 'react-i18next';
+import { getPastEventsSectionContent } from '@/data/componentContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,6 +12,8 @@ export default function PastEvents() {
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const sliderRef = useRef(null);
+  const { t } = useTranslation();
+  const pastEventsSectionContent = getPastEventsSectionContent(t);
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {

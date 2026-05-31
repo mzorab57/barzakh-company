@@ -3,7 +3,8 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-react';
-import { guestsSectionContent } from '@/data/componentContent';
+import { useTranslation } from 'react-i18next';
+import { getGuestsSectionContent } from '@/data/componentContent';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +13,8 @@ export default function Guests() {
   const headerRef = useRef(null);
   const cardsRef = useRef([]);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const { t } = useTranslation();
+  const guestsSectionContent = getGuestsSectionContent(t);
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
