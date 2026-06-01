@@ -43,14 +43,15 @@ export default function UpcomingEvents() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#fafaf8] overflow-hidden text-[#1a1814] font-sans selection:bg-[#88743e] selection:text-white"
+      dir='ltr'
+      className="relative  bg-[#fafaf8] overflow-hidden text-[#1a1814] font-sans selection:bg-[#88743e] selection:text-white"
     >
-      <div className="hidden lg:block relative h-screen w-full">
-        <div className="absolute top-0 left-0 h-full w-[42%] bg-[#fafaf8] z-30 flex items-center border-r border-[#1a1814]/10 shadow-[30px_0_60px_rgba(250,250,248,1)]">
+      <div  className="hidden lg:block relative h-screen w-full">
+        <div dir='rtl' className="absolute top-0 left-0 h-full w-[42%] bg-[#fafaf8] z-30 flex items-center border-r border-[#1a1814]/10 shadow-[30px_0_60px_rgba(250,250,248,1)]">
           <div className="px-16 xl:px-24 max-w-xl">
-            <div className="mb-12">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-[1px] w-12 bg-[#88743e]" />
+            <div  className="mb-12">
+              <div  className="flex items-center gap-4 mb-4">
+                <div  className="h-[1px] w-12 bg-[#88743e]" />
                 <span className="text-[10px] font-medium uppercase tracking-[0.35em] text-[#88743e]">
                   {upcomingEventsSectionContent.featuredLabel}
                 </span>
@@ -163,6 +164,7 @@ function EditorialCard({ event, index, isMobile = false, content }) {
 
   return (
     <article
+    
       ref={cardRef}
       className={`
         group relative flex-shrink-0 bg-[#fafaf8]
@@ -198,7 +200,7 @@ function EditorialCard({ event, index, isMobile = false, content }) {
           </div>
         </div>
 
-        <div className={`${isMobile ? 'space-y-6' : 'px-12 xl:px-16 py-10 space-y-8'}`}>
+        <div dir='rtl' className={`${isMobile ? 'space-y-6' : 'px-12 xl:px-16 py-10 space-y-8'}`}>
           <div className="space-y-3">
             <h2 className="text-4xl xl:text-5xl font-light tracking-tight text-[#1a1814] leading-[1.1] transition-colors duration-300 group-hover:text-[#88743e]">
               {event.title}

@@ -3,10 +3,10 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   BedDouble,
+  CalendarDays,
   Coffee,
   Dumbbell,
   Hotel,
-  MapPin,
   Phone,
   ShieldCheck,
   Sparkles,

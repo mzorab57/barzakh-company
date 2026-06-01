@@ -1,5 +1,10 @@
 import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
 import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.webp';
+import migrationRouteImg1 from '../assets/images/migrationRoute/img1.webp';
+import migrationRouteImg2 from '../assets/images/migrationRoute/img2.webp';
+import migrationRouteImg3 from '../assets/images/migrationRoute/img3.webp';
+import migrationRouteImg4 from '../assets/images/migrationRoute/img4.webp';
+import migrationRouteImg5 from '../assets/images/migrationRoute/img5.webp';
 
 const mergeItems = (translatedItems = [], staticItems = []) =>
   translatedItems.map((item, index) => ({
@@ -64,11 +69,11 @@ export const getMigrationRoutePageContent = t => ({
     { iconKey: 'MapPin' },
   ]),
   journeyStages: mergeItems(t('pages.migrationRoute.journeyStages', { returnObjects: true }), [
-    { image: '/assets/images/hero1.jpg' },
-    { image: '/assets/images/hero4.jpg' },
-    { image: '/assets/images/hero2.jpg' },
-    { image: '/assets/images/hero3.jpg' },
-    { image: '/assets/images/hero1.jpg' },
+    { image: migrationRouteImg1 },
+    { image: migrationRouteImg2 },
+    { image: migrationRouteImg3 },
+    { image: migrationRouteImg4 },
+    { image: migrationRouteImg5 },
   ]),
   seerah: {
     ...t('pages.migrationRoute.seerah', { returnObjects: true }),

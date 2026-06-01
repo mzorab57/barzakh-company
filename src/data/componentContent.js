@@ -107,8 +107,6 @@ export const getHeaderContent = t => ({
       isParent: true,
       children: [
         { label: t('components.header.menu.migrationRoute'), link: '/events/migration-route' },
-        { label: t('components.header.menu.turkey'), link: '/events/turkey-2027' },
-        { label: t('components.header.menu.medinaStay'), link: '/events/medina-stay' },
       ],
     },
     { label: t('components.header.menu.volunteer'), link: '/apply-to-volunteer' },

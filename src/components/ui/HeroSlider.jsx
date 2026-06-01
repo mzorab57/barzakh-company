@@ -39,7 +39,7 @@ const Slider = () => {
   };
 
   return (
-    <div className="relative w-full bg-[#0a0805] px-0 sm:px-4 lg:py-8  flex justify-center">
+    <div dir='ltr' className="relative w-full bg-[#0a0805] px-0 sm:px-4 lg:py-8  flex justify-center">
       <div 
         className="relative w-full max-w-[95rem] h-[60vh] md:h-[70vh] lg:h-[80vh] max-h-[850px] overflow-hidden sm:rounded-[2.5rem] shadow-2xl group"
         onMouseEnter={() => setIsPaused(true)}
