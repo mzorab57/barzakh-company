@@ -9,6 +9,7 @@ const initialForm = {
   whatsappNumber: '',
   phoneNumber: '',
   age: '',
+  gender: '',
   address: '',
   reason: '',
   hasVolunteeredBefore: 'no',
@@ -17,104 +18,28 @@ const initialForm = {
   agreeRules: false,
 };
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 function buildWhatsappMessage(form, volunteerRegistrationPageContent) {
-  const { fields, excel, booleanLabels, radioOptions } = volunteerRegistrationPageContent.form;
+  const { fields, booleanLabels, radioOptions } = volunteerRegistrationPageContent.form;
   const volunteeredBeforeLabel = radioOptions.find(option => option.value === form.hasVolunteeredBefore)?.label || '';
 
   return [
-    excel.title,
+    volunteerRegistrationPageContent.hero.title,
     '',
     `${fields.firstName}: ${form.firstName}`,
     `${fields.lastName}: ${form.lastName}`,
     `${fields.whatsappNumber}: ${form.whatsappNumber}`,
     `${fields.phoneNumber}: ${form.phoneNumber}`,
     `${fields.age}: ${form.age}`,
+    `${fields.gender}: ${form.gender}`,
     `${fields.address}: ${form.address}`,
     '',
     `${fields.reason}: ${form.reason}`,
     `${fields.volunteeredBefore}: ${volunteeredBeforeLabel}`,
-    `${fields.experience}: ${form.experience || excel.emptyValue}`,
+    `${fields.experience}: ${form.experience || '-'}`,
     '',
     `${fields.confirmCorrect}: ${form.confirmCorrect ? booleanLabels.yes : booleanLabels.no}`,
     `${fields.agreeRules}: ${form.agreeRules ? booleanLabels.yes : booleanLabels.no}`,
   ].join('\n');
-}
-
-function buildExcelHtml(form, volunteerRegistrationPageContent) {
-  const { fields, excel, booleanLabels, radioOptions } = volunteerRegistrationPageContent.form;
-  const volunteeredBeforeLabel = radioOptions.find(option => option.value === form.hasVolunteeredBefore)?.label || '';
-  const rows = [
-    [excel.title, ''],
-    [fields.firstName, form.firstName],
-    [fields.lastName, form.lastName],
-    [fields.whatsappNumber, form.whatsappNumber],
-    [fields.phoneNumber, form.phoneNumber],
-    [fields.age, form.age],
-    [fields.address, form.address],
-    [fields.reason, form.reason],
-    [fields.volunteeredBefore, volunteeredBeforeLabel],
-    [fields.experience, form.experience || excel.emptyValue],
-    [fields.confirmCorrect, form.confirmCorrect ? booleanLabels.yes : booleanLabels.no],
-    [fields.agreeRules, form.agreeRules ? booleanLabels.yes : booleanLabels.no],
-  ];
-
-  const tableRows = rows
-    .map(
-      ([label, value]) =>
-        `<tr><th style="text-align:left;padding:12px;border:1px solid #d8cfbb;background:#f4ecda;">${escapeHtml(label)}</th><td style="padding:12px;border:1px solid #d8cfbb;">${escapeHtml(value)}</td></tr>`
-    )
-    .join('');
-
-  return `<!DOCTYPE html>
-<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="ProgId" content="Excel.Sheet" />
-    <meta name="Generator" content="${escapeHtml(excel.shareTitle)}" />
-  </head>
-  <body>
-    <table style="border-collapse:collapse;font-family:Arial,sans-serif;width:100%;max-width:960px;">
-      ${tableRows}
-    </table>
-  </body>
-</html>`;
-}
-
-function createExcelFile(form, volunteerRegistrationPageContent) {
-  const content = buildExcelHtml(form, volunteerRegistrationPageContent);
-  const blob = new Blob([content], {
-    type: 'application/vnd.ms-excel;charset=utf-8;',
-  });
-  const safeName = `${form.firstName || 'volunteer'}-${form.lastName || 'form'}`
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-  return new File([
-    blob,
-  ], `${volunteerRegistrationPageContent.form.excel.filePrefix}-${safeName || 'registration'}.xls`, {
-    type: 'application/vnd.ms-excel;charset=utf-8;',
-  });
-}
-
-function downloadExcelFile(file) {
-  const url = URL.createObjectURL(file);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = file.name;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
 }
 
 export default function VolunteerRegistrationPage() {
@@ -132,7 +57,7 @@ export default function VolunteerRegistrationPage() {
     }));
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     event.preventDefault();
 
     if (!form.confirmCorrect || !form.agreeRules) {
@@ -141,7 +66,7 @@ export default function VolunteerRegistrationPage() {
       return;
     }
 
-    if (!form.firstName || !form.lastName || !form.whatsappNumber || !form.phoneNumber || !form.age || !form.address || !form.reason) {
+    if (!form.firstName || !form.lastName || !form.whatsappNumber || !form.phoneNumber || !form.age || !form.gender || !form.address || !form.reason) {
       setError(volunteerRegistrationPageContent.form.errors.required);
       setInfo('');
       return;
@@ -150,36 +75,14 @@ export default function VolunteerRegistrationPage() {
     setError('');
     setInfo('');
 
-    const file = createExcelFile(form, volunteerRegistrationPageContent);
     const whatsappText = buildWhatsappMessage(form, volunteerRegistrationPageContent);
-
-    if (navigator.canShare && navigator.share && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({
-          files: [file],
-          title: volunteerRegistrationPageContent.form.excel.shareTitle,
-          text: whatsappText,
-        });
-        setInfo(volunteerRegistrationPageContent.form.errors.shared);
-        return;
-      } catch (shareError) {
-        if (shareError?.name === 'AbortError') {
-          setInfo(volunteerRegistrationPageContent.form.errors.canceled);
-          return;
-        }
-      }
-    }
-
-    downloadExcelFile(file);
-    const message = encodeURIComponent(
-      `${whatsappText}\n\n${volunteerRegistrationPageContent.form.excel.followUpMessage}`
-    );
+    const message = encodeURIComponent(whatsappText);
     window.open(
       `https://wa.me/${volunteerRegistrationPageContent.whatsappNumber}?text=${message}`,
       '_blank',
       'noopener,noreferrer'
     );
-    setInfo(volunteerRegistrationPageContent.form.errors.downloaded);
+    setInfo(volunteerRegistrationPageContent.form.errors.opened);
   };
 
   const { hero, note, requirements, form: formContent } = volunteerRegistrationPageContent;
@@ -249,6 +152,7 @@ export default function VolunteerRegistrationPage() {
                   <input name="whatsappNumber" value={form.whatsappNumber} onChange={handleChange} placeholder={formContent.fields.whatsappNumber} className="rounded-2xl border border-[#eadfc6] bg-[#fcfaf4] px-4 py-3 text-[#2d230f] outline-none transition focus:border-[#b59a62]" />
                   <input name="phoneNumber" value={form.phoneNumber} onChange={handleChange} placeholder={formContent.fields.phoneNumber} className="rounded-2xl border border-[#eadfc6] bg-[#fcfaf4] px-4 py-3 text-[#2d230f] outline-none transition focus:border-[#b59a62]" />
                   <input name="age" value={form.age} onChange={handleChange} placeholder={formContent.fields.age} className="rounded-2xl border border-[#eadfc6] bg-[#fcfaf4] px-4 py-3 text-[#2d230f] outline-none transition focus:border-[#b59a62]" />
+                  <input name="gender" value={form.gender} onChange={handleChange} placeholder={formContent.fields.gender} className="rounded-2xl border border-[#eadfc6] bg-[#fcfaf4] px-4 py-3 text-[#2d230f] outline-none transition focus:border-[#b59a62]" />
                   <input name="address" value={form.address} onChange={handleChange} placeholder={formContent.fields.address} className="rounded-2xl border border-[#eadfc6] bg-[#fcfaf4] px-4 py-3 text-[#2d230f] outline-none transition focus:border-[#b59a62]" />
                 </div>
               </div>
@@ -294,7 +198,7 @@ export default function VolunteerRegistrationPage() {
                 {formContent.submitLabel}
               </button>
 
-              <p className="text-center text-xs leading-6 text-[#6f5d35]">{formContent.helperText}</p>
+              {/* <p className="text-center text-xs leading-6 text-[#6f5d35]">{formContent.helperText}</p> */}
             </form>
           </div>
         </div>

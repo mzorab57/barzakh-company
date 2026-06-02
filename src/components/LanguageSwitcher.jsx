@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 const languageItems = [
   { code: 'ku', labelKey: 'common.languages.ku' },
   { code: 'ar', labelKey: 'common.languages.ar' },
-  { code: 'en', labelKey: 'common.languages.en' },
+  // { code: 'en', labelKey: 'common.languages.en' },
 ];
 
 export default function LanguageSwitcher() {
@@ -32,7 +32,7 @@ export default function LanguageSwitcher() {
       <button
         type="button"
         onClick={() => setOpen(current => !current)}
-        className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/15"
+        className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/15"
         aria-label={t('common.actions.changeLanguage')}
       >
         <Languages className="h-4 w-4" />

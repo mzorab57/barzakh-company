@@ -5,6 +5,8 @@ import migrationRouteImg2 from '../assets/images/migrationRoute/img2.webp';
 import migrationRouteImg3 from '../assets/images/migrationRoute/img3.webp';
 import migrationRouteImg4 from '../assets/images/migrationRoute/img4.webp';
 import migrationRouteImg5 from '../assets/images/migrationRoute/img5.webp';
+import aboutBgImg from '../assets/images/about/about-bg.jpeg';
+import aboutEventImg from '../assets/images/about/about.jpeg';
 
 const mergeItems = (translatedItems = [], staticItems = []) =>
   translatedItems.map((item, index) => ({
@@ -14,7 +16,20 @@ const mergeItems = (translatedItems = [], staticItems = []) =>
 
 export const getAboutPageContent = t => ({
   ...t('pages.about', { returnObjects: true }),
-  heroImage: '/assets/images/hero4.jpg',
+  heroImage: aboutBgImg,
+  story: {
+    ...t('pages.about.story', { returnObjects: true }),
+    paragraphs: t('pages.about.story.paragraphs', { returnObjects: true }) || [
+      t('pages.about.story.intro'),
+      t('pages.about.story.body'),
+    ].filter(Boolean),
+  },
+  motivational: {
+    ...t('pages.about.motivational', { returnObjects: true }),
+    image: aboutEventImg,
+    imageAlt: t('pages.about.motivational.imageAlt') || 'About event',
+    paragraphs: t('pages.about.motivational.paragraphs', { returnObjects: true }) || [],
+  },
   cosmic: {
     ...t('pages.about.cosmic', { returnObjects: true }),
     loop: true,
@@ -27,6 +42,11 @@ export const getAboutPageContent = t => ({
 export const getContactPageContent = t => t('pages.contact', { returnObjects: true });
 
 export const getMenuLandingPageDefaults = t => t('pages.menuLandingDefaults', { returnObjects: true });
+
+export const getStallsPageContent = t => ({
+  ...t('pages.stallsForm', { returnObjects: true }),
+  whatsappNumber: '9647713857171',
+});
 
 export const getMedinaStayPageContent = t => ({
   ...t('pages.medinaStay', { returnObjects: true }),

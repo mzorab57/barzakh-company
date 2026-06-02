@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import MedinaStayPage from './pages/MedinaStayPage';
 import MenuLandingPage from './pages/MenuLandingPage';
 import MigrationRoutePage from './pages/MigrationRoutePage';
+import StallsPage from './pages/StallsPage';
 import TurkeyEventPage from './pages/TurkeyEventPage';
 import VolunteerRegistrationPage from './pages/VolunteerRegistrationPage';
 
@@ -49,7 +50,6 @@ function LanguageDocumentSync() {
 
 function App() {
   const { t } = useTranslation();
-  const stallsRoute = t('routes.stalls', { returnObjects: true });
   const pastEventsRoute = t('routes.pastEvents', { returnObjects: true });
   const faqRoute = t('routes.faq', { returnObjects: true });
 
@@ -80,14 +80,7 @@ function App() {
             />
             <Route
               path="/stalls"
-              element={
-                <MenuLandingPage
-                  eyebrow={stallsRoute.eyebrow}
-                  title={stallsRoute.title}
-                  description={stallsRoute.description}
-                  highlights={stallsRoute.highlights}
-                />
-              }
+              element={<StallsPage />}
             />
             <Route path="/about" element={<About />} />
             <Route

@@ -31,10 +31,14 @@ export const StaggeredMenu = ({
   const panelRef = useRef(null);
   const preLayersRef = useRef(null);
   const preLayerElsRef = useRef([]);
-  const iconRef = useRef(null);
   const textInnerRef = useRef(null);
   const toggleBtnRef = useRef(null);
   const openTlRef = useRef(null);
+
+  // ڕێفەکان بۆ ٣ خەتەکەی هەمبەرگر مینیۆ
+  const line1Ref = useRef(null);
+  const line2Ref = useRef(null);
+  const line3Ref = useRef(null);
 
   const closeMenu = useCallback(() => {
     if (!openRef.current) return;
@@ -47,7 +51,12 @@ export const StaggeredMenu = ({
       duration: 0.4,
       ease: 'power3.in'
     });
-    gsap.to(iconRef.current, { rotate: 0, duration: 0.5 });
+    
+    // گەڕاندنەوەی ٣ خەتەکە بۆ باری ئاسایی (Hamburger)
+    gsap.to(line1Ref.current, { y: 0, rotate: 0, duration: 0.5, ease: 'power3.out' });
+    gsap.to(line2Ref.current, { scaleX: 1, opacity: 1, duration: 0.5, ease: 'power3.out' });
+    gsap.to(line3Ref.current, { y: 0, rotate: 0, duration: 0.5, ease: 'power3.out' });
+    
     gsap.to(textInnerRef.current, { yPercent: 0, duration: 0.5 });
     setCurrentMenu({ type: 'main', items });
   }, [items, onMenuClose, position]);
@@ -114,7 +123,6 @@ export const StaggeredMenu = ({
     }
   }, [currentMenu, open, animateItemsIn]);
 
-  // کۆدی ستاندارد بۆ کردنەوە و داخستن (هەمان کۆدی خۆت)
   const buildOpenTimeline = useCallback(() => {
     const panel = panelRef.current;
     const layers = preLayerElsRef.current;
@@ -138,7 +146,13 @@ export const StaggeredMenu = ({
     if (target) {
       onMenuOpen?.();
       buildOpenTimeline()?.play(0);
-      setCurrentMenu({ type: 'main', items: items }); // هەمیشە لە لیستی سەرەکی دەست پێ بکاتەوە
+      setCurrentMenu({ type: 'main', items: items });
+      
+      // گۆڕینی ٣ خەتەکە بۆ X
+      gsap.to(line1Ref.current, { y: 7, rotate: 45, duration: 0.5, ease: 'power3.out' });
+      gsap.to(line2Ref.current, { scaleX: 0, opacity: 0, duration: 0.5, ease: 'power3.out' });
+      gsap.to(line3Ref.current, { y: -7, rotate: -45, duration: 0.5, ease: 'power3.out' });
+      
     } else {
       onMenuClose?.();
       gsap.to([...preLayerElsRef.current, panelRef.current], {
@@ -147,9 +161,14 @@ export const StaggeredMenu = ({
         ease: 'power3.in'
       });
       setCurrentMenu({ type: 'main', items });
+      
+      // گەڕاندنەوە بۆ ٣ خەتەکە
+      gsap.to(line1Ref.current, { y: 0, rotate: 0, duration: 0.5, ease: 'power3.out' });
+      gsap.to(line2Ref.current, { scaleX: 1, opacity: 1, duration: 0.5, ease: 'power3.out' });
+      gsap.to(line3Ref.current, { y: 0, rotate: 0, duration: 0.5, ease: 'power3.out' });
     }
-    // Icon & Text animations
-    gsap.to(iconRef.current, { rotate: target ? 225 : 0, duration: 0.5 });
+    
+    // ئەنیمەیشنی تێکستەکە
     gsap.to(textInnerRef.current, { yPercent: target ? -50 : 0, duration: 0.5 });
   }, [items, onMenuOpen, onMenuClose, buildOpenTimeline, position]);
 
@@ -194,12 +213,16 @@ export const StaggeredMenu = ({
         <span className="sm-toggle-textWrap">
           <span ref={textInnerRef} className="sm-toggle-textInner">
             {staggeredMenuContent.toggleLabels.map((line) => (
-              <span key={line} className="sm-toggle-line text-xl font-light">{line}</span>
+              /* لێرەدا قەبارەی تێکستەکە بچووک کرایەوە و شێوازێکی ناسکی پێدرا */
+              <span key={line} className="sm-toggle-line text-sm uppercase tracking-widest font-bold"></span> //{line} bo danani text wak menu la taisht se xataka
             ))}
           </span>
         </span>
-        <span ref={iconRef} className="sm-icon">
-          <span className="sm-icon-line" /><span className="sm-icon-line sm-icon-line-v" />
+        {/* ئایکۆنی هەمبەرگر نوێکراوەتەوە */}
+        <span className="sm-icon">
+          <span ref={line1Ref} className="sm-icon-line line-1" />
+          <span ref={line2Ref} className="sm-icon-line line-2" />
+          <span ref={line3Ref} className="sm-icon-line line-3" />
         </span>
       </button>
 
@@ -224,9 +247,9 @@ export const StaggeredMenu = ({
                     e.preventDefault();
                     handleLeafItemClick(item);
                   }}>
-                    <span className="sm-panel-itemLabel">
+                    <span className="sm-panel-itemLabel text-xl lg:text-4xl">
                       {item.label} 
-                      {item.isParent && <span className="sm-item-arrow"> ↗</span>}
+                      {item.isParent && <span className="sm-item-arrow"> ↗ </span>}
                     </span>
                   </a>
                 </li>
@@ -234,7 +257,7 @@ export const StaggeredMenu = ({
             </ul>
           </div>
           {displaySocials && currentMenu.type === 'main' && (
-            <div className="sm-socials  h-32">
+            <div className="sm-socials h-32">
               <h3 className="sm-socials-title">{staggeredMenuContent.socialsTitle}</h3>
               <ul className="sm-socials-list">
                 {socialItems.map((s, i) => (

@@ -44,10 +44,10 @@ export default function UpcomingEvents() {
     <section
       ref={sectionRef}
       dir='ltr'
-      className="relative  bg-[#fafaf8] overflow-hidden text-[#1a1814] font-sans selection:bg-[#88743e] selection:text-white"
+      className="relative   bg-[#fafaf8] overflow-hidden text-[#1a1814]  selection:bg-[#88743e] selection:text-white"
     >
       <div  className="hidden lg:block relative h-screen w-full">
-        <div dir='rtl' className="absolute top-0 left-0 h-full w-[42%] bg-[#fafaf8] z-30 flex items-center border-r border-[#1a1814]/10 shadow-[30px_0_60px_rgba(250,250,248,1)]">
+        <div  className="absolute top-0 left-0 h-full w-[42%] bg-[#fafaf8] z-30 flex items-center border-r border-[#1a1814]/10 shadow-[30px_0_60px_rgba(250,250,248,1)]">
           <div className="px-16 xl:px-24 max-w-xl">
             <div  className="mb-12">
               <div  className="flex items-center gap-4 mb-4">
@@ -102,7 +102,7 @@ export default function UpcomingEvents() {
         </div>
       </div>
 
-      <div className="lg:hidden px-5 sm:px-8 py-20">
+      <div dir='rtl' className="lg:hidden px-5 sm:px-8 py-20">
         <div className="mb-16 space-y-8 max-w-2xl">
           <div className="flex items-center gap-4">
             <div className="h-[1px] w-10 bg-[#88743e]" />
@@ -111,7 +111,7 @@ export default function UpcomingEvents() {
             </span>
           </div>
 
-          <h1 className="space-y-1 uppercase">
+          <h1  className="space-y-1 uppercase">
             <span className="block text-5xl sm:text-6xl font-semibold tracking-tight text-[#1a1814]">
               {upcomingEventsSectionContent.titleLines[0]}
             </span>
