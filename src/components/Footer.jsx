@@ -1,5 +1,5 @@
 'use client';
-import { Mail, Facebook, Instagram, Send, Globe, ExternalLink, ArrowUpRight, Award } from 'lucide-react';
+import { Mail, Facebook, Instagram, Globe, ExternalLink, ArrowUpRight, HeartHandshake } from 'lucide-react';
 import { useState, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,7 +10,7 @@ import { getFooterContent } from '@/data/componentContent';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
+  const [donationAmount, setDonationAmount] = useState('');
   const { t } = useTranslation();
   const footerContent = getFooterContent(t);
 
@@ -18,10 +18,6 @@ export default function Footer() {
   const brandRef = useRef(null);
   const linksRef = useRef([]);
   const statsRef = useRef(null);
-
-  const statIconMap = {
-    Award,
-  };
 
   const socialIconMap = {
     Facebook,
@@ -87,12 +83,6 @@ export default function Footer() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    console.log('Subscribed:', email);
-    setEmail('');
-  };
-
   return (
     <footer 
       ref={footerRef}
@@ -124,115 +114,48 @@ export default function Footer() {
       {/* === Main Content === */}
       <div className="relative z-10 container max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-12">
         
-        {/* Top Section: Hero Newsletter */}
-        <div className="pt-24 sm:pt-32 lg:pt-40 pb-20 lg:pb-28 border-b border-white/5">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-            
-            {/* Left: Mega Brand Section */}
-            <div ref={brandRef} className="lg:col-span-7 space-y-10">
-              
-              {/* Premium Badge */}
-              <div className="inline-flex items-center gap-3">
-               
-                <div className="h-[1px] w-20 bg-gradient-to-r from-[#C5B78E] to-transparent" />
-                <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-[0.5em] text-[#C5B78E]">
-                  {footerContent.badge}
-                </span>
-              </div>
+      
 
-              {/* Mega Typography */}
-              <div>
-                <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light uppercase leading-[0.9] tracking-tighter mb-4">
-                  <span className="block font-black text-white">{footerContent.titleLines[0]}</span>
-                  <span className="block font-black text-white">{footerContent.titleLines[1]}</span>
-                </h2>
-                <p className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl  font-normal lowercase tracking-tight">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#C5B78E] via-[#E6D6A3] to-[#b59e5f]">
-                    {footerContent.titleLines[2]}
-                  </span>
-                </p>
-              </div>
-
-              {/* Description */}
-              <div className="flex items-start gap-6 max-w-2xl">
-                <div className="hidden sm:block w-[2px] h-32 bg-gradient-to-b from-[#C5B78E] to-transparent" />
-                <p className="text-lg sm:text-xl text-white/50 font-light leading-relaxed">
-                  {footerContent.description}
-                </p>
-              </div>
-
-            </div>
-
-            {/* Right: Premium Newsletter Form */}
-            <div className="lg:col-span-5">
-              <div className="relative group">
-                
-                {/* Decorative Background Card */}
-                <div className="absolute -inset-4 bg-gradient-to-br from-[#C5B78E]/10 to-transparent rounded-[2.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                
-                <div className="relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 sm:p-10 hover:border-[#C5B78E]/30 transition-all duration-700">
-                  
-                  <h3 className="text-2xl font-bold mb-6 text-white/90">
-                    {footerContent.newsletter.title}
-                  </h3>
-
-                  <form onSubmit={handleSubscribe} className="space-y-5">
-                    {/* Email Input */}
-                    <div className="relative group/input">
-                      <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30 pointer-events-none transition-colors group-focus-within/input:text-[#C5B78E]" strokeWidth={1.5} />
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder={footerContent.newsletter.placeholder}
-                        required
-                        className="w-full pl-14 pr-5 py-5 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-white/30 focus:bg-white/10 focus:border-[#C5B78E]/50 focus:outline-none transition-all duration-300"
-                      />
-                    </div>
-
-                    {/* Submit Button */}
-                    <button
-                      type="submit"
-                      className="group/btn w-full flex items-center justify-center gap-3 py-5 bg-gradient-to-r from-[#C5B78E] to-[#b59e5f] text-black rounded-2xl font-bold text-sm uppercase tracking-wider shadow-[0_10px_40px_rgba(197,183,142,0.3)] transition-all duration-500 hover:shadow-[0_20px_60px_rgba(197,183,142,0.5)] hover:scale-[1.02] active:scale-95"
-                    >
-                      <span>{footerContent.newsletter.buttonLabel}</span>
-                      <Send className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" strokeWidth={1.5} />
-                    </button>
-                  </form>
-
-                  <p className="mt-5 text-xs text-white/30 font-light text-center">
-                    {footerContent.newsletter.note}
-                  </p>
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* Stats Section (Floating Cards) */}
+        {/* Donation Section */}
         <div ref={statsRef} className="py-16 lg:py-20">
-          <div className="grid grid-cols-1  gap-6 lg:gap-8">
-            {footerContent.stats.map((stat, index) => {
-              const Icon = statIconMap[stat.iconKey];
-              return (
-                <div
-                  key={index}
-                  className="group relative bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-2xl p-8 text-center hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(197,183,142,0.1)]"
-                >
-                  {Icon ? <Icon className="mx-auto mb-4 h-7 w-7 text-[#C5B78E]" strokeWidth={1.6} /> : null}
-                  <div className="text-4xl font-black text-white mb-2 transition-colors group-hover:text-[#C5B78E]">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm font-light uppercase tracking-[0.2em] text-white/50">
-                    {stat.label}
-                  </div>
+          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 shadow-[0_20px_70px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-8 lg:p-10">
+            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+              <div>
+                <div className="inline-flex items-center gap-3 rounded-full border border-[#C5B78E]/25 bg-[#C5B78E]/10 px-4 py-2 text-xs font-semibold tracking-[0.24em] text-[#C5B78E]">
+                  <HeartHandshake className="h-4 w-4" strokeWidth={1.8} />
+                  <span className='text-lg'>{footerContent.donation.badge}</span>
                 </div>
-              );
-            })}
+                <div className="mt-6 space-y-5">
+                  {footerContent.donation.paragraphs.map((paragraph) => (
+                    <p key={paragraph} className="max-w-2xl  leading-8 text-white/78 text-xs">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[1.75rem] border border-white/10 bg-black/20 p-5 sm:p-6">
+                <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[#C5B78E]">
+                  {footerContent.donation.formLabel}
+                </p>
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                  <input
+                    type="text"
+                    value={donationAmount}
+                    onChange={(event) => setDonationAmount(event.target.value)}
+                    placeholder={footerContent.donation.placeholder}
+                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-base text-white placeholder:text-white/35 outline-none transition focus:border-[#C5B78E]/60 focus:bg-white/[0.06]"
+                  />
+                  <button
+                    type="button"
+                    className="rounded-2xl border border-[#C5B78E]/30 bg-[#C5B78E]/12 px-6 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-[#f4ead0] transition hover:bg-[#C5B78E]/18"
+                  >
+                    {footerContent.donation.buttonLabel}
+                  </button>
+                </div>
+               
+              </div>
+            </div>
           </div>
         </div>
 

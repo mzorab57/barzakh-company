@@ -93,8 +93,8 @@ export default function VolunteerRegistrationPage() {
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="overflow-hidden rounded-[2rem] bg-[#1d160b] text-white shadow-[0_30px_80px_rgba(49,31,0,0.22)]">
             <div className="border-b border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(197,183,142,0.28),transparent_35%),linear-gradient(135deg,#1d160b,#31230f)] px-6 py-10 sm:px-8 lg:px-10">
-              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-[#d9c999]">{hero.eyebrow}</p>
-              <h1 className="mt-4 text-4xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">{hero.title}</h1>
+              <h1 className="text-4xl  font-semibold uppercase tracking-[0.35em] text-[#d9c999]">{hero.eyebrow}</h1>
+              <h1 className="mt-4 text-3xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">{hero.title}</h1>
               <p className="mt-5 max-w-2xl text-base leading-8 text-white/78">{hero.description}</p>
             </div>
 

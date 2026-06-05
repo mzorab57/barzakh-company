@@ -62,12 +62,12 @@ function CosmicParallaxBg({
         <div className="cosmic-title-main">{head.toUpperCase()}</div>
         <div className="cosmic-subtitle-list">
           {textParts.map((part, index) => (
-            <span
+            <h1
               key={`${part}-${index}`}
-              className={`cosmic-sub-part subtitle-part-${index + 1}`}
+              className={` translate-y-28 text-gray-200 max-w-xl text-xl`}
             >
               {part.toUpperCase()}
-            </span>
+            </h1>
           ))}
         </div>
       </div>

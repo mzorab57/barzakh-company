@@ -79,6 +79,7 @@ const About = () => {
     >
       <CosmicParallaxBg
         {...aboutPageContent.cosmic}
+        text={aboutPageContent.hero.title}
       />
       <section className="relative isolate overflow-hidden">
        
@@ -92,15 +93,14 @@ const About = () => {
                 data-about-hero
                 className="mb-5 text-sm font-semibold uppercase tracking-[0.38em] text-[#88743e]"
               >
-                {/* <p className="text-sm font-semibold uppercase tracking-[0.34em] text-primary/90">
-                  {aboutPageContent.hero.eyebrow}
-                </p> */}
-                <h1 className="mt-16 max-w-5xl text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-                  {aboutPageContent.hero.title}
-                </h1>
-                <p className="mt-5 max-w-3xl text-base leading-8 text-white/86 sm:text-lg">
+              
+                  <h1 className="mt-16 max-w-5xl text-lg font-bold leading-tight sm:text-3xl">
+                  {/* {aboutPageContent.hero.title} */}
                   {aboutPageContent.hero.description}
-                </p>
+                </h1>
+                {/* <p className="mt-5 max-w-3xl text-base leading-8 text-white/86 sm:text-lg">
+                  {aboutPageContent.hero.description}
+                </p> */}
               </div>
 
               <div
@@ -125,14 +125,14 @@ const About = () => {
         className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-16"
       >
         <div className="rounded-[2rem] border border-[#eadfbe] bg-white p-8 shadow-[0_18px_50px_rgba(81,62,21,0.08)] sm:p-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#8d7841]">
+          {/* <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#8d7841]">
             {aboutPageContent.story.label}
-          </p>
+          </p> */}
           <div className="mt-6 space-y-6">
             {aboutPageContent.story.paragraphs.map((item) => (
               <p
                 key={item}
-                className="text-base leading-8 text-[#4f3e1f] sm:text-lg"
+                className="text-sm  leading-5 text-[#4f3e1f] sm:text-base md:text-lg"
               >
                 {item}
               </p>
@@ -141,6 +141,8 @@ const About = () => {
         </div>
       </section>
 
+
+{/* motivation event8 */}
 
       <section
         data-about-section
@@ -156,17 +158,17 @@ const About = () => {
           </div>
 
           <div className="rounded-[2.2rem] border border-[#eadfbe] bg-white p-8 shadow-[0_22px_70px_rgba(90,68,20,0.10)] sm:p-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.34em] text-[#8d7841]">
+            <p className="text-3xl sm:text-4xl font-semibold uppercase tracking-[0.34em] text-[#8d7841]">
               {aboutPageContent.motivational.label}
             </p>
-            <h2 className="mt-5 text-3xl font-bold leading-tight text-[#241b08] sm:text-4xl">
+            <h2 className="mt-5 text-lg sm:text-2xl font-bold leading-tight text-[#241b08] ">
               {aboutPageContent.motivational.title}
             </h2>
             <div className="mt-6 space-y-6">
               {aboutPageContent.motivational.paragraphs.map((item) => (
                 <p
                   key={item}
-                  className="text-base leading-8 text-[#554522] sm:text-lg"
+                  className="text-sm leading-5 text-[#554522] sm:text-lg"
                 >
                   {item}
                 </p>
@@ -178,9 +180,9 @@ const About = () => {
         {aboutPageContent.lastingGift?.description ? (
           <div
             data-about-section
-            className="mt-10 rounded-[2.2rem] border border-[#e7dab4] bg-[linear-gradient(135deg,#fffdf7_0%,#f3ead0_100%)] p-8 shadow-[0_20px_70px_rgba(112,88,32,0.12)] sm:p-10"
+            className="mt-10 rounded-[2.2rem]  border border-[#e7dab4] bg-[linear-gradient(135deg,#fffdf7_0%,#f3ead0_100%)] p-8 shadow-[0_20px_70px_rgba(112,88,32,0.12)] sm:p-10"
           >
-            <p className="text-sm font-semibold uppercase tracking-[0.32em] text-[#0e0e0c]">
+            <p className="text-sm font-semibold  uppercase tracking-[0.32em] text-[#0e0e0c]">
               {aboutPageContent.lastingGift.label}
             </p>
             <p className="mt-5 max-w-5xl text-base leading-8 text-[#746538] sm:text-lg">

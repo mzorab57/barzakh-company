@@ -695,6 +695,18 @@
       "stats": [
         { "number": "50+", "label": "nukhba global" }
       ],
+      "donation": {
+        "badge": "Support & Giving",
+        "paragraphs": [
+          "We are a group of young people who care deeply about our city and strive to spread the beauty of this faith through meaningful and successful global gatherings that address the realities of everyday life.",
+          "Please support us, even if it is only a small amount, to help continue Nukhba's inspiring work.",
+          "Any amount you wish to give is appreciated. May God accept your charity. Ameen."
+        ],
+        "formLabel": "Donation Amount",
+        "placeholder": "Enter donation amount",
+        "buttonLabel": "Donate",
+        "note": "This input is currently for presentation only and can be connected to an API or database later."
+      },
       "quickLinksTitle": "Quick Links",
       "usefulLinks": [
         { "name": "Event Calendar" },
