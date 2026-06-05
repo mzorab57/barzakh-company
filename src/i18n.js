@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 
 const savedLanguage = typeof window !== 'undefined' ? window.localStorage.getItem('barzakh-language') : null;
 const defaultLanguage = savedLanguage || 'ku';
+const localeVersion = '2026-06-05-1';
 
 export const i18nReady = i18n
   .use(HttpBackend)
@@ -18,7 +19,7 @@ export const i18nReady = i18n
       escapeValue: false,
     },
     backend: {
-      loadPath: '/locales/{{lng}}/translation.json',
+      loadPath: `/locales/{{lng}}/translation.json?v=${localeVersion}`,
     },
     react: {
       useSuspense: false,

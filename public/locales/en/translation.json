@@ -709,11 +709,12 @@
       },
       "quickLinksTitle": "Quick Links",
       "usefulLinks": [
-        { "name": "Event Calendar" },
-        { "name": "Event Map" },
-        { "name": "Volunteer" },
-        { "name": "Terms & Conditions" },
-        { "name": "Privacy Policy" }
+        { "name": "Home" },
+        { "name": "Events" },
+        { "name": "Apply to Volunteer" },
+        { "name": "Stalls" },
+        { "name": "About Us" },
+        { "name": "Contact Us" }
       ],
       "globalReachTitle": "Global Reach",
       "international": [
@@ -725,9 +726,10 @@
       "connectTitle": "Connect",
       "followUsLabel": "Follow Us",
       "socialLinks": [
-        { "label": "Facebook" },
         { "label": "Instagram" },
-        { "label": "Website" }
+        { "label": "Facebook" },
+        { "label": "TikTok" },
+        { "label": "WhatsApp" }
       ],
       "copyrightName": "Nukhba Global",
       "rightsReserved": "All rights reserved.",

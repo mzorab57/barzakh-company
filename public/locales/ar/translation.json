@@ -709,11 +709,12 @@
       },
       "quickLinksTitle": "روابط سريعة",
       "usefulLinks": [
-        { "name": "تقويم الفعاليات" },
-        { "name": "خريطة الفعاليات" },
-        { "name": "التطوع" },
-        { "name": "الشروط والأحكام" },
-        { "name": "سياسة الخصوصية" }
+        { "name": "الرئيسية" },
+        { "name": "الفعاليات" },
+        { "name": "التقديم للتطوع" },
+        { "name": "الأكشاك" },
+        { "name": "من نحن" },
+        { "name": "اتصل بنا" }
       ],
       "globalReachTitle": "الانتشار العالمي",
       "international": [
@@ -725,9 +726,10 @@
       "connectTitle": "تواصل",
       "followUsLabel": "تابعنا",
       "socialLinks": [
-        { "label": "فيسبوك" },
         { "label": "إنستغرام" },
-        { "label": "الموقع" }
+        { "label": "فيسبوك" },
+        { "label": "تيك توك" },
+        { "label": "واتساب" }
       ],
       "copyrightName": "Nukhba Global",
       "rightsReserved": "جميع الحقوق محفوظة.",

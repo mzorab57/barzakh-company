@@ -67,37 +67,64 @@ export const getUpcomingEventsSectionContent = t => ({
   ]),
 });
 
-export const getFooterContent = t => ({
-  ...t('components.footer', { returnObjects: true }),
-  stats: mergeItems(t('components.footer.stats', { returnObjects: true }), [{ iconKey: 'Award' }]),
-  usefulLinks: mergeItems(t('components.footer.usefulLinks', { returnObjects: true }), [
-    { href: '#calendar' },
-    { href: '#map' },
-    { href: '#volunteer' },
-    { href: '#terms' },
-    { href: '#privacy' },
-  ]),
-  international: mergeItems(t('components.footer.international', { returnObjects: true }), [
-    { code: 'UK', flag: 'GB' },
-    { code: 'PH', flag: 'PH' },
-    { code: 'SA', flag: 'SA' },
-    { code: 'ID', flag: 'ID' },
-  ]),
-  email: 'info@nukhbaglobal.com',
-  socialLinks: mergeItems(t('components.footer.socialLinks', { returnObjects: true }), [
-    { iconKey: 'Facebook', href: 'https://facebook.com', color: 'hover:bg-[#1877F2]' },
-    {
-      iconKey: 'Instagram',
-      href: 'https://instagram.com',
-      color: 'hover:bg-gradient-to-br hover:from-[#405DE6] hover:to-[#E1306C]',
+export const getFooterContent = t => {
+  const footer = t('components.footer', { returnObjects: true }) || {};
+
+  return {
+    ...footer,
+    stats: mergeItems(t('components.footer.stats', { returnObjects: true }) || [], [{ iconKey: 'Award' }]),
+    donation: {
+      badge: 'Support & Giving',
+      paragraphs: [],
+      formLabel: 'Donation Amount',
+      placeholder: 'Enter donation amount',
+      buttonLabel: 'Donate',
+      note: '',
+      ...(footer.donation || {}),
     },
-    { iconKey: 'Globe', href: '#', color: 'hover:bg-[#C5B78E]' },
-  ]),
-  credits: {
-    ...t('components.footer.credits', { returnObjects: true }),
-    href: 'https://wa.me/9647701411893',
-  },
-});
+    usefulLinks: mergeItems(t('components.footer.usefulLinks', { returnObjects: true }) || [], [
+      { href: '/' },
+      { href: '/events/migration-route' },
+      { href: '/apply-to-volunteer' },
+      { href: '/stalls' },
+      { href: '/about' },
+      { href: '/contact' },
+    ]),
+    international: mergeItems(t('components.footer.international', { returnObjects: true }) || [], [
+      { code: 'UK', flag: 'GB' },
+      { code: 'PH', flag: 'PH' },
+      { code: 'SA', flag: 'SA' },
+      { code: 'ID', flag: 'ID' },
+    ]),
+    email: 'info@nukhbaglobal.com',
+    socialLinks: mergeItems(t('components.footer.socialLinks', { returnObjects: true }) || [], [
+      {
+        iconKey: 'Instagram',
+        href: 'https://www.instagram.com/nukhba.global?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
+        color: 'hover:bg-gradient-to-br hover:from-[#405DE6] hover:to-[#E1306C]',
+      },
+      {
+        iconKey: 'Facebook',
+        href: 'https://www.facebook.com/share/18jEsA4j89/?mibextid=wwXIfr',
+        color: 'hover:bg-[#1877F2]',
+      },
+      {
+        iconKey: 'TikTok',
+        href: 'https://www.tiktok.com/@nukhba.global?_r=1&_t=ZS-96xzQZ4lwiT',
+        color: 'hover:bg-[#111111]',
+      },
+      {
+        iconKey: 'WhatsApp',
+        href: 'https://wa.me/9647713857171',
+        color: 'hover:bg-[#25D366]',
+      },
+    ]),
+    credits: {
+      ...((footer && footer.credits) || {}),
+      href: 'https://wa.me/9647713857171',
+    },
+  };
+};
 
 export const getHeaderContent = t => ({
   menuItems: [

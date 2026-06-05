@@ -1,5 +1,14 @@
 'use client';
-import { Mail, Facebook, Instagram, Globe, ExternalLink, ArrowUpRight, HeartHandshake } from 'lucide-react';
+import {
+  Mail,
+  FacebookIcon,
+  InstagramIcon,
+  Music2,
+  MessageCircle,
+  ExternalLink,
+  ArrowUpRight,
+  HeartHandshake,
+} from 'lucide-react';
 import { useState, useRef, useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -20,9 +29,10 @@ export default function Footer() {
   const statsRef = useRef(null);
 
   const socialIconMap = {
-    Facebook,
-    Instagram,
-    Globe,
+    Facebook: FacebookIcon,
+    Instagram: InstagramIcon,
+    TikTok: Music2,
+    WhatsApp: MessageCircle,
   };
 
   // GSAP Animations
@@ -160,9 +170,9 @@ export default function Footer() {
         </div>
 
         {/* Links Grid Section */}
-        <div className="py-16 lg:py-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16 border-t border-white/5">
+        <div className="py-16 lg:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 border-t border-white/5">
           
-          {/* Useful Links */}
+          {/* Sections */}
           <div ref={(el) => (linksRef.current[0] = el)} className="space-y-8">
             <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
               {footerContent.quickLinksTitle}
@@ -184,32 +194,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* International Presence */}
-          <div ref={(el) => (linksRef.current[1] = el)} className="space-y-8">
-            <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
-              {footerContent.globalReachTitle}
-            </h4>
-            <ul className="grid grid-cols-2 gap-4">
-              {footerContent.international.map((country) => (
-                <li key={country.code}>
-                  <a
-                    href={`#${country.code.toLowerCase()}`}
-                    className="group flex flex-col items-start gap-2 p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-300"
-                  >
-                    <span className="rounded-full border border-white/10 px-3 py-1 text-xs font-semibold tracking-[0.24em] text-[#C5B78E]">
-                      {country.code}
-                    </span>
-                    <span className="text-sm font-light text-white/60 group-hover:text-white transition-colors">
-                      {country.name}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           {/* Contact & Social */}
-          <div ref={(el) => (linksRef.current[2] = el)} className="space-y-8">
+          <div ref={(el) => (linksRef.current[1] = el)} className="space-y-8">
             <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
               {footerContent.connectTitle}
             </h4>
