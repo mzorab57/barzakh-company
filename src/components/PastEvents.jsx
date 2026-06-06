@@ -109,12 +109,15 @@ export default function PastEvents() {
             >
               {/* Reverse Zoom Image */}
               <div className="absolute inset-0 overflow-hidden">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="w-full h-full object-cover scale-110 grayscale-[30%] opacity-80 transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100"
-                  loading="lazy"
-                />
+                <picture>
+                  {event.mobileImage ? <source media="(max-width: 767px)" srcSet={event.mobileImage} /> : null}
+                  <img
+                    src={event.image}
+                    alt={event.title}
+                    className="w-full h-full object-cover scale-110 grayscale-[30%] opacity-80 transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100"
+                    loading="lazy"
+                  />
+                </picture>
               </div>
 
               {/* Gradient Overlays */}

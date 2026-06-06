@@ -57,9 +57,9 @@ const Slider = () => {
               <img
                 src={slide.mobileImg}
                 alt={slide.title || `Slide ${index + 1}`}
-                className={`md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[6s] ease-out ${
-                  current === index ? "scale-110" : "scale-100"
-                }`}
+                className={`md:hidden absolute inset-0 w-full h-full object-cover transition-transform duration-[6s] ease-out
+                 
+                `}
                 loading={index === 0 ? "eager" : "lazy"}
               />
               

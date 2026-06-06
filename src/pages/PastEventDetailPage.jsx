@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, CalendarDays, Play, Tag, X } from 'lucide-react';
+import { Navigate, useParams } from 'react-router-dom';
+import { Play, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { getPastEventDetailPageContent } from '@/data/pageContent';
@@ -69,7 +69,10 @@ export default function PastEventDetailPage() {
       <section className="min-h-screen overflow-hidden bg-[#060504] text-white">
         <div className="relative isolate">
           <div className="absolute inset-0">
-            <img src={event.image} alt={event.title} className="h-full w-full object-cover" />
+            <picture>
+              {event.mobileImage ? <source media="(max-width: 767px)" srcSet={event.mobileImage} /> : null}
+              <img src={event.image} alt={event.title} className="h-full w-full object-cover" />
+            </picture>
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.2)_0%,rgba(0,0,0,0.74)_55%,rgba(5,4,3,0.98)_100%)]" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(197,183,142,0.22),transparent_34%)]" />
           </div>

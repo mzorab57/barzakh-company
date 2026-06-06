@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, CalendarDays, PlayCircle, Tag } from 'lucide-react';
+import { ArrowRight, CalendarDays, Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { getPastEventsArchivePageContent } from '@/data/pageContent';
@@ -34,11 +34,14 @@ export default function PastEventsPage() {
               className="group relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-[#111] shadow-[0_24px_70px_rgba(0,0,0,0.28)] transition duration-500  hover:border-[#d8c78f]/35"
             >
               <div className="absolute inset-0">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="lg:size-full lg:object-cover transition duration-700 "
-                />
+                <picture>
+                  {event.mobileImage ? <source media="(max-width: 767px)" srcSet={event.mobileImage} /> : null}
+                  <img
+                    src={event.image}
+                    alt={event.title}
+                    className="h-full w-full object-cover transition duration-700"
+                  />
+                </picture>
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.16)_0%,rgba(0,0,0,0.72)_62%,rgba(0,0,0,0.92)_100%)]" />
               </div>
 

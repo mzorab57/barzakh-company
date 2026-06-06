@@ -11,11 +11,11 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* تایتڵی سەرەکی */}
-        <div className=" mb-24">
-          <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#88743e] mb-4">
+        <div className=" mb-6">
+          <p className="text-xl font-semibold uppercase tracking-[0.4em] text-[#88743e] mb-4">
             {aboutSectionContent.hero.eyebrow}
           </p>
-          <h1 className="mt-4 text-3xl font-bold uppercase leading-tight sm:text-4xl text-[#c4b690] lg:text-6xl">
+          <h1 className="mt-4 text-lg font-bold uppercase leading-tight sm:text-xl text-[#c4b690] lg:text-4xl">
             {aboutSectionContent.hero.title}
           </h1>
         </div>
@@ -24,26 +24,26 @@ export default function AboutSection() {
         <div className="max-w-6xl mx-auto">
           <MagicText
             text={aboutSectionContent.aboutText}
-            className="text-4xl md:text-5xl "
+            className="text-sm md:text-4xl "
           />
         </div>
 
         {/* پشوویەک لەنێوان دوو دەقەکە */}
-        <div className="h-64"></div> 
+        <div className="h-12"></div> 
         
         {/* Magic Text دووەم */}
         <div className="max-w-6xl mx-auto">
-          <div className=" mb-12">
-            <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#88743e] mb-4">
+          <div className=" mb-4">
+            <p className="text-xl font-semibold uppercase tracking-[0.4em] text-[#88743e] mb-4">
               {aboutSectionContent.mission.eyebrow}
             </p>
-            <h2 className="mt-4 text-3xl font-bold uppercase leading-tight sm:text-4xl text-[#c4b690] lg:text-6xl">
+            <h2 className="mt-4 text-lg font-bold uppercase leading-tight sm:text-xl text-[#c4b690] lg:text-4xl">
               {aboutSectionContent.mission.title}
             </h2>
           </div>
           <MagicText
             text={aboutSectionContent.missionText}
-            className="text-2xl md:text-3xl font-light leading-relaxed text-right"
+            className="text-sm md:text-4xl font-light leading-relaxed text-right"
           />
         </div>
 

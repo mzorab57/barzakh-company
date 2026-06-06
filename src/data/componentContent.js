@@ -1,6 +1,7 @@
 import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
 import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.webp';
 import migrationPosterImg from '../assets/images/event/regay-koch.webp';
+import migrationPosterMobileImg from '../assets/images/event/regay-koch-mobile.webp';
 
 const mergeItems = (translatedItems = [], staticItems = []) =>
   translatedItems.map((item, index) => ({
@@ -49,8 +50,8 @@ export const getGuestsSectionContent = t => ({
 export const getPastEventsSectionContent = t => ({
   ...t('components.pastEvents', { returnObjects: true }),
   pastEvents: mergeItems(t('components.pastEvents.pastEvents', { returnObjects: true }), [
-    { image: eventTurkiaDesktop, href: '/past-events/route-of-hajj' },
-    { image: migrationPosterImg, href: '/past-events/migration-route' },
+    { image: eventTurkiaDesktop, mobileImage: eventTurkiaMobile, href: '/past-events/route-of-hajj' },
+    { image: migrationPosterImg, mobileImage: migrationPosterMobileImg, href: '/past-events/migration-route' },
   ]),
 });
 
@@ -178,8 +179,8 @@ export const getHeroSliderContent = t => ({
     },
     {
       id: 2,
-      desktopImg: '/assets/images/hero2.jpg',
-      mobileImg: 'https://lightuponlight.co.uk/wp-content/uploads/2026/04/Poster-summer-conference.jpg',
+      desktopImg: migrationPosterImg,
+      mobileImg: migrationPosterMobileImg,
       title: '',
       category: '',
     },

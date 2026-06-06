@@ -1,5 +1,6 @@
 import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
 import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.webp';
+import migrationPosterMobileImg from '../assets/images/event/regay-koch-mobile.webp';
 import migrationRouteImg1 from '../assets/images/migrationRoute/img1.webp';
 import migrationRouteImg2 from '../assets/images/migrationRoute/img2.webp';
 import migrationRouteImg3 from '../assets/images/migrationRoute/img3.webp';
@@ -34,6 +35,7 @@ const getPastEventsStaticItems = () => ([
   {
     slug: 'migration-route',
     image: migrationPosterImg,
+    mobileImage: migrationPosterMobileImg,
     year: '2025',
     category: 'medina',
     videos: [
@@ -46,6 +48,7 @@ const getPastEventsStaticItems = () => ([
   {
     slug: 'route-of-hajj',
     image: eventTurkiaDesktop,
+    mobileImage: eventTurkiaMobile,
     year: '2025',
     category: 'makkah',
     videos: [
