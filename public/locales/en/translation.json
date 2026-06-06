@@ -54,6 +54,40 @@
         "Registration updates and next steps"
       ]
     },
+    "pastEventsArchive": {
+      "eyebrow": "Video Archive",
+      "title": "Our Past Events",
+      "description": "Two featured past experiences from the Nukhba archive, presented with polished cards and dedicated detail pages for all related videos.",
+      "eventBadge": "Event",
+      "videosCountLabel": "videos",
+      "ctaLabel": "Open Details"
+    },
+    "pastEventDetails": {
+      "backLabel": "Back to Past Events",
+      "videosEyebrow": "Video Library",
+      "videosTitle": "All videos from this event",
+      "videosDescription": "Click any video card to open it inside a premium modal without leaving the page.",
+      "videoLabel": "Video",
+      "watchHint": "Click to watch inside the modal",
+      "events": [
+        {
+          "title": "Route of Hajj",
+          "category": "Makkah",
+          "description": "A cinematic archive entry capturing the atmosphere, message, and spiritual direction of the Route of Hajj event.",
+          "videos": [
+            { "title": "Route of Hajj - Main Video" }
+          ]
+        },
+        {
+          "title": "Migration Route",
+          "category": "Medina",
+          "description": "A refined visual archive for Migration Route, gathering its event videos inside a focused and elegant detail page.",
+          "videos": [
+            { "title": "Migration Route - Main Video" }
+          ]
+        }
+      ]
+    },
     "about": {
       "cosmic": {
         "head": "About Us",
@@ -646,19 +680,16 @@
     },
     "pastEvents": {
       "badge": "The Archives",
-      "titleLines": ["Relive Our", "Past Events", "around the world."],
+      "titleLines": ["Featured", "Past Events", "from the archive."],
       "mobileSwipeLabel": "Swipe to explore",
-      "ctaLabel": "View Gallery",
+      "ctaLabel": "View Details",
       "fieldLabels": {
         "date": "Date",
         "location": "Location"
       },
       "pastEvents": [
-        { "title": "Winter Conference", "year": "2024", "category": "Annual Gathering", "attendees": "500", "date": "2024", "location": "United Kingdom" },
-        { "title": "An Evening With", "year": "2024", "category": "Motivational", "attendees": "300", "date": "15 Nov 2024", "location": "United Kingdom" },
-        { "title": "Light Upon Light Monrovia", "year": "2023", "category": "Featured Event", "attendees": "450", "date": "2023", "location": "Liberia" },
-        { "title": "Summer Retreat", "year": "2023", "category": "Spiritual Retreat", "attendees": "250", "date": "2023", "location": "Turkiye" },
-        { "title": "Youth Conference", "year": "2022", "category": "Community", "attendees": "600", "date": "2022", "location": "Iraq" }
+        { "title": "Route of Hajj", "year": "2025", "category": "Makkah", "attendees": "1", "date": "2025", "location": "Makkah" },
+        { "title": "Migration Route", "year": "2025", "category": "Medina", "attendees": "1", "date": "2025", "location": "Medina" }
       ]
     },
     "upcomingEvents": {

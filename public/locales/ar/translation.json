@@ -54,6 +54,40 @@
         "تحديثات التسجيل والخطوات التالية"
       ]
     },
+    "pastEventsArchive": {
+      "eyebrow": "أرشيف الفيديو",
+      "title": "فعالياتنا السابقة",
+      "description": "فعاليتان مميزتان من أرشيف نخبة، مع تصميم أنيق وصفحات تفاصيل خاصة تعرض جميع الفيديوهات المرتبطة بكل فعالية.",
+      "eventBadge": "فعالية",
+      "videosCountLabel": "فيديو",
+      "ctaLabel": "فتح التفاصيل"
+    },
+    "pastEventDetails": {
+      "backLabel": "العودة إلى الفعاليات السابقة",
+      "videosEyebrow": "مكتبة الفيديو",
+      "videosTitle": "جميع فيديوهات هذه الفعالية",
+      "videosDescription": "اضغط على أي بطاقة فيديو لفتحها داخل نافذة مودال أنيقة دون الانتقال إلى تبويب جديد.",
+      "videoLabel": "فيديو",
+      "watchHint": "اضغط للمشاهدة داخل المودال",
+      "events": [
+        {
+          "title": "طريق الحج",
+          "category": "مكة",
+          "description": "أرشيف بصري سينمائي يوثق أجواء ورسالة واتجاه فعالية طريق الحج.",
+          "videos": [
+            { "title": "طريق الحج - الفيديو الرئيسي" }
+          ]
+        },
+        {
+          "title": "طريق الهجرة",
+          "category": "المدينة",
+          "description": "صفحة أرشيف مرئية أنيقة تجمع فيديوهات طريق الهجرة داخل تجربة عرض مركزة وجميلة.",
+          "videos": [
+            { "title": "طريق الهجرة - الفيديو الرئيسي" }
+          ]
+        }
+      ]
+    },
     "about": {
       "cosmic": {
         "head": "من نحن",
@@ -646,19 +680,16 @@
     },
     "pastEvents": {
       "badge": "الأرشيف",
-      "titleLines": ["استعد", "فعالياتنا السابقة", "حول العالم."],
+      "titleLines": ["فعاليات", "سابقة مميزة", "من الأرشيف."],
       "mobileSwipeLabel": "اسحب للاستكشاف",
-      "ctaLabel": "عرض المعرض",
+      "ctaLabel": "عرض التفاصيل",
       "fieldLabels": {
         "date": "التاريخ",
         "location": "الموقع"
       },
       "pastEvents": [
-        { "title": "المؤتمر الشتوي", "year": "2024", "category": "تجمع سنوي", "attendees": "500", "date": "2024", "location": "المملكة المتحدة" },
-        { "title": "أمسية مع", "year": "2024", "category": "تحفيزي", "attendees": "300", "date": "15 نوفمبر 2024", "location": "المملكة المتحدة" },
-        { "title": "Light Upon Light Monrovia", "year": "2023", "category": "فعالية مميزة", "attendees": "450", "date": "2023", "location": "ليبيريا" },
-        { "title": "خلوة الصيف", "year": "2023", "category": "خلوة روحانية", "attendees": "250", "date": "2023", "location": "تركيا" },
-        { "title": "مؤتمر الشباب", "year": "2022", "category": "مجتمع", "attendees": "600", "date": "2022", "location": "العراق" }
+        { "title": "طريق الحج", "year": "2025", "category": "مكة", "attendees": "1", "date": "2025", "location": "مكة" },
+        { "title": "طريق الهجرة", "year": "2025", "category": "المدينة", "attendees": "1", "date": "2025", "location": "المدينة" }
       ]
     },
     "upcomingEvents": {

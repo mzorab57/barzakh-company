@@ -7,12 +7,55 @@ import migrationRouteImg4 from '../assets/images/migrationRoute/img4.webp';
 import migrationRouteImg5 from '../assets/images/migrationRoute/img5.webp';
 import aboutBgImg from '../assets/images/about/about-bg.jpeg';
 import aboutEventImg from '../assets/images/about/about.jpeg';
+import migrationPosterImg from '../assets/images/event/regay-koch.webp';
 
 const mergeItems = (translatedItems = [], staticItems = []) =>
   translatedItems.map((item, index) => ({
     ...staticItems[index],
     ...item,
   }));
+
+const mergePastEventItems = (translatedItems = [], staticItems = []) =>
+  staticItems.map((item, index) => {
+    const translatedItem = translatedItems[index] || {};
+
+    return {
+      ...item,
+      ...translatedItem,
+      videos: item.videos.map((video, videoIndex) => ({
+        ...video,
+        ...((translatedItem.videos || [])[videoIndex] || {}),
+      })),
+    };
+  });
+
+const getPastEventsStaticItems = () => ([
+  
+  {
+    slug: 'migration-route',
+    image: migrationPosterImg,
+    year: '2025',
+    category: 'medina',
+    videos: [
+      {
+        id: 'TLKOrC-1ejE',
+        url: 'https://youtu.be/TLKOrC-1ejE?si=BI_rnHFbHZeOH7JC',
+      },
+    ],
+  },
+  {
+    slug: 'route-of-hajj',
+    image: eventTurkiaDesktop,
+    year: '2025',
+    category: 'makkah',
+    videos: [
+      {
+        id: 'We5OqKbf4Gk',
+        url: 'https://youtu.be/We5OqKbf4Gk?si=L0u0BkQBL8-5YhlJ',
+      },
+    ],
+  },
+]);
 
 export const getAboutPageContent = t => ({
   ...t('pages.about', { returnObjects: true }),
@@ -184,3 +227,18 @@ export const getVolunteerRegistrationPageContent = t => ({
   ...t('pages.volunteerRegistration', { returnObjects: true }),
   whatsappNumber: '9647713857171',
 });
+
+export const getPastEventsArchivePageContent = t => ({
+  ...t('pages.pastEventsArchive', { returnObjects: true }),
+  events: mergePastEventItems(t('pages.pastEventsArchive.events', { returnObjects: true }) || [], getPastEventsStaticItems()),
+});
+
+export const getPastEventDetailPageContent = t => {
+  const detail = t('pages.pastEventDetails', { returnObjects: true }) || {};
+  const items = getPastEventsStaticItems();
+
+  return {
+    ...detail,
+    events: mergePastEventItems(t('pages.pastEventDetails.events', { returnObjects: true }) || [], items),
+  };
+};

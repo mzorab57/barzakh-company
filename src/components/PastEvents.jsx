@@ -1,5 +1,6 @@
 'use client';
 import { useLayoutEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
@@ -101,8 +102,9 @@ export default function PastEvents() {
           className="flex gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory hide-scrollbar pl-5 sm:pl-8 lg:pl-12 pr-[10vw] pb-0"
         >
           {pastEventsSectionContent.pastEvents.map((event, index) => (
-            <article 
+            <Link
               key={index}
+              to={event.href || '/past-events'}
               className="group relative flex-shrink-0 w-[85vw] sm:w-[50vw] lg:w-[30vw] h-[55vh] sm:h-[60vh] lg:h-[65vh] max-h-[700px] overflow-hidden rounded-[2rem] bg-[#111] snap-center sm:snap-start cursor-pointer border border-white/5 transition-colors duration-500 hover:border-[#E6D6A3]/30"
             >
               {/* Reverse Zoom Image */}
@@ -152,7 +154,7 @@ export default function PastEvents() {
                 </div>
 
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 

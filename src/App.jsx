@@ -9,6 +9,8 @@ import Contact from './pages/Contact';
 import Home from './pages/Home';
 import MedinaStayPage from './pages/MedinaStayPage';
 import MenuLandingPage from './pages/MenuLandingPage';
+import PastEventDetailPage from './pages/PastEventDetailPage';
+import PastEventsPage from './pages/PastEventsPage';
 import MigrationRoutePage from './pages/MigrationRoutePage';
 import StallsPage from './pages/StallsPage';
 import TurkeyEventPage from './pages/TurkeyEventPage';
@@ -50,7 +52,6 @@ function LanguageDocumentSync() {
 
 function App() {
   const { t } = useTranslation();
-  const pastEventsRoute = t('routes.pastEvents', { returnObjects: true });
   const faqRoute = t('routes.faq', { returnObjects: true });
 
   return (
@@ -83,16 +84,10 @@ function App() {
               element={<StallsPage />}
             />
             <Route path="/about" element={<About />} />
+            <Route path="/past-events/:slug" element={<PastEventDetailPage />} />
             <Route
               path="/past-events"
-              element={
-                <MenuLandingPage
-                  eyebrow={pastEventsRoute.eyebrow}
-                  title={pastEventsRoute.title}
-                  description={pastEventsRoute.description}
-                  highlights={pastEventsRoute.highlights}
-                />
-              }
+              element={<PastEventsPage />}
             />
             <Route
               path="/faq"

@@ -1,5 +1,6 @@
 import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
 import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.webp';
+import migrationPosterImg from '../assets/images/event/regay-koch.webp';
 
 const mergeItems = (translatedItems = [], staticItems = []) =>
   translatedItems.map((item, index) => ({
@@ -48,11 +49,8 @@ export const getGuestsSectionContent = t => ({
 export const getPastEventsSectionContent = t => ({
   ...t('components.pastEvents', { returnObjects: true }),
   pastEvents: mergeItems(t('components.pastEvents.pastEvents', { returnObjects: true }), [
-    { image: '/assets/images/hero3.jpg' },
-    { image: '/assets/images/hero4.jpg' },
-    { image: '/assets/images/hero2.jpg' },
-    { image: '/assets/images/hero1.jpg' },
-    { image: '/assets/images/hero4.jpg' },
+    { image: eventTurkiaDesktop, href: '/past-events/route-of-hajj' },
+    { image: migrationPosterImg, href: '/past-events/migration-route' },
   ]),
 });
 
