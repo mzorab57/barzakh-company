@@ -96,6 +96,12 @@ export const getFooterContent = t => {
       { code: 'ID', flag: 'ID' },
     ]),
     email: 'info@nukhbaglobal.com',
+    phones: footer.phones || ['0771-385-7171', '0751-385-7171'],
+    location: {
+      label: footer.location?.label || 'Location',
+      text: footer.location?.text || 'سلێمانی - کوردسات',
+      href: 'https://maps.app.goo.gl/H4bbxHj6Kbn5eUCq7',
+    },
     socialLinks: mergeItems(t('components.footer.socialLinks', { returnObjects: true }) || [], [
       {
         iconKey: 'Instagram',

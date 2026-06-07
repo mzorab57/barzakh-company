@@ -755,6 +755,10 @@
         { "name": "إندونيسيا" }
       ],
       "connectTitle": "تواصل",
+      "phoneLabel": "رقم الهاتف",
+      "location": {
+        "label": "الموقع"
+      },
       "followUsLabel": "تابعنا",
       "socialLinks": [
         { "label": "إنستغرام" },

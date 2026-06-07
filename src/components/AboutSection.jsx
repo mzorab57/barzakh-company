@@ -11,7 +11,7 @@ export default function AboutSection() {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* تایتڵی سەرەکی */}
-        <div className=" mb-6">
+        <div className=" mb-6 max-w-3xl">
           <p className="text-xl font-semibold uppercase tracking-[0.4em] text-[#88743e] mb-4">
             {aboutSectionContent.hero.eyebrow}
           </p>
@@ -21,10 +21,10 @@ export default function AboutSection() {
         </div>
 
         {/* Magic Text یەکەم */}
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl ">
           <MagicText
             text={aboutSectionContent.aboutText}
-            className="text-sm md:text-4xl "
+            className="text-sm md:text-2xl "
           />
         </div>
 
@@ -32,7 +32,7 @@ export default function AboutSection() {
         <div className="h-12"></div> 
         
         {/* Magic Text دووەم */}
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl ">
           <div className=" mb-4">
             <p className="text-xl font-semibold uppercase tracking-[0.4em] text-[#88743e] mb-4">
               {aboutSectionContent.mission.eyebrow}
@@ -43,7 +43,7 @@ export default function AboutSection() {
           </div>
           <MagicText
             text={aboutSectionContent.missionText}
-            className="text-sm md:text-4xl font-light leading-relaxed text-right"
+            className="text-sm md:text-2xl "
           />
         </div>
 

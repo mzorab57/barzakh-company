@@ -773,6 +773,10 @@
         { "name": "ئەندەنوسیا" }
       ],
       "connectTitle": "پەیوەندی",
+      "phoneLabel": "ژمارەی تەلەفۆن",
+      "location": {
+        "label": "شوێن"
+      },
       "followUsLabel": "فۆڵۆومان بکە",
       "socialLinks": [
         { "label": "ئینستاگرام" },

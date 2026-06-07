@@ -5,11 +5,11 @@ const Word = ({ children, progress, range }) => {
   const opacity = useTransform(progress, range, [0, 1]);
 
   return (
-    <span className="relative inline-block mr-3 mt-3">
+    <span className="relative font-light  inline-block mr-2 mt-3">
       {/* وشەی کاڵ لە پشتەوە */}
       <span className="absolute opacity-10">{children}</span>
       {/* وشەی ڕووناک کاتێک سکڕۆڵ دەکرێت */}
-      <motion.span style={{ opacity }}>{children}</motion.span>
+      <motion.span className="font-light text-sm lg:text-2xl" style={{ opacity }}>{children}</motion.span>
     </span>
   );
 };

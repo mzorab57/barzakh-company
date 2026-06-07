@@ -1,6 +1,8 @@
 'use client';
 import {
   Mail,
+  MapPin,
+  Phone,
   FacebookIcon,
   InstagramIcon,
   Music2,
@@ -126,48 +128,6 @@ export default function Footer() {
         
       
 
-        {/* Donation Section */}
-        <div ref={statsRef} className="py-16 lg:py-20">
-          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 shadow-[0_20px_70px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-8 lg:p-10">
-            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-              <div>
-                <div className="inline-flex items-center gap-3 rounded-full border border-[#C5B78E]/25 bg-[#C5B78E]/10 px-4 py-2 text-xs font-semibold tracking-[0.24em] text-[#C5B78E]">
-                  <HeartHandshake className="h-4 w-4" strokeWidth={1.8} />
-                  <span className='text-lg'>{footerContent.donation.badge}</span>
-                </div>
-                <div className="mt-6 space-y-5">
-                  {footerContent.donation.paragraphs.map((paragraph) => (
-                    <p key={paragraph} className="max-w-2xl  leading-8 text-white/78 text-xs">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-[1.75rem] border border-white/10 bg-black/20 p-5 sm:p-6">
-                <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[#C5B78E]">
-                  {footerContent.donation.formLabel}
-                </p>
-                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                  <input
-                    type="text"
-                    value={donationAmount}
-                    onChange={(event) => setDonationAmount(event.target.value)}
-                    placeholder={footerContent.donation.placeholder}
-                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-base text-white placeholder:text-white/35 outline-none transition focus:border-[#C5B78E]/60 focus:bg-white/[0.06]"
-                  />
-                  <button
-                    type="button"
-                    className="rounded-2xl border border-[#C5B78E]/30 bg-[#C5B78E]/12 px-6 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-[#f4ead0] transition hover:bg-[#C5B78E]/18"
-                  >
-                    {footerContent.donation.buttonLabel}
-                  </button>
-                </div>
-               
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Links Grid Section */}
         <div className="py-16 lg:py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 border-t border-white/5">
@@ -213,6 +173,47 @@ export default function Footer() {
               </span>
             </a>
 
+            <a
+              href={footerContent.location.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-300"
+            >
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#C5B78E]/10 border border-[#C5B78E]/20 group-hover:bg-[#C5B78E] group-hover:scale-110 transition-all duration-300">
+                <MapPin className="w-5 h-5 text-white" strokeWidth={1.5} />
+              </div>
+              <div className="min-w-0">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/35">
+                  {footerContent.location.label}
+                </p>
+                <span className="block truncate text-sm font-light text-white/70 group-hover:text-white transition-colors">
+                  {footerContent.location.text}
+                </span>
+              </div>
+            </a>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {footerContent.phones.map((phone) => (
+                <a
+                  key={phone}
+                  href={`tel:${phone.replace(/[^+\d]/g, '')}`}
+                  className="group flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-[#C5B78E]/30 transition-all duration-300"
+                >
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-[#C5B78E]/10 border border-[#C5B78E]/20 group-hover:bg-[#C5B78E] group-hover:scale-110 transition-all duration-300">
+                    <Phone className="w-5 h-5 text-white" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/35">
+                      {footerContent.phoneLabel}
+                    </p>
+                    <span className="block text-sm font-light text-white/70 group-hover:text-white transition-colors" dir="ltr">
+                      {phone}
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+
             {/* Social Links */}
             <div className="space-y-4">
               <h5 className="text-sm font-bold uppercase tracking-[0.3em] text-white/40">
@@ -252,7 +253,52 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Bar */}
+      
+
+
+        {/* Donation Section */}
+        <div ref={statsRef} className="py-16 lg:py-20">
+          <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 shadow-[0_20px_70px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-8 lg:p-10">
+            <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+              <div>
+                <div className="inline-flex items-center gap-3 rounded-full border border-[#C5B78E]/25 bg-[#C5B78E]/10 px-4 py-2 text-xs font-semibold tracking-[0.24em] text-[#C5B78E]">
+                  <HeartHandshake className="h-4 w-4" strokeWidth={1.8} />
+                  <span className='text-lg'>{footerContent.donation.badge}</span>
+                </div>
+                <div className="mt-6 space-y-5">
+                  {footerContent.donation.paragraphs.map((paragraph) => (
+                    <p key={paragraph} className="max-w-2xl  leading-8 text-white/78 text-xs">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-[1.75rem] border border-white/10 bg-black/20 p-5 sm:p-6">
+                <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[#C5B78E]">
+                  {footerContent.donation.formLabel}
+                </p>
+                <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                  <input
+                    type="text"
+                    value={donationAmount}
+                    onChange={(event) => setDonationAmount(event.target.value)}
+                    placeholder={footerContent.donation.placeholder}
+                    className="w-full rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 text-base text-white placeholder:text-white/35 outline-none transition focus:border-[#C5B78E]/60 focus:bg-white/[0.06]"
+                  />
+                  <button
+                    type="button"
+                    className="rounded-2xl border border-[#C5B78E]/30 bg-[#C5B78E]/12 px-6 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-[#f4ead0] transition hover:bg-[#C5B78E]/18"
+                  >
+                    {footerContent.donation.buttonLabel}
+                  </button>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+          {/* Bottom Bar */}
         <div className="py-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
           
           {/* Copyright */}

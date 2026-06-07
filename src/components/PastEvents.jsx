@@ -114,7 +114,7 @@ export default function PastEvents() {
                   <img
                     src={event.image}
                     alt={event.title}
-                    className=" scale-110 grayscale-[30%] opacity-80 transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100"
+                    className=" scale-105 pt-4 md:pt-0 opacity-100 transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100"
                     loading="lazy"
                   />
                 </picture>

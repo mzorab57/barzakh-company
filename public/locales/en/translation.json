@@ -755,6 +755,10 @@
         { "name": "Indonesia" }
       ],
       "connectTitle": "Connect",
+      "phoneLabel": "Phone Number",
+      "location": {
+        "label": "Location"
+      },
       "followUsLabel": "Follow Us",
       "socialLinks": [
         { "label": "Instagram" },
