@@ -14,10 +14,11 @@ export default function PastEventsPage() {
         <div className="relative overflow-hidden rounded-[2.5rem]  bg-[radial-gradient(circle_at_top,rgba(197,183,142,0.18),transparent_35%),linear-gradient(180deg,#12100c_0%,#080705_100%)] px-6 py-8 lg:py-14 shadow-[0_24px_90px_rgba(0,0,0,0.35)] sm:px-10 lg:px-14">
           <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.03] mix-blend-overlay" />
           <div className="relative">
-            {/* <p className="text-sm font-semibold uppercase tracking-[0.35em] text-[#d9c999]">
+            <p className=" text-3xl sm:text-5xl font-semibold uppercase tracking-[0.35em] text-[#d9c999]">
               {content.eyebrow}
-            </p> */}
-            <h1 className=" max-w-4xl text-4xl  leading-tight text-[#f6edd8] sm:text-5xl lg:text-6xl">
+            </p>
+            <br/>
+            <h1 className=" max-w-4xl text-2xl  leading-tight text-[#f6edd8] ">
               {content.title}
             </h1>
             {/* <p className="mt-6 max-w-3xl text-base leading-8 text-white/72 sm:text-lg">
@@ -42,38 +43,36 @@ export default function PastEventsPage() {
                     className="h-full w-full object-cover transition duration-700"
                   />
                 </picture>
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.16)_0%,rgba(0,0,0,0.72)_62%,rgba(0,0,0,0.92)_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.16)_0%,rgba(0,0,0,0.2)_62%,rgba(0,0,0,0.92)_100%)]" />
               </div>
 
               <div className="relative flex min-h-[20rem] flex-col justify-between p-6 sm:p-8">
                 <div className="flex items-start justify-between gap-4">
-                  <span className="inline-flex rounded-full border border-white/15 bg-black/25 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#e4d4a0] backdrop-blur-md">
+                  {/* <span className="inline-flex rounded-full border border-white/15 bg-black/25 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#e4d4a0] backdrop-blur-md">
                     {content.eventBadge} {String(index + 1).padStart(2, '0')}
-                  </span>
+                  </span> */}
               
                 </div>
 
-                <div>
-                  <div className="mb-4 flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
-                    <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-2 backdrop-blur">
+                <div className='flex justify-between items-end'>
+                  <div className=" flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+                    <span className="inline-flex items-center gap-0.5 rounded-full bg-white/5 px-3  backdrop-blur">
                       <CalendarDays className="h-4 w-4 text-[#d8c78f]" />
                       {event.year}
                     </span>
-                    <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-2 backdrop-blur">
+                    <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 backdrop-blur">
                       <Tag className="h-4 w-4 text-[#d8c78f]" />
                       {event.category}
                     </span>
                   </div>
-                  <h2 className="max-w-xl text-3xl font-black leading-tight text-white sm:text-4xl">
+                  <h2 className="max-w-xl  text-3xl font-black leading-tight text-white sm:text-4xl">
                     {event.title}
                   </h2>
                   
-                  <p className="mt-4 max-w-2xl text-sm leading-7 text-white/72 sm:text-base">
-                    {event.description}
-                  </p>
+                 
                   <div className="mt-6 inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#e7d9a7]">
-                    <span>{content.ctaLabel}</span>
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <div> <span className='text-xs flex text-nowrap' >{content.ctaLabel}   <ArrowRight className="h-4 w-4 transition-transform mx-2 -rotate-45 duration-300 group-hover:translate-x-1" /></span></div> 
+                  
                   </div>
                 </div>
               </div>

@@ -17,7 +17,7 @@ const Home = () => {
       {/* <InternationalSection /> */}
    
       <AboutSection />
-      <UpcomingEvents />
+      {/* <UpcomingEvents /> */}
       <HeroVideoSection />
       <Guests />
       <PastEvents />

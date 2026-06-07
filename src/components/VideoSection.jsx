@@ -40,10 +40,10 @@ const HeroVideoSection = () => {
 
               {/* Masterpiece Heading */}
               <h2 className="animate-fade-in-up text-5xl font-black uppercase leading-[1.1] tracking-tighter sm:text-6xl lg:text-[4rem] xl:text-[4.5rem]" style={{ animationDelay: '0.4s' }}>
-                <span className="block text-white/90 font-light tracking-tight">
+                {/* <span className="block text-white/90 font-light tracking-tight">
                   {videoSectionContent.headingLines[0]}
-                </span>
-                <span className="block mt-1 bg-clip-text text-transparent bg-gradient-to-r from-[#E6D6A3] via-[#fff5d6] to-[#b39e60] drop-shadow-[0_0_30px_rgba(230,214,163,0.3)]">
+                </span> */}
+                <span className=" mt-1 bg-clip-text text-transparent bg-gradient-to-r from-[#E6D6A3] via-[#fff5d6] to-[#b39e60] drop-shadow-[0_0_30px_rgba(230,214,163,0.3)]">
                   {videoSectionContent.headingLines[1]}
                 </span>
                 {/* Outline Text Effect */}
@@ -97,14 +97,6 @@ const HeroVideoSection = () => {
             {/* Film Grain Overlay */}
             <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay bg-[url('/noise.svg')]" />
 
-            {/* Cinematic Center Play Button */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="flex size-10 items-center justify-center rounded-full border border-white/5 bg-black/20 backdrop-blur-sm transition-transform duration-700 group-hover/card:scale-110 group-hover/card:bg-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
-                 <svg className="w-8 h-8 text-white/80  drop-shadow-lg transition-all duration-300 group-hover/card:text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-            </div>
 
             {/* Cinematic Progress Bar & Timecode */}
             <div className="absolute bottom-6 left-6 right-6 lg:bottom-10 lg:left-10 lg:right-10 flex items-center gap-4 z-20">

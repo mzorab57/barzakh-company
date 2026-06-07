@@ -64,17 +64,17 @@ export default function PastEvents() {
           
           <div className="max-w-2xl">
             <div className="flex items-center gap-4 mb-6">
-              <div className="h-[1px] w-10 bg-[#E6D6A3]" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#E6D6A3]">
+            
+              <span className="text-4xl lg:text-5xl font-bold uppercase tracking-[0.4em] text-[#E6D6A3]">
                 {pastEventsSectionContent.badge}
               </span>
             </div>
             
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-light uppercase leading-[1.05] tracking-tight text-white">
-              <span className="block text-white/40 text-2xl sm:text-3xl tracking-[0.2em] mb-2">{pastEventsSectionContent.titleLines[0]}</span>
+            <h2 className="text-3xl  font-light uppercase leading-[1.05] tracking-tight text-white">
+              <span className="block mt-1   font-normal lowercase text-[#faf7ee] text-xl lg:text-3xl ">
+              {/* <span className="block text-white/40 text-2xl sm:text-3xl tracking-[0.2em] mb-2">{pastEventsSectionContent.titleLines[2]}</span> */}
               <span className="block font-medium text-[#f6eac4]">{pastEventsSectionContent.titleLines[1]}</span>
-              <span className="block mt-1   font-normal lowercase text-[#faf7ee] text-5xl sm:text-6xl lg:text-7xl">
-                {pastEventsSectionContent.titleLines[2]}
+                {pastEventsSectionContent.titleLines[0]}
               </span>
             </h2>
           </div>
@@ -105,7 +105,7 @@ export default function PastEvents() {
             <Link
               key={index}
               to={event.href || '/past-events'}
-              className="group relative flex-shrink-0 w-[85vw] sm:w-[50vw] lg:w-[30vw] h-[55vh] sm:h-[60vh] lg:h-[65vh] max-h-[700px] overflow-hidden rounded-[2rem] bg-[#111] snap-center sm:snap-start cursor-pointer border border-white/5 transition-colors duration-500 hover:border-[#E6D6A3]/30"
+              className="group relative flex-shrink-0 w-[85vw] sm:w-[50vw] lg:w-[30vw] h-[55vh] sm:h-[60vh] lg:h-[65vh] max-h-[500px] overflow-hidden rounded-[2rem] bg-[#111] snap-center sm:snap-start cursor-pointer border border-white/5 transition-colors duration-500 hover:border-[#E6D6A3]/30"
             >
               {/* Reverse Zoom Image */}
               <div className="absolute inset-0 overflow-hidden">
@@ -114,7 +114,7 @@ export default function PastEvents() {
                   <img
                     src={event.image}
                     alt={event.title}
-                    className="w-full h-full object-cover scale-110 grayscale-[30%] opacity-80 transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100"
+                    className=" scale-110 grayscale-[30%] opacity-80 transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-100 group-hover:grayscale-0 group-hover:opacity-100"
                     loading="lazy"
                   />
                 </picture>

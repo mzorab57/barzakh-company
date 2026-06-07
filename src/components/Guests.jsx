@@ -79,18 +79,16 @@ export default function Guests() {
       <div className="mx-auto max-w-[95rem] px-4 sm:px-6 lg:px-10 xl:px-12 relative z-10">
         
         {/* === Luxurious Header === */}
-        <div ref={headerRef} className="max-w-4xl mb-16 md:mb-24 lg:mb-32">
+        <div ref={headerRef} className="max-w-4xl mb-6 ">
           
           
 
-          <h2 className="mb-10">
-            <span className="block text-[20vw] sm:text-[15vw] md:text-[12rem] font-black leading-none tracking-tighter text-[#1a1814]/[0.03] pointer-events-none">
-              {guestsSectionContent.header.watermark}
-            </span>
-            <span className="block -mt-20 sm:-mt-28 md:-mt-32 text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-medium uppercase leading-[0.9] tracking-tight text-[#594d33]">
+          <h2 className="my-10">
+          
+            <span className="block -mt-20 sm:-mt-28 md:-mt-32 text-4xl md:text-5xl lg:text-7xl font-medium uppercase leading-[0.9] tracking-tight text-[#594d33]">
               {guestsSectionContent.header.titleLineOne}
             </span>
-            <span className="block mt-3   font-normal lowercase text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight">
+            <span className="block mt-3   font-normal lowercase text-2xl md:text-4xl lg:text-5xl tracking-tight">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b59e5f] via-[#d4b976] to-[#8a7340]">
                 {guestsSectionContent.header.titleLineTwo}
               </span>
@@ -100,7 +98,7 @@ export default function Guests() {
           {/* Description with elegant border */}
           <div className="flex items-start gap-6 max-w-2xl">
             <div className="hidden sm:block w-[2px] h-24 bg-gradient-to-b from-[#b59e5f] to-transparent mt-1" />
-            <p className="text-base sm:text-lg lg:text-xl text-[#1a1814]/60 font-light leading-relaxed">
+            <p className="text-sm sm:text-lg lg:text-xl text-[#1a1814]/60 font-light leading-relaxed">
               {guestsSectionContent.header.description}
             </p>
           </div>
