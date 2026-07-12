@@ -10,142 +10,86 @@ const HeroVideoSection = () => {
       
       {/* Background Grid Pattern & Ambient Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] opacity-20" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#E6D6A3] rounded-full blur-[150px] opacity-10 animate-pulse-slow" />
+      
+      {/* Giant Ambient Glow behind the video */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[1000px] max-h-[1000px] bg-[#E6D6A3] rounded-full blur-[180px] opacity-10 animate-pulse-slow pointer-events-none" />
 
-      <div className="mx-auto max-w-[90rem] w-full relative z-10">
+      {/* Cinematic Video Container */}
+      <div className="relative w-full max-w-[95rem] h-[60vh] sm:h-[75vh] lg:h-[85vh] mx-auto z-10 group cursor-default">
         
-        {/* Main Luxury Container */}
-        <div className="group/card relative grid grid-cols-1 overflow-hidden rounded-[2.5rem] bg-[#0a0805]/80 backdrop-blur-3xl border border-white/10 shadow-[0_30px_100px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.1)] transition-all duration-1000 hover:border-[#E6D6A3]/30 hover:shadow-[0_40px_120px_rgba(230,214,163,0.15)] lg:grid-cols-12 lg:rounded-[3.5rem]">
+        {/* Main Frame */}
+        <div className="absolute inset-0 overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-[#0a0805] shadow-[0_30px_100px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.1)] border border-white/10 transition-all duration-1000 hover:border-[#E6D6A3]/30 hover:shadow-[0_40px_120px_rgba(230,214,163,0.2)]">
           
-          {/* Left Side: Text Content (Takes 5 columns on Desktop) */}
-          <div className="order-2 flex flex-col justify-center px-6 py-16 sm:px-12 sm:py-20 lg:order-1 lg:col-span-5 lg:px-16 xl:px-20 relative z-20">
+          {/* The Video */}
+          <video
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-[40s] ease-linear group-hover:scale-110"
+            src={videoSectionContent.videoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+
+          {/* Premium Overlays for depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none opacity-80 transition-opacity duration-700 group-hover:opacity-60" />
+          
+          {/* Subtle Vignette (Dark edges) */}
+          <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.9)] pointer-events-none" />
+
+          {/* Film Grain Overlay */}
+          <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay bg-[url('/noise.svg')] pointer-events-none" />
+
+          {/* Cinematic Corner Accents */}
+          {/* Top Left */}
+          <div className="absolute top-6 left-6 sm:top-10 sm:left-10 w-12 h-12 sm:w-20 sm:h-20 border-t-2 border-l-2 border-[#E6D6A3]/20 rounded-tl-3xl pointer-events-none transition-all duration-700 group-hover:border-[#E6D6A3]/60 group-hover:w-24 group-hover:h-24" />
+          
+          {/* Top Right */}
+          <div className="absolute top-6 right-6 sm:top-10 sm:right-10 w-12 h-12 sm:w-20 sm:h-20 border-t-2 border-r-2 border-[#E6D6A3]/20 rounded-tr-3xl pointer-events-none transition-all duration-700 group-hover:border-[#E6D6A3]/60 group-hover:w-24 group-hover:h-24" />
+          
+          {/* Bottom Left */}
+          <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-10 w-12 h-12 sm:w-20 sm:h-20 border-b-2 border-l-2 border-[#E6D6A3]/20 rounded-bl-3xl pointer-events-none transition-all duration-700 group-hover:border-[#E6D6A3]/60 group-hover:w-24 group-hover:h-24" />
+          
+          {/* Bottom Right */}
+          <div className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 w-12 h-12 sm:w-20 sm:h-20 border-b-2 border-r-2 border-[#E6D6A3]/20 rounded-br-3xl pointer-events-none transition-all duration-700 group-hover:border-[#E6D6A3]/60 group-hover:w-24 group-hover:h-24" />
+
+          {/* Cinematic Progress Bar & Timecode */}
+          <div className="absolute bottom-6 left-10 right-10 sm:bottom-10 sm:left-16 sm:right-16 flex items-center gap-4 sm:gap-6 z-20 opacity-70 transition-opacity duration-500 group-hover:opacity-100">
+            <span className="text-[10px] sm:text-xs font-mono text-white/70">
+              {videoSectionContent.progress?.start || "00:00"}
+            </span>
             
-            {/* Subtle Inner Glow behind text */}
-            <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#E6D6A3]/10 rounded-full blur-[80px]" />
-
-            <div className="max-w-xl text-white space-y-10 relative z-10">
-              
-              {/* Premium Badge */}
-              <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                <div className="inline-flex items-center gap-3 rounded-full  bg-[#E6D6A3]/5 px-4 py-2 backdrop-blur-md">
-                  {/* <div className="relative flex h-2.5 w-2.5 items-center justify-center">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E6D6A3] opacity-60"></span>
-                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#E6D6A3]"></span>
-                  </div> */}
-                  <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#E6D6A3]">
-                    {videoSectionContent.badge}
-                  </span>
-                </div>
-              </div>
-
-              {/* Masterpiece Heading */}
-              <h2 className="animate-fade-in-up text-5xl font-black uppercase leading-[1.1] tracking-tighter sm:text-6xl lg:text-[4rem] xl:text-[4.5rem]" style={{ animationDelay: '0.4s' }}>
-                {/* <span className="block text-white/90 font-light tracking-tight">
-                  {videoSectionContent.headingLines[0]}
-                </span> */}
-                <span className=" mt-1 bg-clip-text text-transparent bg-gradient-to-r from-[#E6D6A3] via-[#fff5d6] to-[#b39e60] drop-shadow-[0_0_30px_rgba(230,214,163,0.3)]">
-                  {videoSectionContent.headingLines[1]}
-                </span>
-                {/* Outline Text Effect */}
-                <span className="block mt-1 text-transparent" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.8)' }}>
-                  {videoSectionContent.headingLines[2]}
-                </span>
-              </h2>
-
-              {/* Description */}
-              <p className="animate-fade-in-up text-base font-light leading-relaxed text-white/50 sm:text-lg max-w-md" style={{ animationDelay: '0.6s' }}>
-                {videoSectionContent.description}
-              </p>
-
-              {/* Luxury CTA & Tags Group */}
-              <div className="animate-fade-in-up pt-4 space-y-8" style={{ animationDelay: '0.8s' }}>
-                
-               
-
-                {/* Minimalist Tags */}
-                <div className="flex flex-wrap gap-4 border-t border-white/10 pt-8">
-                  {videoSectionContent.tags.map((tag) => (
-                    <span 
-                      key={tag}
-                      className="cursor-default text-[10px] font-medium uppercase tracking-[0.3em] text-white/40 transition-colors duration-300 hover:text-[#E6D6A3]"
-                    >
-                      • {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
+            <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-white/20 backdrop-blur-sm">
+              {/* Animated Progress Line */}
+              <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-[#E6D6A3]/50 to-[#E6D6A3] rounded-full shadow-[0_0_15px_#E6D6A3] animate-progress" />
             </div>
+            
+            <span className="text-[10px] sm:text-xs font-mono text-white/70">
+              {videoSectionContent.progress?.end || "03:45"}
+            </span>
           </div>
 
-          {/* Right Side: Cinematic Video (Takes 7 columns on Desktop) */}
-          <div className="order-1 relative w-full min-h-[450px] sm:min-h-[600px] lg:order-2 lg:col-span-7 lg:min-h-full overflow-hidden bg-black">
-            
-            {/* The Video */}
-            <video
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[30s] ease-linear group-hover/card:scale-110"
-              src={videoSectionContent.videoSrc}
-              autoPlay
-              muted
-              loop
-              playsInline
-            />
-
-            {/* Premium Gradients for Blending */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0805] via-transparent to-transparent lg:bg-gradient-to-r lg:from-[#0a0805] lg:via-[#0a0805]/60 lg:to-transparent" />
-            
-            {/* Film Grain Overlay */}
-            <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay bg-[url('/noise.svg')]" />
-
-
-            {/* Cinematic Progress Bar & Timecode */}
-            <div className="absolute bottom-6 left-6 right-6 lg:bottom-10 lg:left-10 lg:right-10 flex items-center gap-4 z-20">
-              <span className="text-[10px] font-mono text-white/50">{videoSectionContent.progress.start}</span>
-              <div className="relative h-[2px] flex-1 overflow-hidden rounded-full bg-white/20 backdrop-blur-sm">
-                <div className="absolute top-0 left-0 h-full w-1/3 bg-[#E6D6A3] rounded-full shadow-[0_0_10px_#E6D6A3] animate-progress" />
-              </div>
-              <span className="text-[10px] font-mono text-white/50">{videoSectionContent.progress.end}</span>
-            </div>
-
-            {/* Top Right "REC" indicator */}
-           
-
- {/* Corner Accents */}
-            <div className="absolute top-8 right-8 lg:top-12 lg:right-12 w-24 h-24 border-t-2 border-r-2 border-[#E6D6A3]/30 rounded-tr-3xl pointer-events-none"></div>
-            <div className="absolute bottom-12 left-8 lg:bottom-12 lg:left-12 w-24 h-24 border-b-2 border-l-2 border-[#E6D6A3]/30 rounded-bl-3xl pointer-events-none lg:hidden"></div>
+          {/* Optional: Subtle REC indicator (can remove if you don't want it) */}
+          <div className="absolute top-8 right-10 sm:top-12 sm:right-14 flex items-center gap-2 opacity-50 transition-opacity duration-500 group-hover:opacity-100">
+            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-[9px] font-bold tracking-[0.3em] text-white uppercase">Live</span>
           </div>
+
         </div>
       </div>
 
-      {/* Embedded Styles for the specific animations */}
+      {/* Embedded Styles for animations */}
       <style>{`
-        .animate-fade-in-up {
-          opacity: 0;
-          animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
         .animate-pulse-slow {
           animation: pulseSlow 8s ease-in-out infinite;
         }
 
         .animate-progress {
-          animation: loadProgress 15s ease-in-out infinite alternate;
-        }
-
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(40px) scale(0.98);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
+          animation: loadProgress 20s ease-in-out infinite alternate;
         }
 
         @keyframes pulseSlow {
-          0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
-          50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.1); }
+          0%, 100% { opacity: 0.08; transform: translate(-50%, -50%) scale(1); }
+          50% { opacity: 0.15; transform: translate(-50%, -50%) scale(1.05); }
         }
 
         @keyframes loadProgress {

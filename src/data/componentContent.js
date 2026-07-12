@@ -1,5 +1,5 @@
 import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
-import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.webp';
+import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.jpeg';
 import migrationPosterImg from '../assets/images/event/regay-koch.webp';
 import migrationPosterMobileImg from '../assets/images/event/regay-koch-mobile.webp';
 

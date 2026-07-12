@@ -19,7 +19,7 @@ const Home = () => {
       <AboutSection />
       {/* <UpcomingEvents /> */}
       <HeroVideoSection />
-      <Guests />
+      {/* <Guests /> */}
       <PastEvents />
     </div>
   )
