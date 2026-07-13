@@ -1,0 +1,301 @@
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowLeft, CalendarDays, MapPin, Ticket, Wallet } from 'lucide-react';
+import { Link, Navigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { apiRequest } from '@/lib/api';
+import {
+  buildEventCheckoutRoute,
+  getLocalizedText,
+  parseEventSlug,
+  resolveLocale,
+} from '@/lib/catalog';
+
+const COPY = {
+  ku: {
+    back: 'گەڕانەوە',
+    loading: 'چاوەڕێی زانیارییەکانی event...',
+    notFound: 'ئەم event ـە نەدۆزرایەوە.',
+    about: 'دەربارەی event',
+    schedule: 'Sub-events',
+    tickets: 'Tickets',
+    noSubEvents: 'هێشتا sub-event دانەنراوە.',
+    noTickets: 'هێشتا هیچ ticket ـێکی بەردەست نییە.',
+    booking: 'دەستپێکردنی booking',
+    remaining: 'بەردەست',
+    from: 'لە',
+    date: 'بەروار',
+    location: 'شوێن',
+    sessions: 'سێشنەکان',
+  },
+  ar: {
+    back: 'رجوع',
+    loading: 'جاري تحميل تفاصيل الفعالية...',
+    notFound: 'لم يتم العثور على هذه الفعالية.',
+    about: 'عن الفعالية',
+    schedule: 'الجلسات',
+    tickets: 'التذاكر',
+    noSubEvents: 'لا توجد جلسات مضافة بعد.',
+    noTickets: 'لا توجد تذاكر متاحة حالياً.',
+    booking: 'ابدأ الحجز',
+    remaining: 'المتبقي',
+    from: 'من',
+    date: 'التاريخ',
+    location: 'الموقع',
+    sessions: 'الجلسات',
+  },
+  en: {
+    back: 'Back',
+    loading: 'Loading event details...',
+    notFound: 'This event could not be found.',
+    about: 'About the event',
+    schedule: 'Sub-events',
+    tickets: 'Tickets',
+    noSubEvents: 'No sub-events have been added yet.',
+    noTickets: 'No tickets are available right now.',
+    booking: 'Start booking',
+    remaining: 'Remaining',
+    from: 'From',
+    date: 'Date',
+    location: 'Location',
+    sessions: 'Sessions',
+  },
+};
+
+function renderRichText(value) {
+  if (typeof value !== 'string' || value.trim() === '') {
+    return '';
+  }
+
+  return /<[a-z][\s\S]*>/i.test(value) ? value : `<p>${value}</p>`;
+}
+
+export default function EventDetailPage() {
+  const { slug } = useParams();
+  const { i18n } = useTranslation();
+  const locale = resolveLocale(i18n?.language);
+  const copy = COPY[locale] || COPY.ku;
+  const [payload, setPayload] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const eventId = useMemo(() => parseEventSlug(slug).id, [slug]);
+
+  useEffect(() => {
+    if (!eventId) {
+      setLoading(false);
+      setPayload(null);
+      return;
+    }
+
+    let ignore = false;
+
+    apiRequest(`/api/catalog/events/${eventId}`)
+      .then((response) => {
+        if (!ignore) {
+          setPayload(response?.data || null);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setPayload(null);
+        }
+      })
+      .finally(() => {
+        if (!ignore) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [eventId]);
+
+  if (!eventId) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-[55vh] bg-[#06070b] px-4 py-28 text-center text-white/70">
+        {copy.loading}
+      </div>
+    );
+  }
+
+  const event = payload?.event;
+
+  if (!event) {
+    return (
+      <div className="min-h-[55vh] bg-[#06070b] px-4 py-28 text-center text-white/70">
+        {copy.notFound}
+      </div>
+    );
+  }
+
+  const title = getLocalizedText(event.title, locale, event.titleText || 'Event');
+  const description = getLocalizedText(event.description, locale, event.descriptionText || '');
+  const subEvents = Array.isArray(payload?.subEvents) ? payload.subEvents : [];
+  const tickets = Array.isArray(payload?.tickets) ? payload.tickets : [];
+  const heroImage = event.desktopImage || event.mobileImage;
+  const checkoutRoute = buildEventCheckoutRoute(event);
+
+  return (
+    <div className="bg-[#06070b] text-white">
+      <section className="relative isolate min-h-[72vh] overflow-hidden">
+        {heroImage ? (
+          <img src={heroImage} alt={title} className="absolute inset-0 h-full w-full object-cover" />
+        ) : null}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,5,9,0.34)_0%,rgba(4,5,9,0.62)_38%,rgba(4,5,9,0.96)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(216,199,143,0.18),transparent_24%)]" />
+
+        <div className="relative mx-auto flex min-h-[72vh] max-w-7xl items-end px-4 pb-16 pt-10 sm:px-6 lg:px-8">
+          <div className="max-w-4xl">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/25 px-4 py-2 text-sm text-white/86 backdrop-blur transition hover:bg-black/40"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              {copy.back}
+            </Link>
+
+            <div className="mt-8 flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-[#eadcae]">
+              <span className="rounded-full border border-[#eadcae]/25 bg-[#eadcae]/10 px-4 py-2">
+                {event.countryNameText || 'Global'}
+              </span>
+              <span className="rounded-full border border-white/12 bg-black/20 px-4 py-2">
+                {event.upcoming ? 'Upcoming' : 'Public'}
+              </span>
+            </div>
+
+            <h1 className="mt-6 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">{title}</h1>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-[1.3rem] border border-white/10 bg-black/25 p-4 backdrop-blur">
+                <p className="text-[10px] uppercase tracking-[0.24em] text-white/45">{copy.date}</p>
+                <p className="mt-2 text-sm text-white">{event.date || '-'}</p>
+              </div>
+              <div className="rounded-[1.3rem] border border-white/10 bg-black/25 p-4 backdrop-blur">
+                <p className="text-[10px] uppercase tracking-[0.24em] text-white/45">{copy.location}</p>
+                <p className="mt-2 text-sm text-white">{event.countryNameText || 'Global'}</p>
+              </div>
+              <div className="rounded-[1.3rem] border border-white/10 bg-black/25 p-4 backdrop-blur">
+                <p className="text-[10px] uppercase tracking-[0.24em] text-white/45">{copy.sessions}</p>
+                <p className="mt-2 text-sm text-white">{subEvents.length}</p>
+              </div>
+            </div>
+
+            <div className="mt-8">
+              <Link
+                to={checkoutRoute}
+                className="inline-flex items-center gap-2 rounded-full bg-[#d8c78f] px-6 py-3 text-sm font-semibold text-[#1b1607] transition hover:bg-[#e6d7a1]"
+              >
+                <Wallet className="h-4 w-4" />
+                {copy.booking}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-20">
+        <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 sm:p-9">
+          <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.about}</p>
+          <div
+            className="prose prose-invert mt-6 max-w-none text-white/78 prose-p:leading-8 prose-li:leading-8 prose-strong:text-white prose-ul:list-disc"
+            dangerouslySetInnerHTML={{ __html: renderRichText(description) }}
+          />
+
+          <div className="mt-10">
+            <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.schedule}</p>
+            <div className="mt-5 space-y-4">
+              {subEvents.length > 0 ? subEvents.map((item) => (
+                <div key={item.id} className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">
+                        {getLocalizedText(item.title, locale, item.titleText || 'Sub-event')}
+                      </h3>
+                      {item.subTitleText ? <p className="mt-1 text-sm text-[#d8c78f]">{item.subTitleText}</p> : null}
+                    </div>
+                    <div className="text-sm text-white/60">
+                      {item.date || '-'} {item.startTime ? `· ${item.startTime}` : ''}
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm leading-7 text-white/70">
+                    {getLocalizedText(item.description, locale, item.descriptionText || '') || item.locationText || ''}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-3 text-xs uppercase tracking-[0.22em] text-white/45">
+                    {item.cityNameText ? (
+                      <span className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/[0.04] px-3 py-2">
+                        <MapPin className="h-3.5 w-3.5 text-[#d8c78f]" />
+                        {item.cityNameText}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+              )) : (
+                <div className="rounded-[1.5rem] border border-white/10 bg-black/20 px-5 py-8 text-sm text-white/60">
+                  {copy.noSubEvents}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <aside className="rounded-[2rem] border border-[#d8c78f]/20 bg-[linear-gradient(180deg,rgba(216,199,143,0.06)_0%,rgba(255,255,255,0.02)_100%)] p-7 sm:p-9">
+          <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.tickets}</p>
+          <div className="mt-5 space-y-4">
+            {tickets.length > 0 ? tickets.map((ticket) => (
+              <div key={ticket.id} className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-white">
+                      {getLocalizedText(ticket.title, locale, ticket.titleText || 'Ticket')}
+                    </h3>
+                    {ticket.subEventTitleText ? (
+                      <p className="mt-1 text-sm text-white/55">{ticket.subEventTitleText}</p>
+                    ) : null}
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs uppercase tracking-[0.22em] text-white/40">{copy.from}</p>
+                    <p className="mt-1 text-xl font-bold text-[#eadcae]">{ticket.price?.toLocaleString?.() || ticket.price} IQD</p>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-3 text-xs uppercase tracking-[0.2em] text-white/45">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/[0.04] px-3 py-2">
+                    <Ticket className="h-3.5 w-3.5 text-[#d8c78f]" />
+                    {copy.remaining}: {ticket.remainingCount ?? 0}
+                  </span>
+                  {ticket.cityNameText ? (
+                    <span className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/[0.04] px-3 py-2">
+                      <MapPin className="h-3.5 w-3.5 text-[#d8c78f]" />
+                      {ticket.cityNameText}
+                    </span>
+                  ) : null}
+                  {ticket.subEventDate ? (
+                    <span className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/[0.04] px-3 py-2">
+                      <CalendarDays className="h-3.5 w-3.5 text-[#d8c78f]" />
+                      {ticket.subEventDate}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            )) : (
+              <div className="rounded-[1.5rem] border border-white/10 bg-black/20 px-5 py-8 text-sm text-white/60">
+                {copy.noTickets}
+              </div>
+            )}
+          </div>
+
+          <Link
+            to={checkoutRoute}
+            className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#d8c78f] px-6 py-3 text-sm font-semibold text-[#1b1607] transition hover:bg-[#e6d7a1]"
+          >
+            <Wallet className="h-4 w-4" />
+            {copy.booking}
+          </Link>
+        </aside>
+      </section>
+    </div>
+  );
+}

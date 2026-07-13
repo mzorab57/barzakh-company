@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CheckCircle2, ClipboardList, MessageCircle, ShieldCheck, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getVolunteerRegistrationPageContent } from '@/data/pageContent';
+import { ApiError, apiRequest } from '@/lib/api';
 
 const initialForm = {
   firstName: '',
@@ -18,36 +19,13 @@ const initialForm = {
   agreeRules: false,
 };
 
-function buildWhatsappMessage(form, volunteerRegistrationPageContent) {
-  const { fields, booleanLabels, radioOptions } = volunteerRegistrationPageContent.form;
-  const volunteeredBeforeLabel = radioOptions.find(option => option.value === form.hasVolunteeredBefore)?.label || '';
-
-  return [
-    volunteerRegistrationPageContent.hero.title,
-    '',
-    `${fields.firstName}: ${form.firstName}`,
-    `${fields.lastName}: ${form.lastName}`,
-    `${fields.whatsappNumber}: ${form.whatsappNumber}`,
-    `${fields.phoneNumber}: ${form.phoneNumber}`,
-    `${fields.age}: ${form.age}`,
-    `${fields.gender}: ${form.gender}`,
-    `${fields.address}: ${form.address}`,
-    '',
-    `${fields.reason}: ${form.reason}`,
-    `${fields.volunteeredBefore}: ${volunteeredBeforeLabel}`,
-    `${fields.experience}: ${form.experience || '-'}`,
-    '',
-    `${fields.confirmCorrect}: ${form.confirmCorrect ? booleanLabels.yes : booleanLabels.no}`,
-    `${fields.agreeRules}: ${form.agreeRules ? booleanLabels.yes : booleanLabels.no}`,
-  ].join('\n');
-}
-
 export default function VolunteerRegistrationPage() {
   const { t } = useTranslation();
   const volunteerRegistrationPageContent = getVolunteerRegistrationPageContent(t);
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = event => {
     const { name, value, type, checked } = event.target;
@@ -57,7 +35,7 @@ export default function VolunteerRegistrationPage() {
     }));
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
     if (!form.confirmCorrect || !form.agreeRules) {
@@ -74,15 +52,45 @@ export default function VolunteerRegistrationPage() {
 
     setError('');
     setInfo('');
+    setSubmitting(true);
 
-    const whatsappText = buildWhatsappMessage(form, volunteerRegistrationPageContent);
-    const message = encodeURIComponent(whatsappText);
-    window.open(
-      `https://wa.me/${volunteerRegistrationPageContent.whatsappNumber}?text=${message}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
-    setInfo(volunteerRegistrationPageContent.form.errors.opened);
+    try {
+      const experience = [
+        form.gender ? `Gender: ${form.gender}` : '',
+        form.experience || '',
+      ]
+        .filter(Boolean)
+        .join('\n\n');
+
+      const response = await apiRequest('/api/volunteers/applications', {
+        method: 'POST',
+        body: {
+          first_name: form.firstName,
+          last_name: form.lastName,
+          whatsapp_number: form.whatsappNumber,
+          phone_number: form.phoneNumber,
+          age: Number(form.age),
+          address: form.address,
+          reason: form.reason,
+          has_volunteered_before: form.hasVolunteeredBefore,
+          experience: experience || null,
+          confirm_correct: form.confirmCorrect,
+          agree_rules: form.agreeRules,
+        },
+      });
+
+      setInfo(response?.message || volunteerRegistrationPageContent.form.errors.submitted || '');
+      setForm(initialForm);
+    } catch (requestError) {
+      if (requestError instanceof ApiError) {
+        setError(requestError.message || volunteerRegistrationPageContent.form.errors.required);
+      } else {
+        setError(volunteerRegistrationPageContent.form.errors.required);
+      }
+      setInfo('');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const { hero, note, requirements, form: formContent } = volunteerRegistrationPageContent;
@@ -193,9 +201,9 @@ export default function VolunteerRegistrationPage() {
               {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
               {info ? <p className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{info}</p> : null}
 
-              <button type="submit" className="inline-flex w-full items-center justify-center gap-3 rounded-[1.25rem] bg-[#1f7a44] px-6 py-4 text-sm font-bold uppercase tracking-[0.3em] text-white transition hover:bg-[#176438]">
-                <MessageCircle className="h-5 w-5" />
-                {formContent.submitLabel}
+              <button type="submit" disabled={submitting} className="inline-flex w-full items-center justify-center gap-3 rounded-[1.25rem] bg-[#1f7a44] px-6 py-4 text-sm font-bold uppercase tracking-[0.3em] text-white transition hover:bg-[#176438] disabled:cursor-not-allowed disabled:opacity-60">
+                {/* <MessageCircle className="h-5 w-5" /> */}
+                {submitting ? '...' : formContent.submitLabel}
               </button>
 
               {/* <p className="text-center text-xs leading-6 text-[#6f5d35]">{formContent.helperText}</p> */}

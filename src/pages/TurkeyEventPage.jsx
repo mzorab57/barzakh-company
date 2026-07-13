@@ -14,6 +14,8 @@ import {
   Waves,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import LiveEventBookingCta from '@/components/LiveEventBookingCta';
+import PublicEventsShowcase from '@/components/PublicEventsShowcase';
 import { SmoothScrollHero } from '@/components/ui/modern-hero';
 import { getTurkeyEventPageContent } from '@/data/pageContent';
 
@@ -302,6 +304,8 @@ export default function TurkeyEventPage() {
           </div>
         </div>
       </section>
+      <LiveEventBookingCta matchPath="/events/turkey-2027" />
+      <PublicEventsShowcase excludePath="/events/turkey-2027" />
     </div>
   );
 }

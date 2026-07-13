@@ -3,24 +3,67 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useTranslation } from 'react-i18next';
 import { getHeroSliderContent } from '@/data/componentContent';
+import { apiRequest } from '@/lib/api';
+import { getLocalizedText, resolveLocale } from '@/lib/catalog';
 
 const Slider = () => {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
-  const { t } = useTranslation();
+  const [mediaFeed, setMediaFeed] = useState(null);
+  const { t, i18n } = useTranslation();
   const heroSliderContent = getHeroSliderContent(t);
-
-  const next = () => setCurrent((prev) => (prev + 1) % heroSliderContent.slides.length);
-  const prev = () => setCurrent((prev) => (prev - 1 + heroSliderContent.slides.length) % heroSliderContent.slides.length);
+  const locale = resolveLocale(i18n?.language);
 
   useEffect(() => {
-    if (isPaused) return;
+    let ignore = false;
+
+    apiRequest('/api/catalog/media?categories=home_hero,homepage_slider')
+      .then((response) => {
+        if (!ignore) {
+          setMediaFeed(response?.data || null);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setMediaFeed(null);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const dynamicSlides = [
+    ...(mediaFeed?.categories?.home_hero?.items || []),
+    ...(mediaFeed?.categories?.homepage_slider?.items || []),
+  ].map((item, index) => ({
+    id: item.id || `media-slide-${index}`,
+    desktopImg: item.desktopImage,
+    mobileImg: item.mobileImage || item.desktopImage,
+    title: getLocalizedText(item.title, locale, ''),
+    category: '',
+  }));
+
+  const slides = dynamicSlides.length > 0 ? dynamicSlides : heroSliderContent.slides;
+
+  const next = () => setCurrent((prev) => (prev + 1) % slides.length);
+  const prev = () => setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+
+  useEffect(() => {
+    if (isPaused || slides.length <= 1) return;
     const timer = setInterval(() => {
       next();
     }, heroSliderContent.autoPlaySpeed);
     return () => clearInterval(timer);
-  }, [isPaused]);
+  }, [isPaused, slides.length, heroSliderContent.autoPlaySpeed]);
+
+  useEffect(() => {
+    if (current >= slides.length) {
+      setCurrent(0);
+    }
+  }, [current, slides.length]);
 
   const onTouchStart = (e) => {
     setIsPaused(true);
@@ -52,7 +95,7 @@ const Slider = () => {
           className="flex h-full w-full transition-transform duration-[1.2s] ease-[cubic-bezier(0.25,1,0.5,1)]"
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
-          {heroSliderContent.slides.map((slide, index) => (
+          {slides.map((slide, index) => (
             <div key={slide.id} className="relative w-full h-full flex-shrink-0 overflow-hidden bg-black">
               <img
                 src={slide.mobileImg}
@@ -116,7 +159,7 @@ const Slider = () => {
         </button>
 
         <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
-          {heroSliderContent.slides.map((_, i) => (
+          {slides.map((_, i) => (
             <button
               key={i}
               type="button"

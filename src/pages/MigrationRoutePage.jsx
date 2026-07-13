@@ -16,6 +16,8 @@ import {
   Users,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import LiveEventBookingCta from '@/components/LiveEventBookingCta';
+import PublicEventsShowcase from '@/components/PublicEventsShowcase';
 
 import { getMigrationRoutePageContent } from '@/data/pageContent';
 gsap.registerPlugin(ScrollTrigger);
@@ -321,6 +323,8 @@ export default function MigrationRoutePage() {
           </div>
         </div>
       </section>
+      <LiveEventBookingCta matchPath="/events/migration-route" />
+      <PublicEventsShowcase excludePath="/events/migration-route" />
     </div>
   );
 }

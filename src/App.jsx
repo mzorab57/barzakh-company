@@ -6,6 +6,9 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import EventCheckoutPage from './pages/EventCheckoutPage';
+import EventCheckoutStatusPage from './pages/EventCheckoutStatusPage';
+import EventDetailPage from './pages/EventDetailPage';
 import Home from './pages/Home';
 import MedinaStayPage from './pages/MedinaStayPage';
 import MenuLandingPage from './pages/MenuLandingPage';
@@ -75,6 +78,9 @@ function App() {
               path="/events/medina-stay"
               element={<MedinaStayPage />}
             />
+            <Route path="/events/:slug/checkout/status" element={<EventCheckoutStatusPage />} />
+            <Route path="/events/:slug/checkout" element={<EventCheckoutPage />} />
+            <Route path="/events/:slug" element={<EventDetailPage />} />
             <Route
               path="/apply-to-volunteer"
               element={<VolunteerRegistrationPage />}

@@ -16,6 +16,8 @@ import {
   Utensils,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import LiveEventBookingCta from '@/components/LiveEventBookingCta';
+import PublicEventsShowcase from '@/components/PublicEventsShowcase';
 import ParallaxComponent from '../components/ui/parallax-scrolling';
 import { getMedinaStayPageContent } from '@/data/pageContent';
 
@@ -313,6 +315,8 @@ export default function MedinaStayPage() {
           </div>
         </div>
       </section>
+      <LiveEventBookingCta matchPath="/events/medina-stay" />
+      <PublicEventsShowcase excludePath="/events/medina-stay" />
     </div>
   );
 }

@@ -1,9 +1,10 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CosmicParallaxBg } from '@/components/ui/parallax-cosmic-background';
 import { useTranslation } from 'react-i18next';
 import { getAboutPageContent } from '@/data/pageContent';
+import { apiRequest } from '@/lib/api';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,6 +12,27 @@ const About = () => {
   const rootRef = useRef(null);
   const { t } = useTranslation();
   const aboutPageContent = getAboutPageContent(t);
+  const [bannerImage, setBannerImage] = useState('');
+
+  useEffect(() => {
+    let ignore = false;
+
+    apiRequest('/api/catalog/media?category=about_banner')
+      .then((response) => {
+        if (!ignore) {
+          setBannerImage(response?.data?.categories?.about_banner?.primaryItem?.desktopImage || '');
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setBannerImage('');
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -108,7 +130,7 @@ const About = () => {
                 className="group relative overflow-hidden rounded-[2.2rem] border border-white/15 bg-black/25  backdrop-blur-xl"
               >
                 <img
-                  src={aboutPageContent.heroImage}
+                  src={bannerImage || aboutPageContent.heroImage}
                   alt={aboutPageContent.hero.imageAlt}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />

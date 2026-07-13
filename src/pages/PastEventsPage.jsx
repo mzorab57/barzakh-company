@@ -1,12 +1,52 @@
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CalendarDays, Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { getPastEventsArchivePageContent } from '@/data/pageContent';
+import { apiRequest } from '@/lib/api';
+import { buildPastEventSlug, getLocalizedText, resolveLocale } from '@/lib/catalog';
 
 export default function PastEventsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [dynamicEvents, setDynamicEvents] = useState([]);
   const content = getPastEventsArchivePageContent(t);
+  const locale = resolveLocale(i18n?.language);
+
+  useEffect(() => {
+    let ignore = false;
+
+    apiRequest('/api/catalog/past-events')
+      .then((response) => {
+        if (!ignore) {
+          setDynamicEvents(Array.isArray(response?.data?.items) ? response.data.items : []);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setDynamicEvents([]);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const events = useMemo(() => {
+    if (dynamicEvents.length === 0) {
+      return content.events;
+    }
+
+    return dynamicEvents.map((event, index) => ({
+      slug: buildPastEventSlug(event),
+      title: getLocalizedText(event.title, locale, event.titleText || 'Past Event'),
+      image: event.desktopImage || event.posterImage || content.events?.[index]?.image,
+      mobileImage: event.desktopImage || event.posterImage || content.events?.[index]?.mobileImage,
+      year: event.year || String(event.date || '').slice(0, 4),
+      category: Array.isArray(event.categories) ? (event.categories[0] || '') : '',
+    }));
+  }, [content.events, dynamicEvents, locale]);
 
   return (
     <section className="min-h-screen overflow-hidden bg-[#060504] px-4 py-16 text-white sm:px-6 lg:px-8">
@@ -28,7 +68,7 @@ export default function PastEventsPage() {
         </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-2">
-          {content.events.map((event, index) => (
+          {events.map((event) => (
             <Link
               key={event.slug}
               to={`/past-events/${event.slug}`}

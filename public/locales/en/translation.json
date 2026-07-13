@@ -593,7 +593,8 @@
         "errors": {
           "confirm": "Please confirm the information and agree to the rules before submitting.",
           "required": "Please complete all required fields before submitting.",
-          "opened": "WhatsApp opened with your volunteer details ready to send."
+          "opened": "WhatsApp opened with your volunteer details ready to send.",
+          "submitted": "Your volunteer application was submitted successfully."
         }
       }
     },
@@ -635,7 +636,8 @@
         "helperText": "After submitting, your stall request opens directly in WhatsApp for `0771-385-7171`.",
         "errors": {
           "required": "Please complete all required fields before submitting.",
-          "opened": "WhatsApp opened with your stall request ready to send."
+          "opened": "WhatsApp opened with your stall request ready to send.",
+          "submitted": "Your stall application was submitted successfully."
         }
       }
     }

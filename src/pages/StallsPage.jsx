@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CheckCircle2, MessageCircle, Store, Ticket } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getStallsPageContent } from '@/data/pageContent';
+import { ApiError, apiRequest } from '@/lib/api';
 
 const initialForm = {
   lastName: '',
@@ -12,28 +13,13 @@ const initialForm = {
   eventName: '',
 };
 
-function buildWhatsappMessage(form, stallsPageContent) {
-  const { fields } = stallsPageContent.form;
-
-  return [
-    stallsPageContent.hero.title,
-    '',
-    `${fields.lastName}: ${form.lastName}`,
-    `${fields.whatsappNumber}: ${form.whatsappNumber}`,
-    `${fields.phoneNumber}: ${form.phoneNumber}`,
-    '',
-    `${fields.purpose}: ${form.purpose}`,
-    `${fields.details}: ${form.details}`,
-    `${fields.eventName}: ${form.eventName}`,
-  ].join('\n');
-}
-
 export default function StallsPage() {
   const { t } = useTranslation();
   const stallsPageContent = getStallsPageContent(t);
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -43,7 +29,7 @@ export default function StallsPage() {
     }));
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
 
     if (!form.lastName || !form.whatsappNumber || !form.phoneNumber || !form.purpose || !form.details || !form.eventName) {
@@ -54,17 +40,33 @@ export default function StallsPage() {
 
     setError('');
     setInfo('');
+    setSubmitting(true);
 
-    const whatsappText = buildWhatsappMessage(form, stallsPageContent);
-    const message = encodeURIComponent(whatsappText);
+    try {
+      const response = await apiRequest('/api/stalls/applications', {
+        method: 'POST',
+        body: {
+          full_name: form.lastName,
+          phone: form.phoneNumber,
+          whatsapp: form.whatsappNumber,
+          booth_type: form.purpose,
+          business_name: form.eventName,
+          message: form.details,
+        },
+      });
 
-    window.open(
-      `https://wa.me/${stallsPageContent.whatsappNumber}?text=${message}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
-
-    setInfo(stallsPageContent.form.errors.opened);
+      setInfo(response?.message || stallsPageContent.form.errors.submitted || '');
+      setForm(initialForm);
+    } catch (requestError) {
+      if (requestError instanceof ApiError) {
+        setError(requestError.message || stallsPageContent.form.errors.required);
+      } else {
+        setError(stallsPageContent.form.errors.required);
+      }
+      setInfo('');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const { hero, note, highlights, form: formContent } = stallsPageContent;
@@ -176,9 +178,9 @@ export default function StallsPage() {
               {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
               {info ? <p className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{info}</p> : null}
 
-              <button type="submit" className="inline-flex w-full items-center justify-center gap-3 rounded-[1.25rem] bg-[#1f7a44] px-6 py-4 text-sm font-bold uppercase tracking-[0.3em] text-white transition hover:bg-[#176438]">
+              <button type="submit" disabled={submitting} className="inline-flex w-full items-center justify-center gap-3 rounded-[1.25rem] bg-[#1f7a44] px-6 py-4 text-sm font-bold uppercase tracking-[0.3em] text-white transition hover:bg-[#176438] disabled:cursor-not-allowed disabled:opacity-60">
                 <MessageCircle className="h-5 w-5" />
-                {formContent.submitLabel}
+                {submitting ? '...' : formContent.submitLabel}
               </button>
 
               {/* <p className="text-center text-xs leading-6 text-[#6f5d35]">{formContent.helperText}</p> */}

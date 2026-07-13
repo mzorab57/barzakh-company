@@ -1,18 +1,59 @@
 'use client';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Calendar, MapPin, ArrowRight, MoveRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { getUpcomingEventsSectionContent } from '@/data/componentContent';
+import { apiRequest } from '@/lib/api';
+import { getLocalizedText, resolveLocale, resolvePublicEventRoute } from '@/lib/catalog';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function UpcomingEvents() {
   const sectionRef = useRef(null);
   const trackRef = useRef(null);
-  const { t } = useTranslation();
+  const [dynamicEvents, setDynamicEvents] = useState([]);
+  const { t, i18n } = useTranslation();
   const upcomingEventsSectionContent = getUpcomingEventsSectionContent(t);
+  const locale = resolveLocale(i18n?.language);
+
+  useEffect(() => {
+    let ignore = false;
+
+    apiRequest('/api/catalog/events?upcoming=1&limit=5')
+      .then((response) => {
+        if (!ignore) {
+          setDynamicEvents(Array.isArray(response?.data?.items) ? response.data.items : []);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setDynamicEvents([]);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const events = useMemo(() => {
+    if (dynamicEvents.length === 0) {
+      return upcomingEventsSectionContent.events;
+    }
+
+    return dynamicEvents.map((event, index) => ({
+      title: getLocalizedText(event.title, locale, event.titleText || 'Event'),
+      image: event.desktopImage || upcomingEventsSectionContent.events?.[index]?.image,
+      category: event.countryNameText || '',
+      attendees: event.remainingTickets || event.ticketsCount || 0,
+      date: event.date || '',
+      location: event.countryNameText || '',
+      href: resolvePublicEventRoute(event, locale),
+    }));
+  }, [dynamicEvents, locale, upcomingEventsSectionContent.events]);
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
@@ -94,7 +135,7 @@ export default function UpcomingEvents() {
 
         <div className="absolute top-0 left-0 h-full w-full z-10 overflow-hidden">
           <div ref={trackRef} className="flex h-full will-change-transform pl-[42%]">
-            {upcomingEventsSectionContent.events.map((event, index) => (
+            {events.map((event, index) => (
               <EditorialCard key={index} event={event} index={index} content={upcomingEventsSectionContent} />
             ))}
             <div className="w-32 flex-shrink-0" />
@@ -129,7 +170,7 @@ export default function UpcomingEvents() {
         </div>
 
         <div className="space-y-12 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-8">
-          {upcomingEventsSectionContent.events.map((event, index) => (
+          {events.map((event, index) => (
             <EditorialCard key={index} event={event} index={index} isMobile content={upcomingEventsSectionContent} />
           ))}
         </div>
@@ -163,11 +204,12 @@ function EditorialCard({ event, index, isMobile = false, content }) {
   }, [index, isMobile]);
 
   return (
-    <article
+    <Link
+      to={event.href || '#'}
     
       ref={cardRef}
       className={`
-        group relative flex-shrink-0 bg-[#fafaf8]
+        group relative flex-shrink-0 bg-[#fafaf8] block
         ${isMobile ? 'w-full' : 'w-[550px] xl:w-[650px] h-full border-r border-[#1a1814]/10'}
       `}
     >
@@ -239,6 +281,6 @@ function EditorialCard({ event, index, isMobile = false, content }) {
           </button>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

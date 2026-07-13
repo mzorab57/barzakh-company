@@ -1,11 +1,13 @@
 'use client';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getPastEventsSectionContent } from '@/data/componentContent';
+import { apiRequest } from '@/lib/api';
+import { buildPastEventSlug, getLocalizedText, resolveLocale } from '@/lib/catalog';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,8 +15,45 @@ export default function PastEvents() {
   const sectionRef = useRef(null);
   const headerRef = useRef(null);
   const sliderRef = useRef(null);
-  const { t } = useTranslation();
+  const [dynamicEvents, setDynamicEvents] = useState([]);
+  const { t, i18n } = useTranslation();
   const pastEventsSectionContent = getPastEventsSectionContent(t);
+  const locale = resolveLocale(i18n?.language);
+
+  useEffect(() => {
+    let ignore = false;
+
+    apiRequest('/api/catalog/past-events')
+      .then((response) => {
+        if (!ignore) {
+          setDynamicEvents(Array.isArray(response?.data?.items) ? response.data.items : []);
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setDynamicEvents([]);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const pastEvents = useMemo(() => {
+    if (dynamicEvents.length === 0) {
+      return pastEventsSectionContent.pastEvents;
+    }
+
+    return dynamicEvents.map((event, index) => ({
+      title: getLocalizedText(event.title, locale, event.titleText || 'Past Event'),
+      image: event.desktopImage || event.posterImage || pastEventsSectionContent.pastEvents?.[index]?.image,
+      mobileImage: event.desktopImage || event.posterImage || pastEventsSectionContent.pastEvents?.[index]?.mobileImage,
+      year: event.year || String(event.date || '').slice(0, 4),
+      category: Array.isArray(event.categories) ? (event.categories[0] || '') : '',
+      href: `/past-events/${buildPastEventSlug(event)}`,
+    }));
+  }, [dynamicEvents, locale, pastEventsSectionContent.pastEvents]);
 
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
@@ -101,7 +140,7 @@ export default function PastEvents() {
           ref={sliderRef}
           className="flex gap-6 lg:gap-8 overflow-x-auto snap-x snap-mandatory hide-scrollbar pl-5 sm:pl-8 lg:pl-12 pr-[10vw] pb-0"
         >
-          {pastEventsSectionContent.pastEvents.map((event, index) => (
+          {pastEvents.map((event, index) => (
             <Link
               key={index}
               to={event.href || '/past-events'}
