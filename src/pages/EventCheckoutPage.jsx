@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, Minus, Plus, ShieldCheck, Ticket, UserRound, Wallet } from 'lucide-react';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ApiError, apiRequest } from '@/lib/api';
 import {
@@ -35,6 +35,10 @@ const COPY = {
     required: 'تکایە ticket و زانیاری سەرەکیەکان پڕبکەرەوە.',
     openPayment: 'چوونە FIB payment',
     ticketQty: 'دانە',
+    selectedSubEvent: 'Sub-event هەڵبژێردراو',
+    soldOut: 'ئەم ticket ـە تەواو بووە',
+    ticketStepRequired: 'تکایە لانیکەم یەک ticket هەڵبژێرە پێش چوونە هەنگاوی داهاتوو.',
+    detailsStepRequired: 'تکایە ناو، مۆبایل، ئیمەیڵ و ناونیشان پڕبکەرەوە پێش چوونە Payment.',
   },
   ar: {
     back: 'العودة إلى الفعالية',
@@ -58,6 +62,10 @@ const COPY = {
     required: 'يرجى اختيار تذكرة واحدة على الأقل وإكمال البيانات الأساسية.',
     openPayment: 'الانتقال إلى دفع FIB',
     ticketQty: 'الكمية',
+    selectedSubEvent: 'الجلسة المختارة',
+    soldOut: 'هذه التذكرة نفدت',
+    ticketStepRequired: 'يرجى اختيار تذكرة واحدة على الأقل قبل الانتقال إلى الخطوة التالية.',
+    detailsStepRequired: 'يرجى إدخال الاسم ورقم الهاتف والبريد الإلكتروني والعنوان قبل الانتقال إلى الدفع.',
   },
   en: {
     back: 'Back to event',
@@ -81,6 +89,10 @@ const COPY = {
     required: 'Please select at least one ticket and complete the required fields.',
     openPayment: 'Continue to FIB payment',
     ticketQty: 'Quantity',
+    selectedSubEvent: 'Selected sub-event',
+    soldOut: 'This ticket is sold out',
+    ticketStepRequired: 'Please select at least one ticket before continuing to the next step.',
+    detailsStepRequired: 'Please fill in name, phone, email, and address before continuing to Payment.',
   },
 };
 
@@ -91,6 +103,7 @@ function persistLookup(payload) {
 export default function EventCheckoutPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { i18n } = useTranslation();
   const locale = resolveLocale(i18n?.language);
   const copy = COPY[locale] || COPY.ku;
@@ -140,9 +153,27 @@ export default function EventCheckoutPage() {
   }, [eventId]);
 
   const event = payload?.event;
-  const tickets = Array.isArray(payload?.tickets) ? payload.tickets : [];
+  const allTickets = Array.isArray(payload?.tickets) ? payload.tickets : [];
+  const requestedSubEventId = Number(searchParams.get('subEventId') || 0) || null;
+  const tickets = useMemo(() => {
+    if (!requestedSubEventId) {
+      return allTickets;
+    }
+
+    return allTickets.filter((ticket) => ticket.subEventId === requestedSubEventId);
+  }, [allTickets, requestedSubEventId]);
   const title = getLocalizedText(event?.title, locale, event?.titleText || 'Event');
   const detailRoute = event ? `/events/${buildEventSlug(event)}` : '/';
+  const selectedSubEvent = useMemo(
+    () => allTickets.find((ticket) => ticket.subEventId === requestedSubEventId)?.subEventTitleText || '',
+    [allTickets, requestedSubEventId],
+  );
+
+  useEffect(() => {
+    setQuantities((current) => Object.fromEntries(
+      Object.entries(current).filter(([ticketId]) => tickets.some((ticket) => String(ticket.id) === ticketId)),
+    ));
+  }, [tickets]);
 
   const selectedItems = useMemo(
     () => tickets
@@ -160,6 +191,10 @@ export default function EventCheckoutPage() {
   );
   const donationAmount = Math.max(0, Number(customer.donation_amount || 0));
   const totalAmount = ticketsTotal + donationAmount;
+  const hasCustomerDetails = customer.customer_name.trim() !== ''
+    && customer.customer_phone.trim() !== ''
+    && customer.customer_email.trim() !== ''
+    && customer.customer_address.trim() !== '';
 
   if (!eventId) {
     return <Navigate to="/" replace />;
@@ -183,9 +218,29 @@ export default function EventCheckoutPage() {
     }));
   };
 
+  const handleNextStep = () => {
+    if (step === 0 && selectedItems.length === 0) {
+      setError(copy.ticketStepRequired);
+      return;
+    }
+
+    if (step === 1 && !hasCustomerDetails) {
+      setError(copy.detailsStepRequired);
+      return;
+    }
+
+    setError('');
+    setStep((current) => Math.min(2, current + 1));
+  };
+
   const handleSubmit = async () => {
-    if (selectedItems.length === 0 || customer.customer_name.trim() === '' || customer.customer_phone.trim() === '') {
-      setError(copy.required);
+    if (selectedItems.length === 0) {
+      setError(copy.ticketStepRequired);
+      return;
+    }
+
+    if (!hasCustomerDetails) {
+      setError(copy.detailsStepRequired);
       return;
     }
 
@@ -270,12 +325,15 @@ export default function EventCheckoutPage() {
               ))}
             </div>
 
-            <p className="mt-5 text-sm text-white/60">{stepHelp}</p>
+            {/* <p className="mt-5 text-sm text-white/60">{stepHelp}</p> */}
+
+         
 
             {step === 0 ? (
               <div className="mt-8 space-y-4">
                 {tickets.length > 0 ? tickets.map((ticket) => {
                   const quantity = Number(quantities[ticket.id] || 0);
+                  const isSoldOut = Number(ticket.remainingCount || 0) <= 0;
                   return (
                     <div key={ticket.id} className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
                       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -283,18 +341,31 @@ export default function EventCheckoutPage() {
                           <h3 className="text-lg font-semibold text-white">{getLocalizedText(ticket.title, locale, ticket.titleText || 'Ticket')}</h3>
                           {ticket.subEventTitleText ? <p className="mt-1 text-sm text-white/55">{ticket.subEventTitleText}</p> : null}
                           <div className="mt-3 flex flex-wrap gap-3 text-xs uppercase tracking-[0.2em] text-white/45">
-                            <span className="rounded-full border border-white/8 bg-white/[0.04] px-3 py-2">{copy.ticketQty}: {quantity}</span>
-                            <span className="rounded-full border border-white/8 bg-white/[0.04] px-3 py-2">{ticket.remainingCount} left</span>
+                            {isSoldOut ? (
+                              <span className="rounded-full border border-rose-400/25 bg-rose-400/10 px-3 py-2 text-rose-200">
+                                {copy.soldOut}
+                              </span>
+                            ) : null}
                           </div>
                         </div>
                         <div className="text-right">
                           <p className="text-2xl font-bold text-[#eadcae]">{Number(ticket.price || 0).toLocaleString()} IQD</p>
                           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] p-1">
-                            <button type="button" onClick={() => updateQuantity(ticket, quantity - 1)} className="rounded-full p-2 text-white/72 transition hover:bg-white/10">
+                            <button
+                              type="button"
+                              onClick={() => updateQuantity(ticket, quantity - 1)}
+                              disabled={isSoldOut}
+                              className="rounded-full p-2 text-white/72 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35"
+                            >
                               <Minus className="h-4 w-4" />
                             </button>
                             <span className="min-w-10 text-center text-sm font-semibold">{quantity}</span>
-                            <button type="button" onClick={() => updateQuantity(ticket, quantity + 1)} className="rounded-full p-2 text-white/72 transition hover:bg-white/10">
+                            <button
+                              type="button"
+                              onClick={() => updateQuantity(ticket, quantity + 1)}
+                              disabled={isSoldOut}
+                              className="rounded-full p-2 text-white/72 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35"
+                            >
                               <Plus className="h-4 w-4" />
                             </button>
                           </div>
@@ -379,7 +450,7 @@ export default function EventCheckoutPage() {
               {step < 2 ? (
                 <button
                   type="button"
-                  onClick={() => setStep((current) => Math.min(2, current + 1))}
+                  onClick={handleNextStep}
                   className="inline-flex items-center gap-2 rounded-full bg-[#d8c78f] px-5 py-3 text-sm font-semibold text-[#1b1607] transition hover:bg-[#e6d7a1]"
                 >
                   {copy.next}

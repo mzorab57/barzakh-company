@@ -14,7 +14,7 @@ const Home = () => {
       <Hero />
    
       <AboutSection />
-      <UpcomingEvents />
+      {/* <UpcomingEvents /> */}
       <HeroVideoSection />
       <PastEvents />
     </div>

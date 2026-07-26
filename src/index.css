@@ -14,6 +14,7 @@
   --font-en: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-ar: 'Noto Naskh Arabic', 'Geeza Pro', 'Tahoma', serif;
   --font-ku: 'Rabar 038', 'Noto Sans Arabic', 'Geeza Pro', 'Tahoma', sans-serif;
+  --font-ku-rich: 'Noto Sans Arabic', 'Geeza Pro', 'Tahoma', sans-serif;
 }
 
 html,
@@ -74,4 +75,15 @@ select {
 
 *::-webkit-scrollbar-corner {
   background: rgba(18, 18, 18, 0.96);
+}
+
+.event-description-ku {
+  font-family: var(--font-ku-rich);
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+.event-description-ku strong,
+.event-description-ku b {
+  font-weight: 700;
 }
