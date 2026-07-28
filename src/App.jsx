@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import DonationStatusPage from './pages/DonationStatusPage';
 import EventCheckoutPage from './pages/EventCheckoutPage';
 import EventCheckoutStatusPage from './pages/EventCheckoutStatusPage';
 import EventDetailPage from './pages/EventDetailPage';
@@ -78,6 +79,7 @@ function App() {
               path="/events/medina-stay"
               element={<MedinaStayPage />}
             />
+            <Route path="/donations/status" element={<DonationStatusPage />} />
             <Route path="/events/:slug/checkout/status" element={<EventCheckoutStatusPage />} />
             <Route path="/events/:slug/checkout" element={<EventCheckoutPage />} />
             <Route path="/events/:slug" element={<EventDetailPage />} />

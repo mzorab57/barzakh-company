@@ -23,6 +23,7 @@ const COPY = {
     location: 'وڵات / هەرێم',
     sessions: 'شوێن',
     subEventLocation: 'شوێن',
+    soldOut: 'تەواوبووە',
   },
   ar: {
     back: 'رجوع',
@@ -36,6 +37,7 @@ const COPY = {
     location: 'الدولة / الإقليم',
     sessions: 'المکان',
     subEventLocation: 'المکان',
+    soldOut: 'نفدت التذاكر',
   },
   en: {
     back: 'Back',
@@ -49,6 +51,7 @@ const COPY = {
     location: 'Country / City',
     sessions: 'Location',
     subEventLocation: 'Location',
+    soldOut: 'Sold Out',
   },
 };
 
@@ -112,8 +115,18 @@ export default function EventDetailPage() {
   const title = getLocalizedText(event?.title, locale, event?.titleText || 'Event');
   const description = getLocalizedText(event?.description, locale, event?.descriptionText || '');
   const subEvents = Array.isArray(payload?.subEvents) ? payload.subEvents : [];
+  const tickets = Array.isArray(payload?.tickets) ? payload.tickets : [];
   const heroImage = event?.desktopImage || event?.mobileImage;
   const checkoutRoute = event ? buildEventCheckoutRoute(event) : '/';
+  const availableSubEventIds = useMemo(
+    () =>
+      new Set(
+        tickets
+          .filter((ticket) => ticket?.subEventId && ticket?.canCheckout)
+          .map((ticket) => Number(ticket.subEventId)),
+      ),
+    [tickets],
+  );
 
   if (!eventId) {
     return <Navigate to="/" replace />;
@@ -201,6 +214,7 @@ export default function EventDetailPage() {
             <div className="mt-5 space-y-3">
               {subEvents.map((item) => {
                 const venueText = item.locationText || item.cityNameText || '';
+                const canBookSubEvent = availableSubEventIds.has(Number(item.id));
 
                 return (
                   <div
@@ -234,13 +248,20 @@ export default function EventDetailPage() {
                         </div>
                       </div>
 
-                      <Link
-                        to={`${checkoutRoute}?subEventId=${item.id}`}
-                        className="inline-flex items-center gap-2 rounded-full bg-[#d8c78f] px-5 py-2.5 text-sm font-semibold text-[#1b1607] transition hover:bg-[#e6d7a1]"
-                      >
-                        <Wallet className="h-4 w-4" />
-                        {copy.booking}
-                      </Link>
+                      {canBookSubEvent ? (
+                        <Link
+                          to={`${checkoutRoute}?subEventId=${item.id}`}
+                          className="inline-flex items-center gap-2 rounded-full bg-[#d8c78f] px-5 py-2.5 text-sm font-semibold text-[#1b1607] transition hover:bg-[#e6d7a1]"
+                        >
+                          <Wallet className="h-4 w-4" />
+                          {copy.booking}
+                        </Link>
+                      ) : (
+                        <span className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white/55">
+                          <Wallet className="h-4 w-4" />
+                          {copy.soldOut}
+                        </span>
+                      )}
                     </div>
                   </div>
                 );

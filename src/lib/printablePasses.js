@@ -14,20 +14,30 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
-function buildClientMessageHtml(display = {}) {
-  const passengerName = display.passengerName || 'Guest';
-  const eventDate = display.eventDate || 'N/A';
-  const subEventTitle = display.subEventTitle || 'Main event';
-  const location = display.location || 'N/A';
+function normalizeTimeValue(value) {
+  const raw = String(value || '').trim();
 
-  return `
-    <div style="margin-top:22px;padding:18px 20px;border-radius:22px;background:#faf7ef;border:1px solid #eadfb9;line-height:1.9;font-size:14px;color:#2f2410;">
-      <p style="margin:0 0 10px;font-weight:700;">السلام عليكم ورحمه الله وبركاته</p>
-      <p style="margin:0 0 10px;">${escapeHtml(passengerName)} خۆشەویست،</p>
-      <p style="margin:0 0 10px;">سوپاس بۆ داواکارییەکەت، داواکارییەکەت بە سەرکەوتوویی ئەنجامدرا. هیوادارین بە بەژداری کردنت ببێتە مایەی خێر و بەرەکەت بۆ دونیا و قیانەی، ئێمەش بەردەوام بین کە خزمەتکردنی ئێوەی ئازیز و خۆشەویست و دین و نیشتیمانمان بکەین.</p>
-      <p style="margin:0;"><strong>${escapeHtml(eventDate)}</strong> / <strong>${escapeHtml(subEventTitle)}</strong> [ <strong>${escapeHtml(location)}</strong> ]</p>
-    </div>
-  `;
+  if (!raw) {
+    return '';
+  }
+
+  return raw.slice(0, 5);
+}
+
+function buildScheduleText(eventDate, startTime, endTime) {
+  const dateText = String(eventDate || '').trim();
+  const startText = normalizeTimeValue(startTime);
+  const endText = normalizeTimeValue(endTime);
+
+  if (dateText && startText && endText) {
+    return `${dateText} | ${startText} - ${endText}`;
+  }
+
+  if (dateText && startText) {
+    return `${dateText} | ${startText}`;
+  }
+
+  return dateText || 'N/A';
 }
 
 function buildPdfFileName(payload, options = {}) {
@@ -57,8 +67,29 @@ async function buildQrEntries(payload) {
   );
 }
 
-function createPdfCardNode({ passItem, qrDataUrl, orderNumber }) {
+function buildPassCardViewModel(passItem, index, total, orderNumber) {
   const display = passItem.display || {};
+  const ticketIndex = Number(passItem.ticketIndex || index + 1);
+  const ticketCount = Number(passItem.ticketCount || total || 1);
+
+  return {
+    title: display.title || 'Event Pass',
+    subtitle: display.subtitle || 'Ticket',
+    subEventTitle: display.subEventTitle || '',
+    passengerName: display.passengerName || 'Guest',
+    orderNumber: display.orderNumber || orderNumber || '',
+    eventDate: display.eventDate || 'N/A',
+    startTime: display.startTime || '',
+    endTime: display.endTime || '',
+    scheduleText: buildScheduleText(display.eventDate || 'N/A', display.startTime || '', display.endTime || ''),
+    location: display.location || '',
+    ticketCode: passItem.ticketCode || '',
+    sequenceLabel: `TICKET ${ticketIndex} OF ${ticketCount}`,
+  };
+}
+
+function createPdfCardNode({ passItem, qrDataUrl, orderNumber }, index, total) {
+  const view = buildPassCardViewModel(passItem, index, total, orderNumber);
   const wrapper = document.createElement('article');
 
   wrapper.style.cssText = [
@@ -71,49 +102,49 @@ function createPdfCardNode({ passItem, qrDataUrl, orderNumber }) {
     'box-sizing:border-box',
     'font-family:Doran, Inter, Arial, sans-serif',
     'box-shadow:0 10px 30px rgba(17,24,39,0.08)',
+    'direction:ltr',
+    'text-align:left',
   ].join(';');
 
   wrapper.innerHTML = `
-    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;">
-      <p style="margin:0;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#6b7280;">NukhbaGlobal Pass</p>
-      <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:0.16em;color:#92400e;">${escapeHtml(display.status || 'valid')}</p>
+    <div style="direction:ltr;text-align:left;">
+      <div style="min-width:0;max-width:100%;">
+        <h1 style="margin:0;font-size:28px;line-height:1.2;text-align:left;">${escapeHtml(view.title)}</h1>
+        ${view.subEventTitle ? `<p style="margin:10px 0 0;color:#6b7280;font-size:15px;text-align:left;">${escapeHtml(view.subEventTitle)}</p>` : ''}
+        <div style="margin-top:16px;display:grid;gap:6px;justify-items:start;text-align:left;">
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">TICKET TYPE</span>
+          <div style="display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;color:#111827;font-size:12px;font-weight:700;white-space:nowrap;">${escapeHtml(view.subtitle)}</div>
+        </div>
+      </div>
     </div>
-    <h1 style="margin:18px 0 0;font-size:26px;line-height:1.25;">${escapeHtml(display.title || 'Event Pass')}</h1>
-    <p style="margin:8px 0 0;color:#4b5563;font-size:15px;">${escapeHtml(display.subtitle || 'Ticket')}</p>
-    <div style="display:grid;grid-template-columns:1fr 180px;gap:24px;margin-top:24px;align-items:center;">
-      <div style="display:grid;gap:14px;">
-        <p style="margin:0;display:grid;gap:4px;font-size:14px;">
-          <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#6b7280;">Passenger</span>
-          ${escapeHtml(display.passengerName || 'Guest')}
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:24px;margin-top:24px;align-items:center;direction:ltr;">
+      <div style="display:grid;gap:14px;text-align:left;">
+        <p style="margin:0;display:grid;gap:4px;font-size:14px;text-align:left;">
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">PASSENGER</span>
+          ${escapeHtml(view.passengerName)}
         </p>
-        <p style="margin:0;display:grid;gap:4px;font-size:14px;">
-          <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#6b7280;">Order</span>
-          ${escapeHtml(display.orderNumber || orderNumber || '')}
+        <p style="margin:0;display:grid;gap:4px;font-size:14px;text-align:left;">
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">ORDER</span>
+          ${escapeHtml(view.orderNumber)}
         </p>
-        <p style="margin:0;display:grid;gap:4px;font-size:14px;">
-          <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#6b7280;">Event Date</span>
-          ${escapeHtml(display.eventDate || 'N/A')}
+        <p style="margin:0;display:grid;gap:4px;font-size:14px;text-align:left;">
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">EVENT DATE</span>
+          ${escapeHtml(view.scheduleText)}
         </p>
-        <p style="margin:0;display:grid;gap:4px;font-size:14px;">
-          <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#6b7280;">Session</span>
-          ${escapeHtml(display.subEventTitle || 'Main event')}
-        </p>
-        ${display.location ? `
-        <p style="margin:0;display:grid;gap:4px;font-size:14px;">
-          <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#6b7280;">Location</span>
-          ${escapeHtml(display.location)}
+        ${view.location ? `
+        <p style="margin:0;display:grid;gap:4px;font-size:14px;text-align:left;">
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">LOCATION</span>
+          ${escapeHtml(view.location)}
         </p>
         ` : ''}
-        <p style="margin:0;display:grid;gap:4px;font-size:14px;">
-          <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.14em;color:#6b7280;">Ticket Code</span>
-          ${escapeHtml(passItem.ticketCode || '')}
-        </p>
       </div>
-      <div style="display:flex;align-items:center;justify-content:center;border:1px solid #e5e7eb;border-radius:24px;padding:12px;background:#ffffff;">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #e5e7eb;border-radius:24px;padding:14px;background:#ffffff;text-align:center;">
+        <p style="margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8a6a2f;">${escapeHtml(view.sequenceLabel)}</p>
         <img src="${qrDataUrl}" alt="QR code" style="width:100%;height:auto;display:block;" />
+        <p style="margin:12px 0 0;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">TICKET CODE</p>
+        <p style="margin:6px 0 0;font-size:18px;font-weight:700;letter-spacing:0.16em;color:#111827;">${escapeHtml(view.ticketCode)}</p>
       </div>
     </div>
-    ${buildClientMessageHtml(display)}
   `;
 
   return wrapper;
@@ -184,14 +215,40 @@ function triggerPdfDownload(pdfBlob, fileName) {
   window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
 }
 
+export async function buildInlineEmailPasses(payload) {
+  const qrEntries = await buildQrEntries(payload);
+  const orderNumber = payload?.order?.orderNumber || 'Order';
+  const total = qrEntries.length;
+
+  return qrEntries.map(({ passItem, qrDataUrl }, index) => {
+    const view = buildPassCardViewModel(passItem, index, total, orderNumber);
+
+    return {
+      sequenceLabel: view.sequenceLabel,
+      title: view.title,
+      subtitle: view.subtitle,
+      subEventTitle: view.subEventTitle,
+      passengerName: view.passengerName,
+      orderNumber: view.orderNumber,
+      eventDate: view.eventDate,
+      startTime: view.startTime,
+      endTime: view.endTime,
+      scheduleText: view.scheduleText,
+      location: view.location,
+      ticketCode: view.ticketCode,
+      qrDataUrl,
+    };
+  });
+}
+
 export async function downloadPrintablePassesPdf(payload, options = {}) {
   const qrEntries = await buildQrEntries(payload);
   const captureRoot = createPdfCaptureRoot();
   const orderNumber = payload?.order?.orderNumber || 'Order';
 
   try {
-    qrEntries.forEach((entry) => {
-      captureRoot.appendChild(createPdfCardNode({ ...entry, orderNumber }));
+    qrEntries.forEach((entry, index) => {
+      captureRoot.appendChild(createPdfCardNode({ ...entry, orderNumber }, index, qrEntries.length));
     });
 
     await waitForImages(captureRoot);

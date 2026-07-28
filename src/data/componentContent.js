@@ -126,7 +126,7 @@ export const getFooterContent = t => {
     ]),
     credits: {
       ...((footer && footer.credits) || {}),
-      href: 'https://wa.me/9647713857171',
+      href: 'https://wa.me/9647701411893',
     },
   };
 };
