@@ -1,18 +1,20 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CheckCircle2, Clock3, Download, QrCode, RefreshCcw, Ticket, XCircle } from 'lucide-react';
-import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom';
+import { CheckCircle2, Clock3, QrCode, Ticket, X, XCircle } from 'lucide-react';
+import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ApiError, apiRequest } from '@/lib/api';
-import { buildInlineEmailPasses, downloadPrintablePassesPdf } from '@/lib/printablePasses';
+import { buildInlineEmailPasses } from '@/lib/printablePasses';
 import { parseEventSlug, resolveLocale } from '@/lib/catalog';
 
 const LOOKUP_STORAGE_KEY = 'nukhbaglobal_last_checkout_lookup';
+const AUTO_EMAIL_STORAGE_PREFIX = 'nukhbaglobal_auto_email_sent_';
+const RETURN_MODAL_STORAGE_PREFIX = 'nukhbaglobal_return_modal_seen_';
 
 const COPY = {
   ku: {
-    title: 'Payment & Passes',
+    title: 'دۆخی پارەدان ',
     missing: 'زانیارییەکانی ئەم order ـە لەسەر ئەم device ـە نەدۆزرایەوە.',
-    pending: 'Payment هێشتا چاوەڕێیە. دوای تەواوکردن لە FIB، ئەم لاپەڕەیە بە شێوەی خۆکار status ـەکە نوێ دەکاتەوە.',
+    pending: '',
     paid: 'پارەدان سەرکەوتوو بوو. ئێستا دەتوانیت QR پاسەکانت دابەزێنیت یان وەک PDF بیانپارێزیت.',
     failed: 'Payment سەرنەکەوت. دەتوانیت دووبارە status بپشکنیت.',
     check: 'پشکنینی status',
@@ -27,12 +29,21 @@ const COPY = {
     printableEmpty: 'هێشتا printable passes ئامادە نین.',
     back: 'گەڕانەوە بۆ booking',
     shareEmail: 'ناردن بە Email',
-    shareWhatsApp: 'ناردن بە WhatsApp',
     downloading: 'چاوەڕێی دروستکردنی PDF...',
     sendingEmail: 'چاوەڕێی ناردنی email...',
     emailSent: 'تیکەتەکان بە سەرکەوتوویی نێردران بۆ ئیمەیڵی customer.',
-    fibMobileHint: 'ئەگەر لە مۆبایل دایت، کلیک لەم دوگمەیە بکە بۆ کردنەوەی ڕاستەوخۆی FIB و تەواوکردنی پارەدان.',
+    emailAutoSent: 'تیکەتەکان بە شێوەی خۆکار بۆ ئیمەیڵی customer نێردران.',
+    emailAutoSending: 'تیکەتەکان بە شێوەی خۆکار بۆ ئیمەیڵ دەنێردرێن...',
+    fibMobileHint: '',
     openingFib: 'چاوەڕێی ئامادەکردنی لینکی FIB...',
+    ticketsReadyTitle: 'تیکەتەکانت ئامادەن',
+    ticketsReadyHint: 'تکایە screenshot ـێک بگرە و لە مۆبایلەکەت هەڵیبگرە بۆ کاتی چوونە ژوورەوە.',
+    codeLabel: 'کۆد',
+    passengerLabel: 'ئامادەبوو',
+    statusLabel: 'دۆخ',
+    subEventLabel: 'Sub-event',
+    scheduleLabel: 'بەروار و کات',
+    close: 'داخستن',
   },
   ar: {
     title: 'الدفع والتذاكر',
@@ -52,12 +63,21 @@ const COPY = {
     printableEmpty: 'لم تصبح التذاكر القابلة للطباعة جاهزة بعد.',
     back: 'العودة إلى الحجز',
     shareEmail: 'إرسال عبر البريد',
-    shareWhatsApp: 'إرسال عبر واتساب',
     downloading: 'جاري إنشاء ملف PDF...',
     sendingEmail: 'جاري إرسال البريد...',
     emailSent: 'تم إرسال التذاكر بنجاح إلى بريد العميل.',
-    fibMobileHint: 'إذا كنت على الهاتف، اضغط هذا الزر لفتح تطبيق FIB مباشرة وإكمال الدفع.',
+    emailAutoSent: 'تم إرسال التذاكر تلقائياً إلى بريد العميل.',
+    emailAutoSending: 'يتم الآن إرسال التذاكر تلقائياً إلى البريد...',
+    fibMobileHint: '',
     openingFib: 'جارٍ تجهيز رابط FIB...',
+    ticketsReadyTitle: 'تذاكرك جاهزة',
+    ticketsReadyHint: 'يرجى أخذ لقطة شاشة والاحتفاظ بها على هاتفك لاستخدامها عند الدخول.',
+    codeLabel: 'الرمز',
+    passengerLabel: 'الاسم',
+    statusLabel: 'الحالة',
+    subEventLabel: 'الفعالية الفرعية',
+    scheduleLabel: 'التاريخ والوقت',
+    close: 'إغلاق',
   },
   en: {
     title: 'Payment & Passes',
@@ -77,12 +97,21 @@ const COPY = {
     printableEmpty: 'Printable passes are not ready yet.',
     back: 'Back to booking',
     shareEmail: 'Share by Email',
-    shareWhatsApp: 'Share by WhatsApp',
     downloading: 'Preparing PDF...',
     sendingEmail: 'Sending email...',
     emailSent: 'Tickets were sent successfully to the customer email.',
-    fibMobileHint: 'If you are on mobile, tap this button to open the FIB app directly and complete payment.',
+    emailAutoSent: 'Tickets were sent automatically to the customer email.',
+    emailAutoSending: 'Sending tickets automatically by email...',
+    fibMobileHint: '',
     openingFib: 'Preparing the FIB link...',
+    ticketsReadyTitle: 'Your Tickets Are Ready',
+    ticketsReadyHint: 'Please take a screenshot and save it on your phone for entry.',
+    codeLabel: 'Code',
+    passengerLabel: 'Passenger',
+    statusLabel: 'Status',
+    subEventLabel: 'Sub-event',
+    scheduleLabel: 'Date & Time',
+    close: 'Close',
   },
 };
 
@@ -114,47 +143,136 @@ function buildLookupFromSearchParams(searchParams) {
   };
 }
 
-function normalizeWhatsAppNumber(phone) {
-  const digits = String(phone || '').replace(/\D/g, '');
-
-  if (!digits) {
-    return '';
+function buildFibReturnUrl({ slug, customerPhone, customerEmail, customerName }) {
+  if (typeof window === 'undefined') {
+    return null;
   }
 
-  if (digits.startsWith('964')) {
-    return digits;
+  const params = new URLSearchParams({ returned: '1' });
+
+  if (customerPhone) {
+    params.set('phone', customerPhone);
+  }
+  if (customerEmail) {
+    params.set('email', customerEmail);
+  }
+  if (customerName) {
+    params.set('name', customerName);
   }
 
-  if (digits.startsWith('0') && digits.length === 11) {
-    return `964${digits.slice(1)}`;
-  }
-
-  if (digits.startsWith('7') && digits.length === 10) {
-    return `964${digits}`;
-  }
-
-  return digits;
+  return `${window.location.origin}/events/${slug}/checkout/status?${params.toString()}`;
 }
 
-function buildWhatsAppPassMessage({ passengerName, eventDate, subEventTitle, location, orderNumber, passesCount, shareUrl }) {
-  const lines = [
-    'السلام عليكم ورحمه الله وبركاته',
-    `${passengerName || 'Guest'} خۆشەویست،`,
-    '',
-    'سوپاس بۆ داواکارییەکەت،',
-    'داواکارییەکەت بە سەرکەوتوویی ئەنجامدرا هیوادارین بە بەژداری کردنت ببێتە مایەی خێر و بەرەکەت بۆ دونیا و قیانەی، ئێمەش بەردەوام بین کە خزمەتکردنی ئێوەی ئازیز و خۆشەویست و دین و نیشتیمانمان بکەین.',
-    '',
-    `${eventDate || 'N/A'} / ${subEventTitle || 'Main event'} [ ${location || 'N/A'} ]`,
-    '',
-    `Order: ${orderNumber || '-'}`,
-    `Passes: ${passesCount || 0}`,
-  ];
+function TicketsReadyModal({ open, passes, customerName, copy, onClose }) {
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
 
-  if (shareUrl) {
-    lines.push('', shareUrl);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
+  if (!open) {
+    return null;
   }
 
-  return lines.join('\n');
+  return (
+    <div className="fixed inset-0 z-[140] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="relative w-full max-w-3xl overflow-hidden rounded-[2rem] border border-white/10 bg-[#090b12] shadow-[0_30px_90px_rgba(0,0,0,0.45)]"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-4 top-4 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/55 text-white transition hover:bg-white hover:text-black"
+          aria-label={copy.close}
+        >
+          <X className="h-5 w-5" />
+        </button>
+
+        <div className="border-b border-white/10 px-6 py-6 sm:px-8">
+          <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.passes}</p>
+          <h2 className="mt-3 text-2xl font-bold text-white">{copy.ticketsReadyTitle}</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-white/70">{copy.ticketsReadyHint}</p>
+          {customerName ? <p className="mt-3 text-sm text-white/55">{customerName}</p> : null}
+        </div>
+
+        <div className="max-h-[75vh] overflow-y-auto px-6 py-6 sm:px-8">
+          <div className="space-y-4">
+            {passes.map((passItem, index) => (
+              <div key={passItem.ticketCode || `${passItem.title || 'pass'}-${index}`} className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+                  <div className="mx-auto w-full max-w-[152px] shrink-0 rounded-[1.35rem] border border-white/10 bg-white p-3">
+                    {passItem.qrDataUrl ? (
+                      <img
+                        src={passItem.qrDataUrl}
+                        alt={`${passItem.ticketCode || 'Ticket'} QR`}
+                        className="aspect-square w-full rounded-[1rem] object-contain"
+                      />
+                    ) : (
+                      <div className="flex aspect-square w-full items-center justify-center rounded-[1rem] bg-slate-100 text-slate-500">
+                        <QrCode className="h-10 w-10" />
+                      </div>
+                    )}
+                    <p className="mt-3 truncate text-center text-xs font-semibold tracking-[0.18em] text-slate-800">
+                      {passItem.ticketCode || 'TICKET'}
+                    </p>
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start gap-3">
+                      <Ticket className="mt-0.5 h-5 w-5 shrink-0 text-[#d8c78f]" />
+                      <div className="min-w-0">
+                        <h3 className="font-semibold text-white">{passItem.title || 'Event Pass'}</h3>
+                        <p className="text-sm text-white/55">{passItem.subtitle || passItem.subEventTitle || ''}</p>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      {passItem.subEventTitle ? (
+                        <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.subEventLabel}</p>
+                          <p className="mt-2 text-sm text-white">{passItem.subEventTitle}</p>
+                        </div>
+                      ) : null}
+
+                      {passItem.scheduleText ? (
+                        <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.scheduleLabel}</p>
+                          <p className="mt-2 text-sm text-white">{passItem.scheduleText}</p>
+                        </div>
+                      ) : null}
+
+                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.codeLabel}</p>
+                        <p className="mt-2 text-sm text-white">{passItem.ticketCode || '-'}</p>
+                      </div>
+
+                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.passengerLabel}</p>
+                        <p className="mt-2 text-sm text-white">{passItem.passengerName || customerName || 'Guest'}</p>
+                      </div>
+
+                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 sm:col-span-2">
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.statusLabel}</p>
+                        <p className="mt-2 text-sm text-white">{passItem.status || 'valid'}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function EventCheckoutStatusPage() {
@@ -170,12 +288,12 @@ export default function EventCheckoutStatusPage() {
   const [trackingPayload, setTrackingPayload] = useState(null);
   const [passesPayload, setPassesPayload] = useState(null);
   const [printablePayload, setPrintablePayload] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [sharingChannel, setSharingChannel] = useState(null);
-  const [openingFib, setOpeningFib] = useState(false);
+  const [showTicketsModal, setShowTicketsModal] = useState(false);
+  const [modalPasses, setModalPasses] = useState([]);
   const [currentPaymentId, setCurrentPaymentId] = useState(() => searchLookup?.paymentId || lookup?.paymentId || null);
   const [paymentLinksOverride, setPaymentLinksOverride] = useState(null);
+  const [openingFib, setOpeningFib] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const refreshInFlightRef = useRef(false);
@@ -185,8 +303,9 @@ export default function EventCheckoutStatusPage() {
   const paymentId = currentPaymentId;
   const customer_phone = activeLookup?.customerPhone || null;
   const customer_email = activeLookup?.customerEmail || null;
+  const customer_name = activeLookup?.customerName || null;
 
-  const refreshStatus = useCallback(async ({ silent = false } = {}) => {
+  const refreshStatus = useCallback(async () => {
     if (!orderNumber || (!customer_phone && !customer_email)) {
       return;
     }
@@ -196,9 +315,6 @@ export default function EventCheckoutStatusPage() {
     }
 
     refreshInFlightRef.current = true;
-    if (!silent) {
-      setLoading(true);
-    }
     setError('');
 
     try {
@@ -228,9 +344,6 @@ export default function EventCheckoutStatusPage() {
       setError(requestError instanceof ApiError ? requestError.message : 'Unable to refresh payment status.');
     } finally {
       refreshInFlightRef.current = false;
-      if (!silent) {
-        setLoading(false);
-      }
     }
   }, [customer_email, customer_phone, orderNumber, paymentId]);
 
@@ -262,7 +375,7 @@ export default function EventCheckoutStatusPage() {
         return;
       }
 
-      void refreshStatus({ silent: true });
+      void refreshStatus();
     }, 5000);
 
     return () => window.clearInterval(intervalId);
@@ -275,7 +388,7 @@ export default function EventCheckoutStatusPage() {
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
-        void refreshStatus({ silent: true });
+        void refreshStatus();
       }
     };
 
@@ -284,30 +397,31 @@ export default function EventCheckoutStatusPage() {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [refreshStatus, shouldAutoRefresh]);
 
-  if (!eventId) {
-    return <Navigate to="/" replace />;
-  }
-
-  if (!activeLookup || !orderNumber || (!customer_phone && !customer_email)) {
-    return (
-      <div className="min-h-[55vh] bg-[#06070b] px-4 py-28 text-center text-white/70">
-        {copy.missing}
-      </div>
-    );
-  }
-
   const localPaymentStatus = normalizedPaymentStatus;
   const isPaid = ['success', 'paid', 'completed'].includes(String(localPaymentStatus).toLowerCase());
   const isFailed = ['failed', 'cancelled'].includes(String(localPaymentStatus).toLowerCase());
   const message = isPaid ? copy.paid : isFailed ? copy.failed : copy.pending;
   const passes = Array.isArray(passesPayload?.passes) ? passesPayload.passes : [];
+  const fallbackModalPasses = useMemo(
+    () =>
+      passes.map((passItem) => ({
+        title: passItem.eventTitleText || 'Event Pass',
+        subtitle: passItem.ticketTitleText || passItem.subEventTitleText || '',
+        subEventTitle: passItem.subEventTitleText || '',
+        passengerName: passItem.passengerName || customer_name || 'Guest',
+        scheduleText: '',
+        ticketCode: passItem.ticketCode || '',
+        qrDataUrl: '',
+        status: passItem.status || 'valid',
+      })),
+    [customer_name, passes],
+  );
   const paymentLinks = {
     qrCode: paymentLinksOverride?.qrCode || trackingPayload?.payment?.links?.qrCode || activeLookup?.paymentLinks?.qrCode || null,
     redirectionLink: paymentLinksOverride?.redirectionLink || trackingPayload?.payment?.links?.redirectionLink || activeLookup?.paymentLinks?.redirectionLink || null,
     readableCode: paymentLinksOverride?.readableCode || trackingPayload?.payment?.links?.readableCode || activeLookup?.paymentLinks?.readableCode || null,
   };
   const canShowFibMobileButton = !isPaid && Boolean(paymentLinks.redirectionLink || paymentLinks.qrCode || paymentId);
-  const primaryPass = passes[0] || {};
   const shareUrl = useMemo(() => {
     if (!orderNumber || (!customer_phone && !customer_email) || typeof window === 'undefined') {
       return '';
@@ -329,56 +443,6 @@ export default function EventCheckoutStatusPage() {
 
     return `${window.location.origin}/events/${slug}/checkout/status?${params.toString()}`;
   }, [activeLookup?.customerName, customer_email, customer_phone, orderNumber, paymentId, slug]);
-  const whatsappHref = useMemo(() => {
-    const normalizedPhone = normalizeWhatsAppNumber(customer_phone);
-
-    if (!normalizedPhone || !orderNumber) {
-      return null;
-    }
-
-    const text = buildWhatsAppPassMessage({
-      passengerName: primaryPass.passengerName || activeLookup?.customerName || 'Guest',
-      eventDate: primaryPass.eventDate || '',
-      subEventTitle: primaryPass.subEventTitleText || primaryPass.ticketTitleText || '',
-      location: primaryPass.subEventLocationText || '',
-      orderNumber,
-      passesCount: passes.length,
-      shareUrl,
-    });
-
-    return `https://wa.me/${normalizedPhone}?text=${encodeURIComponent(text)}`;
-  }, [activeLookup?.customerName, customer_phone, orderNumber, passes.length, primaryPass.eventDate, primaryPass.passengerName, primaryPass.subEventLocationText, primaryPass.subEventTitleText, primaryPass.ticketTitleText, shareUrl]);
-
-  const handleSharePasses = async (channel) => {
-    if (!orderNumber || (!customer_phone && !customer_email)) {
-      return;
-    }
-
-    try {
-      setError('');
-      setSuccessMessage('');
-      setSharingChannel(channel);
-      const inlinePasses = channel === 'email' && printablePayload?.printablePasses?.length
-        ? await buildInlineEmailPasses(printablePayload)
-        : [];
-      await apiRequest('/api/customer/orders/passes/share', {
-        method: 'POST',
-        body: {
-          order_number: orderNumber,
-          customer_phone,
-          customer_email,
-          channel,
-          share_url: shareUrl || null,
-          inline_passes: inlinePasses,
-        },
-      });
-      setSuccessMessage(copy.emailSent);
-    } catch (requestError) {
-      setError(requestError instanceof ApiError ? requestError.message : 'Unable to share passes right now.');
-    } finally {
-      setSharingChannel(null);
-    }
-  };
 
   const handleOpenFibPayment = useCallback(() => {
     const openLink = async () => {
@@ -399,6 +463,12 @@ export default function EventCheckoutStatusPage() {
               order_number: orderNumber,
               customer_phone,
               customer_email,
+              return_url: buildFibReturnUrl({
+                slug,
+                customerPhone: customer_phone,
+                customerEmail: customer_email,
+                customerName: customer_name,
+              }),
             },
           });
 
@@ -451,141 +521,176 @@ export default function EventCheckoutStatusPage() {
     };
 
     void openLink();
-  }, [customer_email, customer_phone, orderNumber, paymentLinks?.qrCode, paymentLinks?.readableCode, paymentLinks?.redirectionLink]);
+  }, [customer_email, customer_name, customer_phone, orderNumber, paymentId, paymentLinks?.qrCode, paymentLinks?.readableCode, paymentLinks?.redirectionLink, slug]);
+
+  const handleSharePasses = useCallback(async (channel) => {
+    if (!orderNumber || (!customer_phone && !customer_email)) {
+      return;
+    }
+
+    try {
+      setError('');
+      setSuccessMessage('');
+      setSharingChannel(channel);
+      const inlinePasses = channel === 'email' && printablePayload?.printablePasses?.length
+        ? await buildInlineEmailPasses(printablePayload)
+        : [];
+      await apiRequest('/api/customer/orders/passes/share', {
+        method: 'POST',
+        body: {
+          order_number: orderNumber,
+          customer_phone,
+          customer_email,
+          channel,
+          share_url: shareUrl || null,
+          inline_passes: inlinePasses,
+        },
+      });
+      setSuccessMessage(copy.emailSent);
+    } catch (requestError) {
+      setError(requestError instanceof ApiError ? requestError.message : 'Unable to share passes right now.');
+    } finally {
+      setSharingChannel(null);
+    }
+  }, [copy.emailSent, customer_email, customer_phone, orderNumber, printablePayload, shareUrl]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    setModalPasses(fallbackModalPasses);
+
+    if (!printablePayload?.printablePasses?.length) {
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    void buildInlineEmailPasses(printablePayload)
+      .then((inlinePasses) => {
+        if (cancelled) {
+          return;
+        }
+
+        setModalPasses(
+          inlinePasses.map((passItem) => {
+            const matchedPass = passes.find((entry) => entry.ticketCode === passItem.ticketCode);
+
+            return {
+              ...passItem,
+              status: matchedPass?.status || 'valid',
+            };
+          }),
+        );
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setModalPasses(fallbackModalPasses);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [fallbackModalPasses, passes, printablePayload]);
+
+  useEffect(() => {
+    if (!isPaid || !searchParams.get('returned') || passes.length === 0 || !orderNumber) {
+      return;
+    }
+
+    const modalStorageKey = `${RETURN_MODAL_STORAGE_PREFIX}${orderNumber}`;
+
+    try {
+      if (sessionStorage.getItem(modalStorageKey) === '1') {
+        return;
+      }
+      sessionStorage.setItem(modalStorageKey, '1');
+    } catch {
+      // Ignore session storage access issues.
+    }
+
+    setShowTicketsModal(true);
+  }, [isPaid, orderNumber, passes.length, searchParams]);
+
+  useEffect(() => {
+    if (!isPaid || !customer_email || !orderNumber || !printablePayload?.printablePasses?.length) {
+      return;
+    }
+
+    const emailStorageKey = `${AUTO_EMAIL_STORAGE_PREFIX}${orderNumber}`;
+
+    try {
+      if (sessionStorage.getItem(emailStorageKey) === '1') {
+        return;
+      }
+    } catch {
+      // Ignore session storage access issues.
+    }
+
+    if (sharingChannel !== null) {
+      return;
+    }
+
+    void handleSharePasses('email')
+      .then(() => {
+        try {
+          sessionStorage.setItem(emailStorageKey, '1');
+        } catch {
+          // Ignore session storage access issues.
+        }
+        setSuccessMessage(copy.emailAutoSent);
+      })
+      .catch(() => {});
+  }, [copy.emailAutoSent, customer_email, handleSharePasses, isPaid, orderNumber, printablePayload?.printablePasses?.length, sharingChannel]);
+
+  if (!eventId) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (!activeLookup || !orderNumber || (!customer_phone && !customer_email)) {
+    return (
+      <div className="min-h-[55vh] bg-[#06070b] px-4 py-28 text-center text-white/70">
+        {copy.missing}
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#06070b] text-white">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <Link
-          to={`/events/${slug}/checkout`}
-          className="inline-flex items-center gap-2 text-sm text-white/70 transition hover:text-white"
-        >
-          {copy.back}
-        </Link>
+      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
 
         <section className="mt-6 rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 sm:p-9">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.title}</p>
-              <h1 className="mt-4 text-3xl font-bold text-white">{orderNumber}</h1>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-white/68">{message}</p>
-            </div>
+          <div className="flex flex-col items-center text-center">
             <div className={`inline-flex h-14 w-14 items-center justify-center rounded-full ${
               isPaid ? 'bg-emerald-500/15 text-emerald-300' : isFailed ? 'bg-rose-500/15 text-rose-300' : 'bg-[#d8c78f]/15 text-[#eadcae]'
             }`}>
               {isPaid ? <CheckCircle2 className="h-7 w-7" /> : isFailed ? <XCircle className="h-7 w-7" /> : <Clock3 className="h-7 w-7" />}
             </div>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <div className="rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/40">{copy.order}</p>
-              <p className="mt-2 text-sm text-white">{orderNumber}</p>
-            </div>
-            <div className="rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/40">{copy.payment}</p>
-              <p className="mt-2 text-sm text-white">{statusPayload?.fibStatus || localPaymentStatus || '-'}</p>
-            </div>
-            <div className="rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/40">{copy.readableCode}</p>
-              <p className="mt-2 text-sm text-white">{paymentLinks?.readableCode || '-'}</p>
-            </div>
-            <div className="rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/40">{copy.passes}</p>
-              <p className="mt-2 text-sm text-white">{passes.length}</p>
-            </div>
-          </div>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={refreshStatus}
-              disabled={loading}
-              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm text-white/78 transition hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              <RefreshCcw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-              {loading ? copy.loading : copy.check}
-            </button>
-           
-            {isPaid ? (
-              <>
-                <button
-                  type="button"
-                  onClick={async () => {
-                    if (!printablePayload?.printablePasses?.length) {
-                      setError(copy.printableEmpty);
-                      return;
-                    }
-
-                    try {
-                      setError('');
-                      setSuccessMessage('');
-                      setDownloadingPdf(true);
-                      await downloadPrintablePassesPdf(printablePayload, {
-                        fileName: `Passes-${orderNumber || 'passes'}.pdf`,
-                      });
-                    } catch (printError) {
-                      setError(printError.message || 'Unable to open printable passes.');
-                    } finally {
-                      setDownloadingPdf(false);
-                    }
-                  }}
-                  disabled={downloadingPdf}
-                  className="inline-flex items-center gap-2 rounded-full bg-emerald-500/15 px-5 py-3 text-sm font-semibold text-emerald-200 transition hover:bg-emerald-500/22 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  <Download className={`h-4 w-4 ${downloadingPdf ? 'animate-pulse' : ''}`} />
-                  {downloadingPdf ? copy.downloading : copy.download}
-                </button>
-                {customer_email ? (
-                  <button
-                    type="button"
-                    onClick={() => handleSharePasses('email')}
-                    disabled={sharingChannel !== null}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-sm text-white/78 transition hover:bg-white/[0.07] disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {sharingChannel === 'email' ? copy.sendingEmail : copy.shareEmail}
-                  </button>
-                ) : null}
-                {whatsappHref ? (
-                  <a
-                    href={whatsappHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => {
-                      setError('');
-                      setSuccessMessage('');
-                    }}
-                    className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-5 py-3 text-sm text-emerald-100 transition hover:text-white"
-                  >
-                    {copy.shareWhatsApp}
-                  </a>
-                ) : null}
-              </>
-            ) : null}
+            <p className="mt-5 text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.title}</p>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/68">{message}</p>
           </div>
 
           {!isPaid && paymentLinks?.qrCode ? (
-            <div className="mt-8 rounded-[1.7rem] border border-[#d8c78f]/20 bg-[#d8c78f]/8 p-6">
-              <div className="flex items-center gap-3">
+            <div className="mx-auto mt-8 max-w-md rounded-[1.7rem] border border-[#d8c78f]/20 bg-[#d8c78f]/8 p-6">
+              <div className="flex items-center justify-center gap-3">
                 <QrCode className="h-5 w-5 text-[#eadcae]" />
                 <p className="text-sm text-white/80">FIB QR</p>
               </div>
-              <div className="mt-5 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+              <div className="mt-5 flex flex-col items-center gap-5">
                 <img
                   src={paymentLinks.qrCode}
                   alt="FIB QR code"
                   className="h-56 w-56 rounded-[1.5rem] border border-white/10 bg-white p-3"
                 />
                 {canShowFibMobileButton ? (
-                  <div className="max-w-sm  md:hidden">
-                    {/* <p className="text-sm leading-6 text-white/72">{copy.fibMobileHint}</p> */}
+                  <div className="w-full md:hidden">
+                    <p className="text-center text-sm leading-6 text-white/72">{copy.fibMobileHint}</p>
                     <button
                       type="button"
                       onClick={handleOpenFibPayment}
                       disabled={openingFib}
-                      className=" inline-flex items-center gap-2 rounded-full bg-[#56bfb7] px-5 py-3 text-sm font-semibold text-[#f7f7f7] transition hover:bg-[#66c7bf] disabled:cursor-not-allowed disabled:opacity-60"
+                      className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-[#56bfb7] px-5 py-3 text-sm font-semibold text-[#f7f7f7] transition hover:bg-[#66c7bf] disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                    
                       {openingFib ? copy.openingFib : copy.openFibApp}
                     </button>
                   </div>
@@ -594,31 +699,21 @@ export default function EventCheckoutStatusPage() {
             </div>
           ) : null}
 
-          {passes.length > 0 ? (
-            <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {passes.map((passItem) => (
-                <div key={passItem.ticketCode} className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5">
-                  <div className="flex items-center gap-3">
-                    <Ticket className="h-5 w-5 text-[#d8c78f]" />
-                    <div>
-                      <h3 className="font-semibold text-white">{passItem.eventTitleText || 'Event Pass'}</h3>
-                      <p className="text-sm text-white/55">{passItem.ticketTitleText || passItem.subEventTitleText || ''}</p>
-                    </div>
-                  </div>
-                  <div className="mt-4 space-y-2 text-sm text-white/72">
-                    <p>Code: {passItem.ticketCode}</p>
-                    <p>Passenger: {passItem.passengerName || activeLookup?.customerName || 'Guest'}</p>
-                    <p>Status: {passItem.status || 'valid'}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : null}
-
-          {successMessage ? <p className="mt-6 text-sm text-emerald-300">{successMessage}</p> : null}
+          {isPaid && customer_email && (sharingChannel === 'email' || successMessage) ? (
+            <p className="mt-6 text-sm text-emerald-300">
+              {sharingChannel === 'email' ? copy.emailAutoSending : successMessage}
+            </p>
+          ) : successMessage ? <p className="mt-6 text-sm text-emerald-300">{successMessage}</p> : null}
           {error ? <p className="mt-3 text-sm text-rose-300">{error}</p> : null}
         </section>
       </div>
+      <TicketsReadyModal
+        open={showTicketsModal}
+        passes={modalPasses}
+        customerName={customer_name}
+        copy={copy}
+        onClose={() => setShowTicketsModal(false)}
+      />
     </div>
   );
 }

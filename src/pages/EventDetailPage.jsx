@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, MapPin, Wallet } from 'lucide-react';
+import { MapPin, Wallet } from 'lucide-react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiRequest } from '@/lib/api';
@@ -24,6 +24,8 @@ const COPY = {
     sessions: 'شوێن',
     subEventLocation: 'شوێن',
     soldOut: 'تەواوبووە',
+    bookingNow: 'ئێستا حجزبکە',
+    chooseCity: 'کلیک لە شارەکەت بکە',
   },
   ar: {
     back: 'رجوع',
@@ -38,6 +40,8 @@ const COPY = {
     sessions: 'المکان',
     subEventLocation: 'المکان',
     soldOut: 'نفدت التذاكر',
+    bookingNow: 'احجز الآن',
+    chooseCity: 'اضغط على مدينتك',
   },
   en: {
     back: 'Back',
@@ -52,6 +56,8 @@ const COPY = {
     sessions: 'Location',
     subEventLocation: 'Location',
     soldOut: 'Sold Out',
+    bookingNow: 'Book Now',
+    chooseCity: 'Tap your city',
   },
 };
 
@@ -68,6 +74,66 @@ function renderRichText(value) {
     .split(/\n{2,}/)
     .map((paragraph) => `<p>${paragraph.replace(/\n/g, '<br />')}</p>`)
     .join('');
+}
+
+function normalizeCityLabel(value, locale) {
+  const raw = String(value || '').trim();
+  if (!raw) {
+    return '';
+  }
+
+  const normalized = raw.toLowerCase();
+
+  if (normalized === 'sulaymaniyah' || normalized === 'slemani' || normalized === 'sulaimaniyah') {
+    return locale === 'ar' ? 'السليمانية' : locale === 'en' ? 'Sulaymaniyah' : 'سلێمانی';
+  }
+
+  if (normalized === 'hawler' || normalized === 'erbil' || normalized === 'hewler' || normalized === 'اربيل') {
+    return locale === 'ar' ? 'أربيل' : locale === 'en' ? 'Hawler' : 'هەولێر';
+  }
+
+  return raw;
+}
+
+function buildSubEventSchedule(date, startTime, endTime) {
+  const dateText = String(date || '').trim();
+  const startText = formatTime12Hour(startTime);
+  const endText = formatTime12Hour(endTime);
+
+  if (dateText && startText && endText) {
+    return `${dateText} / ${startText} - ${endText}`;
+  }
+
+  if (dateText && startText) {
+    return `${dateText} / ${startText}`;
+  }
+
+  return dateText || '-';
+}
+
+function formatTime12Hour(value) {
+  const raw = String(value || '').trim();
+
+  if (!raw) {
+    return '';
+  }
+
+  const match = raw.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (!match) {
+    return raw;
+  }
+
+  const hours = Number(match[1]);
+  const minutes = match[2];
+
+  if (Number.isNaN(hours) || hours < 0 || hours > 23) {
+    return raw;
+  }
+
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const normalizedHours = hours % 12 || 12;
+
+  return `${normalizedHours}:${minutes} ${period}`;
 }
 
 export default function EventDetailPage() {
@@ -127,6 +193,21 @@ export default function EventDetailPage() {
       ),
     [tickets],
   );
+  const heroSubEvents = useMemo(
+    () =>
+      subEvents.map((item) => ({
+        id: item.id,
+        schedule: buildSubEventSchedule(item.date, item.startTime, item.endTime),
+        city: normalizeCityLabel(
+          getLocalizedText(item.cityName, locale, item.cityNameText || '')
+            || item.locationText
+            || getLocalizedText(item.title, locale, item.titleText || 'Sub-event'),
+          locale,
+        ),
+        canBook: availableSubEventIds.has(Number(item.id)),
+      })),
+    [availableSubEventIds, locale, subEvents],
+  );
 
   if (!eventId) {
     return <Navigate to="/" replace />;
@@ -159,41 +240,53 @@ export default function EventDetailPage() {
 
         <div className="relative mx-auto flex min-h-[72vh] max-w-7xl items-end px-4 pb-16 pt-10 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
-            <Link
+            {/* <Link
               to="/"
               className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-black/25 px-4 py-2 text-sm text-white/86 backdrop-blur transition hover:bg-black/40"
             >
               <ArrowLeft className="h-4 w-4" />
               {copy.back}
-            </Link>
+            </Link> */}
 
-            <div className="mt-8 flex flex-wrap gap-3 text-xs uppercase tracking-[0.25em] text-[#eadcae]">
-              <span className="rounded-full border border-[#eadcae]/25 bg-[#eadcae]/10 px-4 py-2">
-                {event.countryNameText || 'Global'}
+            {heroSubEvents.length > 0 ? (
+              <span className="mt-6 inline-flex w-fit rounded-full border border-[#d8c78f]/35 bg-[#d8c78f]/12 px-4 py-2 text-sm font-semibold text-[#f1e4b6] backdrop-blur-md">
+                {copy.bookingNow}
               </span>
-              <span className="rounded-full border border-white/12 bg-black/20 px-4 py-2">
-                {event.upcoming ? 'Upcoming' : 'Public'}
-              </span>
-            </div>
+            ) : null}
 
-            <h1 className="mt-6 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">{title}</h1>
+            <h1 className="mt-4 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">{title}</h1>
 
-            <div className="mt-8 grid gap-4 grid-cols-3">
-              <div className="rounded-[1.3rem] border border-white/10 bg-black/25 p-4 backdrop-blur">
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/45">{copy.date}</p>
-                <p className="mt-2 text-sm text-white">{event.date || '-'}</p>
+            {heroSubEvents.length > 0 ? (
+              <div className="mt-6 inline-flex max-w-xl flex-col rounded-[2rem]  bg-[linear-gradient(180deg,rgba(5,7,12,0.72)_0%,rgba(5,7,12,0.55)_100%)] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.28)] backdrop-blur-md sm:p-5">
+                <p className="text-lg border-b border-[#d8c78f]/35 font-medium text-[#d8c78f]  sm:text-base">{copy.chooseCity}</p>
+                <div className="mt-4 flex flex-col gap-3">
+                  {heroSubEvents.map((item) =>
+                    item.canBook ? (
+                      <Link
+                        key={item.id}
+                        to={`${checkoutRoute}?subEventId=${item.id}`}
+                        className="group rounded-[1.15rem] border border-[#d8c78f]/35 bg-[linear-gradient(180deg,rgba(216,199,143,0.16)_0%,rgba(216,199,143,0.08)_100%)] px-4 py-3 text-base font-semibold text-[#f5e8bb] transition hover:border-[#eadcae]/45 hover:bg-[linear-gradient(180deg,rgba(216,199,143,0.26)_0%,rgba(216,199,143,0.14)_100%)] sm:text-lg"
+                      >
+                        <span className="flex items-center justify-between gap-4">
+                          <span>{item.city}</span>
+                          <span className="text-sm font-medium text-white/62 transition group-hover:text-white/78 sm:text-base">{item.schedule}</span>
+                        </span>
+                      </Link>
+                    ) : (
+                      <span
+                        key={item.id}
+                        className="rounded-[1.15rem] border border-white/12 bg-white/6 px-4 py-3 text-base font-semibold text-white/55 sm:text-lg"
+                      >
+                        <span className="flex items-center justify-between gap-4">
+                          <span>{item.city}</span>
+                          <span className="text-sm font-medium text-white/45 sm:text-base">{item.schedule}h</span>
+                        </span>
+                      </span>
+                    ),
+                  )}
+                </div>
               </div>
-              <div className="rounded-[1.3rem] border border-white/10 bg-black/25 p-4 backdrop-blur">
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/45">{copy.location}</p>
-                <p className="mt-2 text-sm text-white">{event.countryNameText || 'Global'}</p>
-              </div>
-              <div className="rounded-[1.3rem] border border-white/10 bg-black/25 p-4 backdrop-blur">
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/45">{copy.sessions}</p>
-                <p className="mt-2 text-sm text-white">{subEvents.length}</p>
-              
-              </div>
-            </div>
-
+            ) : null}
           </div>
         </div>
       </section>
@@ -207,7 +300,7 @@ export default function EventDetailPage() {
           />
         </div>
 
-        <aside className="rounded-[2rem] border border-[#d8c78f]/20 bg-[linear-gradient(180deg,rgba(216,199,143,0.06)_0%,rgba(255,255,255,0.02)_100%)] p-7 sm:p-9">
+        <aside className="rounded-[2rem] border border-[#d8c78f]/20 bg-[linear-gradient(180deg,rgba(216,199,143,0.06)_0%,rgba(255,255,255,0.02)_100%)] p-0 sm:p-9">
           <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.schedule}</p>
 
           {subEvents.length > 0 ? (

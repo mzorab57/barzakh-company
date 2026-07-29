@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, Minus, Plus, ShieldCheck, Ticket, UserRound, Wallet } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Minus, Plus, Wallet } from 'lucide-react';
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ApiError, apiRequest } from '@/lib/api';
@@ -17,7 +17,8 @@ const COPY = {
     back: 'گەڕانەوە بۆ event',
     loading: 'چاوەڕێی checkout...',
     notFound: 'زانیارییەکانی booking نەدۆزرایەوە.',
-    steps: ['Tickets', 'Details', 'Payment'],
+    stepsTitle: 'هەنگاوەکانی حجزکردن',
+    steps: ['تیکەت', 'وردەکاری', 'پارەدان'],
     next: 'هەنگاوی داهاتوو',
     previous: 'گەڕانەوە',
     createPayment: 'دروستکردنی payment',
@@ -26,12 +27,16 @@ const COPY = {
     paymentHelp: 'پوختەی داواکارییەکە بپشکنە و بچۆ بۆ payment',
     empty: 'بۆ ئەم event ـە ticket ـی checkout بەردەست نییە.',
     summary: 'پوختە',
+    ticketSubtitle: 'ئەم دەقە لە داشبۆردەوە دێت',
+    ticketPriceQty: 'ژمارەی تیکەت / نرخەکە',
     customerName: 'ناوی کڕیار',
     customerPhone: 'مۆبایل',
     customerEmail: 'ئیمەیڵ',
     customerAddress: 'ناونیشان',
     donation: 'بەخشین',
+    donationHelp: 'چەند دەتوانیت ببەخشە بۆ بەردەوام بونمان جزاک اللە خیرا',
     total: 'کۆی گشتی',
+    ticketsLabel: 'تیکەت',
     required: 'تکایە ticket و زانیاری سەرەکیەکان پڕبکەرەوە.',
     openPayment: 'چوونە FIB payment',
     ticketQty: 'دانە',
@@ -44,7 +49,8 @@ const COPY = {
     back: 'العودة إلى الفعالية',
     loading: 'جاري تحميل صفحة الحجز...',
     notFound: 'تعذر العثور على بيانات الحجز لهذه الفعالية.',
-    steps: ['Tickets', 'Details', 'Payment'],
+    stepsTitle: 'خطوات الحجز',
+    steps: ['التذاكر', 'التفاصيل', 'الدفع'],
     next: 'التالي',
     previous: 'السابق',
     createPayment: 'إنشاء الدفع',
@@ -53,12 +59,16 @@ const COPY = {
     paymentHelp: 'راجع الطلب ثم انتقل إلى الدفع',
     empty: 'لا توجد تذاكر متاحة للحجز حالياً.',
     summary: 'الملخص',
+    ticketSubtitle: 'هذا النص يأتي من لوحة التحكم',
+    ticketPriceQty: 'عدد التذاكر / السعر',
     customerName: 'اسم العميل',
     customerPhone: 'رقم الهاتف',
     customerEmail: 'البريد الإلكتروني',
     customerAddress: 'العنوان',
     donation: 'التبرع',
+    donationHelp: 'تبرّع بما تستطيع، وجزاكم الله خيرًا على دعمكم المستمر.',
     total: 'الإجمالي',
+    ticketsLabel: 'التذاكر',
     required: 'يرجى اختيار تذكرة واحدة على الأقل وإكمال البيانات الأساسية.',
     openPayment: 'الانتقال إلى دفع FIB',
     ticketQty: 'الكمية',
@@ -71,6 +81,7 @@ const COPY = {
     back: 'Back to event',
     loading: 'Loading checkout...',
     notFound: 'Booking data could not be found for this event.',
+    stepsTitle: 'Booking Steps',
     steps: ['Tickets', 'Details', 'Payment'],
     next: 'Next step',
     previous: 'Previous',
@@ -80,12 +91,16 @@ const COPY = {
     paymentHelp: 'Review the order before moving into payment',
     empty: 'No tickets are currently available for checkout.',
     summary: 'Summary',
+    ticketSubtitle: 'This text comes from the dashboard',
+    ticketPriceQty: 'Ticket quantity / Price',
     customerName: 'Customer name',
     customerPhone: 'Phone number',
     customerEmail: 'Email address',
     customerAddress: 'Address',
     donation: 'Donation',
+    donationHelp: 'Donate whatever you can. Jazakum Allahu Khayran for your continued support.',
     total: 'Total',
+    ticketsLabel: 'Tickets',
     required: 'Please select at least one ticket and complete the required fields.',
     openPayment: 'Continue to FIB payment',
     ticketQty: 'Quantity',
@@ -98,6 +113,26 @@ const COPY = {
 
 function persistLookup(payload) {
   sessionStorage.setItem(LOOKUP_STORAGE_KEY, JSON.stringify(payload));
+}
+
+function buildFibReturnUrl({ eventSlug, customerPhone, customerEmail, customerName }) {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const params = new URLSearchParams({ returned: '1' });
+
+  if (customerPhone) {
+    params.set('phone', customerPhone);
+  }
+  if (customerEmail) {
+    params.set('email', customerEmail);
+  }
+  if (customerName) {
+    params.set('name', customerName);
+  }
+
+  return `${window.location.origin}/events/${eventSlug}/checkout/status?${params.toString()}`;
 }
 
 export default function EventCheckoutPage() {
@@ -153,7 +188,7 @@ export default function EventCheckoutPage() {
   }, [eventId]);
 
   const event = payload?.event;
-  const allTickets = Array.isArray(payload?.tickets) ? payload.tickets : [];
+  const allTickets = useMemo(() => (Array.isArray(payload?.tickets) ? payload.tickets : []), [payload?.tickets]);
   const requestedSubEventId = Number(searchParams.get('subEventId') || 0) || null;
   const tickets = useMemo(() => {
     if (!requestedSubEventId) {
@@ -162,13 +197,7 @@ export default function EventCheckoutPage() {
 
     return allTickets.filter((ticket) => ticket.subEventId === requestedSubEventId);
   }, [allTickets, requestedSubEventId]);
-  const title = getLocalizedText(event?.title, locale, event?.titleText || 'Event');
   const detailRoute = event ? `/events/${buildEventSlug(event)}` : '/';
-  const selectedSubEvent = useMemo(
-    () => allTickets.find((ticket) => ticket.subEventId === requestedSubEventId)?.subEventTitleText || '',
-    [allTickets, requestedSubEventId],
-  );
-
   useEffect(() => {
     setQuantities((current) => Object.fromEntries(
       Object.entries(current).filter(([ticketId]) => tickets.some((ticket) => String(ticket.id) === ticketId)),
@@ -248,6 +277,13 @@ export default function EventCheckoutPage() {
     setError('');
 
     try {
+      const eventSlug = buildEventSlug(event);
+      const returnUrl = buildFibReturnUrl({
+        eventSlug,
+        customerPhone: customer.customer_phone.trim(),
+        customerEmail: customer.customer_email.trim(),
+        customerName: customer.customer_name.trim(),
+      });
       const response = await apiRequest('/api/payments/fib/checkout', {
         method: 'POST',
         body: {
@@ -257,6 +293,7 @@ export default function EventCheckoutPage() {
           customer_address: customer.customer_address.trim() || null,
           donation_amount: donationAmount,
           total_amount: totalAmount,
+          return_url: returnUrl,
           items: selectedItems.map((entry) => ({
             ticket_id: entry.ticket.id,
             quantity: entry.quantity,
@@ -267,7 +304,7 @@ export default function EventCheckoutPage() {
       const checkout = response?.data || {};
       persistLookup({
         eventId,
-        eventSlug: buildEventSlug(event),
+        eventSlug,
         orderNumber: checkout.orderNumber,
         paymentId: checkout.paymentId,
         customerPhone: customer.customer_phone.trim(),
@@ -280,7 +317,7 @@ export default function EventCheckoutPage() {
         },
       });
 
-      navigate(`/events/${buildEventSlug(event)}/checkout/status`, {
+      navigate(`/events/${eventSlug}/checkout/status`, {
         replace: true,
         state: {
           orderNumber: checkout.orderNumber,
@@ -293,9 +330,6 @@ export default function EventCheckoutPage() {
       setSubmitting(false);
     }
   };
-
-  const stepHelp = [copy.ticketHelp, copy.detailsHelp, copy.paymentHelp][step];
-
   return (
     <div className="bg-[#06070b] text-white">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -306,21 +340,22 @@ export default function EventCheckoutPage() {
 
         <div className="mt-6 grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <section className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 sm:p-9">
-            <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{title}</p>
-            <div className="mt-5 flex flex-wrap gap-3">
+            {/* <p className="text-xs uppercase  text-[#d8c78f]">{title}</p> */}
+            <p className="mt-5 text-lg font-semibold text-[#d8c78f]">{copy.stepsTitle}</p>
+            <div className="mt-4 grid grid-cols-3">
               {copy.steps.map((label, index) => (
                 <div
                   key={label}
-                  className={`inline-flex items-center gap-3 rounded-full border px-4 py-2 text-sm ${
+                  className={`inline-flex min-w-0 items-center justify-center  rounded-full px-2 py-2.5 text-center text-sm ${
                     index === step
-                      ? 'border-[#d8c78f]/40 bg-[#d8c78f]/12 text-[#f1e5b8]'
-                      : 'border-white/8 bg-white/[0.02] text-white/55'
+                      ? 'bg-[#d8c78f]/12 text-[#f1e5b8]'
+                      : 'bg-white/[0.02] text-white/55'
                   }`}
                 >
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-current text-[11px]">
+                  <span className="inline-flex h-6 w-4 shrink-0 items-center justify-center rounded-full bg-white/8 text-[11px]">
                     {index + 1}
                   </span>
-                  {label}
+                  <span className="truncate">{label}</span>
                 </div>
               ))}
             </div>
@@ -339,7 +374,11 @@ export default function EventCheckoutPage() {
                       <div className="flex flex-wrap items-start justify-between gap-4">
                         <div>
                           <h3 className="text-lg font-semibold text-white">{getLocalizedText(ticket.title, locale, ticket.titleText || 'Ticket')}</h3>
-                          {ticket.subEventTitleText ? <p className="mt-1 text-sm text-white/55">{ticket.subEventTitleText}</p> : null}
+                          {ticket.subEventTitle || ticket.subEventTitleText ? (
+                            <p className="mt-1 text-sm text-white/55">
+                              {getLocalizedText(ticket.subEventTitle, locale, ticket.subEventTitleText || copy.ticketSubtitle)}
+                            </p>
+                          ) : null}
                           <div className="mt-3 flex flex-wrap gap-3 text-xs uppercase tracking-[0.2em] text-white/45">
                             {isSoldOut ? (
                               <span className="rounded-full border border-rose-400/25 bg-rose-400/10 px-3 py-2 text-rose-200">
@@ -348,26 +387,29 @@ export default function EventCheckoutPage() {
                             ) : null}
                           </div>
                         </div>
-                        <div className="text-right">
-                          <p className="text-2xl font-bold text-[#eadcae]">{Number(ticket.price || 0).toLocaleString()} IQD</p>
-                          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] p-1">
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(ticket, quantity - 1)}
-                              disabled={isSoldOut}
-                              className="rounded-full p-2 text-white/72 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35"
-                            >
-                              <Minus className="h-4 w-4" />
-                            </button>
-                            <span className="min-w-10 text-center text-sm font-semibold">{quantity}</span>
-                            <button
-                              type="button"
-                              onClick={() => updateQuantity(ticket, quantity + 1)}
-                              disabled={isSoldOut}
-                              className="rounded-full p-2 text-white/72 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35"
-                            >
-                              <Plus className="h-4 w-4" />
-                            </button>
+                        <div className="flex min-w-[13rem] flex-col items-end text-right">
+                          <p className="text-xs font-medium text-white/50">{copy.ticketPriceQty}</p>
+                          <div className="mt-3 flex items-center gap-4">
+                            <p className="text-2xl font-bold text-[#eadcae]">{Number(ticket.price || 0).toLocaleString()} IQD</p>
+                            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] p-1">
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(ticket, quantity - 1)}
+                                disabled={isSoldOut}
+                                className="rounded-full p-2 text-white/72 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35"
+                              >
+                                <Minus className="h-4 w-4" />
+                              </button>
+                              <span className="min-w-10 text-center text-sm font-semibold">{quantity}</span>
+                              <button
+                                type="button"
+                                onClick={() => updateQuantity(ticket, quantity + 1)}
+                                disabled={isSoldOut}
+                                className="rounded-full p-2 text-white/72 transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-35"
+                              >
+                                <Plus className="h-4 w-4" />
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -378,6 +420,19 @@ export default function EventCheckoutPage() {
                     {copy.empty}
                   </div>
                 )}
+
+                <label className="space-y-2 text-sm text-white/76">
+                  <span>{copy.donation}</span>
+                  <p className="text-xs text-white/52">{copy.donationHelp}</p>
+                  <input
+                    type="number"
+                    min="0"
+                    step="1000"
+                    value={customer.donation_amount}
+                    onChange={(event) => setCustomer((current) => ({ ...current, donation_amount: event.target.value }))}
+                    className="h-12 w-full rounded-2xl border border-white/8 bg-white/[0.04] px-4 text-white outline-none"
+                  />
+                </label>
               </div>
             ) : null}
 
@@ -399,17 +454,6 @@ export default function EventCheckoutPage() {
                     />
                   </label>
                 ))}
-                <label className="space-y-2 text-sm text-white/76 sm:col-span-2">
-                  <span>{copy.donation}</span>
-                  <input
-                    type="number"
-                    min="0"
-                    step="1000"
-                    value={customer.donation_amount}
-                    onChange={(event) => setCustomer((current) => ({ ...current, donation_amount: event.target.value }))}
-                    className="h-12 w-full rounded-2xl border border-white/8 bg-white/[0.04] px-4 text-white outline-none"
-                  />
-                </label>
               </div>
             ) : null}
 
@@ -472,33 +516,9 @@ export default function EventCheckoutPage() {
 
           <aside className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 sm:p-9">
             <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.summary}</p>
-            <div className="mt-6 space-y-4">
-              <div className="flex items-center gap-3 rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-                <Ticket className="h-5 w-5 text-[#d8c78f]" />
-                <div className="flex-1">
-                  <p className="text-sm text-white/58">Tickets</p>
-                  <p className="mt-1 font-semibold text-white">{selectedItems.reduce((sum, item) => sum + item.quantity, 0)}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-                <UserRound className="h-5 w-5 text-[#d8c78f]" />
-                <div className="flex-1">
-                  <p className="text-sm text-white/58">{copy.customerName}</p>
-                  <p className="mt-1 font-semibold text-white">{customer.customer_name || '-'}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-                <ShieldCheck className="h-5 w-5 text-[#d8c78f]" />
-                <div className="flex-1">
-                  <p className="text-sm text-white/58">{copy.donation}</p>
-                  <p className="mt-1 font-semibold text-white">{donationAmount.toLocaleString()} IQD</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 rounded-[1.6rem] border border-[#d8c78f]/20 bg-[#d8c78f]/8 p-5">
+            <div className="mt-6 rounded-[1.6rem] border border-[#d8c78f]/20 bg-[#d8c78f]/8 p-5">
               <div className="flex items-center justify-between text-sm text-white/65">
-                <span>Tickets</span>
+                <span>{copy.ticketsLabel}</span>
                 <span>{ticketsTotal.toLocaleString()} IQD</span>
               </div>
               <div className="mt-3 flex items-center justify-between text-sm text-white/65">

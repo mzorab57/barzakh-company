@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { getHeroSliderContent } from '@/data/componentContent';
 import { apiRequest } from '@/lib/api';
 import { getLocalizedText, resolveLocale } from '@/lib/catalog';
@@ -12,6 +13,7 @@ const Slider = () => {
   const [touchStartX, setTouchStartX] = useState(null);
   const [mediaFeed, setMediaFeed] = useState(null);
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const heroSliderContent = getHeroSliderContent(t);
   const locale = resolveLocale(i18n?.language);
 
@@ -43,6 +45,7 @@ const Slider = () => {
     desktopImg: item.desktopImage,
     mobileImg: item.mobileImage || item.desktopImage,
     title: getLocalizedText(item.title, locale, ''),
+    ctaUrl: item.ctaUrl || '',
     category: '',
   }));
 
@@ -81,6 +84,27 @@ const Slider = () => {
     setIsPaused(false);
   };
 
+  const handleSlideClick = (slide) => {
+    const targetUrl = String(slide?.ctaUrl || '').trim();
+
+    if (!targetUrl || typeof window === 'undefined') {
+      return;
+    }
+
+    try {
+      const resolvedUrl = new URL(targetUrl, window.location.origin);
+
+      if (resolvedUrl.origin === window.location.origin) {
+        navigate(`${resolvedUrl.pathname}${resolvedUrl.search}${resolvedUrl.hash}`);
+        return;
+      }
+
+      window.location.href = resolvedUrl.toString();
+    } catch {
+      window.location.href = targetUrl;
+    }
+  };
+
   return (
     <div dir='ltr' className="relative w-full bg-[#0a0805] px-0 sm:px-4 lg:py-8  flex justify-center">
       <div 
@@ -96,7 +120,23 @@ const Slider = () => {
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
           {slides.map((slide, index) => (
-            <div key={slide.id} className="relative w-full h-full flex-shrink-0 overflow-hidden bg-black">
+            <div
+              key={slide.id}
+              className={`relative w-full h-full flex-shrink-0 overflow-hidden bg-black ${slide.ctaUrl ? 'cursor-pointer' : ''}`}
+              onClick={() => handleSlideClick(slide)}
+              role={slide.ctaUrl ? 'link' : undefined}
+              tabIndex={slide.ctaUrl ? 0 : undefined}
+              onKeyDown={(event) => {
+                if (!slide.ctaUrl) {
+                  return;
+                }
+
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  handleSlideClick(slide);
+                }
+              }}
+            >
               <img
                 src={slide.mobileImg}
                 alt={slide.title || `Slide ${index + 1}`}

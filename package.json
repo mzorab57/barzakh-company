@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:local": "vite --mode development",
+    "dev:server": "vite --mode server",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

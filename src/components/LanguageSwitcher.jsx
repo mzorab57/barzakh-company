@@ -54,7 +54,7 @@ export default function LanguageSwitcher() {
               }`}
             >
               <span>{t(item.labelKey)}</span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40">{item.code}</span>
+              <span className="text-[10px] font-bold uppercase  text-white/40">{item.code}</span>
             </button>
           ))}
         </div>

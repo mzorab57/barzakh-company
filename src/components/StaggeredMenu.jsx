@@ -214,7 +214,7 @@ export const StaggeredMenu = ({
           <span ref={textInnerRef} className="sm-toggle-textInner">
             {staggeredMenuContent.toggleLabels.map((line) => (
               /* لێرەدا قەبارەی تێکستەکە بچووک کرایەوە و شێوازێکی ناسکی پێدرا */
-              <span key={line} className="sm-toggle-line text-sm uppercase tracking-widest font-bold"></span> //{line} bo danani text wak menu la taisht se xataka
+              <span key={line} className="sm-toggle-line text-sm uppercase  font-bold"></span> //{line} bo danani text wak menu la taisht se xataka
             ))}
           </span>
         </span>

@@ -104,14 +104,14 @@ export default function PastEvents() {
           <div className="max-w-2xl">
             <div className="flex items-center gap-4 mb-6">
             
-              <span className="text-4xl lg:text-5xl font-bold uppercase tracking-[0.4em] text-[#E6D6A3]">
+              <span className="text-4xl lg:text-5xl font-bold uppercase  text-[#E6D6A3]">
                 {pastEventsSectionContent.badge}
               </span>
             </div>
             
-            <h2 className="text-3xl  font-light uppercase leading-[1.05] tracking-tight text-white">
+            <h2 className="text-3xl  font-light uppercase leading-[1.05]  text-white">
               <span className="block mt-1   font-normal lowercase text-[#faf7ee] text-xl lg:text-3xl ">
-              {/* <span className="block text-white/40 text-2xl sm:text-3xl tracking-[0.2em] mb-2">{pastEventsSectionContent.titleLines[2]}</span> */}
+              {/* <span className="block text-white/40 text-2xl sm:text-3xl  mb-2">{pastEventsSectionContent.titleLines[2]}</span> */}
               <span className="block font-medium text-[#f6eac4]">{pastEventsSectionContent.titleLines[1]}</span>
                 {pastEventsSectionContent.titleLines[0]}
               </span>
@@ -164,7 +164,7 @@ export default function PastEvents() {
               
               {/* Floating Year Badge */}
               <div className="absolute top-6 right-6">
-                <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl text-xs font-bold tracking-widest text-[#E6D6A3] shadow-lg">
+                <span className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-black/40 border border-white/10 backdrop-blur-xl text-xs font-bold  text-[#E6D6A3] shadow-lg">
                   {event.year}
                 </span>
               </div>
@@ -175,18 +175,18 @@ export default function PastEvents() {
                 <div className="transform transition-transform duration-500 group-hover:-translate-y-2">
                   <div className="flex items-center gap-2 mb-4">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#E6D6A3]" />
-                    <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/70">
+                    <span className="text-[10px] font-mono uppercase  text-white/70">
                       {event.category}
                     </span>
                   </div>
 
-                  <h3 className="text-3xl sm:text-4xl font-black uppercase leading-[1.05] tracking-tight text-white mb-6">
+                  <h3 className="text-3xl sm:text-4xl font-black uppercase leading-[1.05]  text-white mb-6">
                     {event.title}
                   </h3>
 
                   {/* Hover Revealed Button Line */}
                   <div className="flex items-center justify-between border-t border-white/15 pt-5 opacity-60 transition-all duration-500 group-hover:opacity-100 group-hover:border-[#E6D6A3]/30">
-                    <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E6D6A3]">
+                    <span className="text-xs font-bold uppercase  text-[#E6D6A3]">
                       {pastEventsSectionContent.ctaLabel}
                     </span>
                     <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center transition-transform duration-500 group-hover:translate-x-2 group-hover:bg-[#E6D6A3]">
@@ -203,7 +203,7 @@ export default function PastEvents() {
         {/* Mobile Navigation Indicators (Visible only on mobile) */}
         <div className="flex sm:hidden items-center justify-center gap-4 mt-4 px-5 text-white/50">
           <ArrowLeft className="w-4 h-4" />
-          <span className="text-xs font-bold uppercase tracking-[0.2em]">{pastEventsSectionContent.mobileSwipeLabel}</span>
+          <span className="text-xs font-bold uppercase ">{pastEventsSectionContent.mobileSwipeLabel}</span>
           <ArrowRight className="w-4 h-4" />
         </div>
 

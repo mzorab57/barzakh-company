@@ -239,7 +239,7 @@ export default function Footer() {
           
           {/* Sections */}
           <div ref={(el) => (linksRef.current[0] = el)} className="space-y-8">
-            <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
+            <h4 className="text-2xl font-black uppercase  text-[#C5B78E]">
               {footerContent.quickLinksTitle}
             </h4>
             <ul className="space-y-4">
@@ -261,7 +261,7 @@ export default function Footer() {
 
           {/* Contact & Social */}
           <div ref={(el) => (linksRef.current[1] = el)} className="space-y-8">
-            <h4 className="text-2xl font-black uppercase tracking-tight text-[#C5B78E]">
+            <h4 className="text-2xl font-black uppercase  text-[#C5B78E]">
               {footerContent.connectTitle}
             </h4>
             
@@ -288,7 +288,7 @@ export default function Footer() {
                 <MapPin className="w-5 h-5 text-white" strokeWidth={1.5} />
               </div>
               <div className="min-w-0">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/35">
+                <p className="text-[11px] font-semibold uppercase  text-white/35">
                   {footerContent.location.label}
                 </p>
                 <span className="block truncate text-sm font-light text-white/70 group-hover:text-white transition-colors">
@@ -308,7 +308,7 @@ export default function Footer() {
                     <Phone className="w-5 h-5 text-white" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/35">
+                    <p className="text-[11px] font-semibold uppercase  text-white/35">
                       {footerContent.phoneLabel}
                     </p>
                     <span className="block text-sm font-light text-white/70 group-hover:text-white transition-colors" dir="ltr">
@@ -321,7 +321,7 @@ export default function Footer() {
 
             {/* Social Links */}
             <div className="space-y-4">
-              <h5 className="text-sm font-bold uppercase tracking-[0.3em] text-white/40">
+              <h5 className="text-sm font-bold uppercase  text-white/40">
                 {footerContent.followUsLabel}
               </h5>
               <div className="flex gap-3">
@@ -364,7 +364,7 @@ export default function Footer() {
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 shadow-[0_20px_70px_rgba(0,0,0,0.18)] backdrop-blur-xl sm:p-8 lg:p-10 relative z-20">
             <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center relative">
               <div>
-                <div className="inline-flex items-center gap-3 rounded-full border border-[#C5B78E]/25 bg-[#C5B78E]/10 px-4 py-2 text-xs font-semibold tracking-[0.24em] text-[#C5B78E]">
+                <div className="inline-flex items-center gap-3 rounded-full border border-[#C5B78E]/25 bg-[#C5B78E]/10 px-4 py-2 text-xs font-semibold  text-[#C5B78E]">
                   <HeartHandshake className="h-4 w-4" strokeWidth={1.8} />
                   <span className='text-lg'>{footerContent.donation.badge}</span>
                 </div>
@@ -378,7 +378,7 @@ export default function Footer() {
               </div>
 
               <div className="rounded-[1.75rem] border border-white/10 bg-black/20 p-5 sm:p-6 relative z-30">
-                <p className="text-sm font-semibold uppercase tracking-[0.26em] text-[#C5B78E]">
+                <p className="text-sm font-semibold uppercase  text-[#C5B78E]">
                   {footerContent.donation.formLabel}
                 </p>
                 
@@ -396,7 +396,7 @@ export default function Footer() {
                       placeholder={footerContent.donation.placeholder || donationCopy.presetPlaceholder}
                       className="relative z-40 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 pe-16 text-base text-white placeholder:text-white/35 outline-none transition focus:border-[#C5B78E]/60 focus:bg-white/[0.06]"
                     />
-                    <span className="pointer-events-none absolute inset-y-0 end-5 z-40 flex items-center text-xs font-semibold uppercase tracking-[0.2em] text-white/35">
+                    <span className="pointer-events-none absolute inset-y-0 end-5 z-40 flex items-center text-xs font-semibold uppercase  text-white/35">
                       IQD
                     </span>
 
@@ -407,7 +407,7 @@ export default function Footer() {
                       }`}
                     >
                       <div className="p-2 relative z-[1000] bg-[#0a0805]">
-                        <div className="mb-1 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-white/40">
+                        <div className="mb-1 px-3 py-2 text-[10px] font-bold uppercase  text-white/40">
                           {donationCopy.presetLabel}
                         </div>
                         {DONATION_PRESET_AMOUNTS.map((amount) => (
@@ -432,7 +432,7 @@ export default function Footer() {
                     type="button"
                     onClick={handleDonate}
                     disabled={submittingDonation}
-                    className="relative z-40 rounded-2xl border border-[#C5B78E]/30 bg-[#C5B78E]/12 px-8 py-4 text-sm font-semibold uppercase tracking-[0.22em] text-[#f4ead0] transition hover:bg-[#C5B78E]/18 sm:w-auto"
+                    className="relative z-40 rounded-2xl border border-[#C5B78E]/30 bg-[#C5B78E]/12 px-8 py-4 text-sm font-semibold uppercase  text-[#f4ead0] transition hover:bg-[#C5B78E]/18 sm:w-auto"
                   >
                     {submittingDonation ? donationCopy.preparing : (footerContent.donation.buttonLabel || donationCopy.action)}
                   </button>

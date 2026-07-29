@@ -72,14 +72,14 @@ export default function LiveEventBookingCta({ matchPath }) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="rounded-[2rem] border border-[#d8c78f]/25 bg-[linear-gradient(135deg,rgba(216,199,143,0.12)_0%,rgba(255,255,255,0.04)_100%)] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.14)] sm:p-8">
-        <p className="text-xs uppercase tracking-[0.35em] text-[#88743e]">{copy.eyebrow}</p>
+        <p className="text-xs uppercase  text-[#88743e]">{copy.eyebrow}</p>
         <div className="mt-4 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-2xl font-bold text-[#241b08] sm:text-3xl">{copy.title}</h2>
             <p className="mt-2 text-sm text-[#5a4824]">
               {getLocalizedText(event.title, locale, event.titleText || 'Event')}
             </p>
-            <div className="mt-4 flex flex-wrap gap-3 text-xs uppercase tracking-[0.2em] text-[#5a4824]/70">
+            <div className="mt-4 flex flex-wrap gap-3 text-xs uppercase  text-[#5a4824]/70">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#d8c78f]/30 bg-white/50 px-3 py-2">
                 <CalendarDays className="h-3.5 w-3.5 text-[#88743e]" />
                 {event.date || '-'}

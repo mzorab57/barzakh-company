@@ -85,10 +85,10 @@ export default function Guests() {
 
           <h2 className="my-10">
           
-            <span className="block -mt-20 sm:-mt-28 md:-mt-32 text-4xl md:text-5xl lg:text-7xl font-medium uppercase leading-[0.9] tracking-tight text-[#594d33]">
+            <span className="block -mt-20 sm:-mt-28 md:-mt-32 text-4xl md:text-5xl lg:text-7xl font-medium uppercase leading-[0.9]  text-[#594d33]">
               {guestsSectionContent.header.titleLineOne}
             </span>
-            <span className="block mt-3   font-normal lowercase text-2xl md:text-4xl lg:text-5xl tracking-tight">
+            <span className="block mt-3   font-normal lowercase text-2xl md:text-4xl lg:text-5xl ">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b59e5f] via-[#d4b976] to-[#8a7340]">
                 {guestsSectionContent.header.titleLineTwo}
               </span>
@@ -155,7 +155,7 @@ export default function Guests() {
 
               {/* Year Badge - Top Right */}
               <div className="absolute top-4 sm:top-6 right-4 sm:right-6 z-30">
-                <span className="inline-flex items-center gap-2 rounded-full bg-black/30 border border-white/10 backdrop-blur-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[10px] font-mono tracking-[0.25em] uppercase text-white/70 transition-all duration-500 group-hover:bg-[#b59e5f]/20 group-hover:border-[#b59e5f]/50 group-hover:text-white">
+                <span className="inline-flex items-center gap-2 rounded-full bg-black/30 border border-white/10 backdrop-blur-xl px-3 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[10px] font-mono  uppercase text-white/70 transition-all duration-500 group-hover:bg-[#b59e5f]/20 group-hover:border-[#b59e5f]/50 group-hover:text-white">
                   {guest.year}
                 </span>
               </div>
@@ -168,7 +168,7 @@ export default function Guests() {
                   mb-3 sm:mb-4 transition-all duration-500 ease-out
                   ${hoveredIndex === index ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
                 `}>
-                  <span className="inline-block text-[#E6D6A3] font-light text-xs sm:text-sm tracking-[0.25em] uppercase">
+                  <span className="inline-block text-[#E6D6A3] font-light text-xs sm:text-sm  uppercase">
                     {guest.role}
                   </span>
                 </div>
@@ -178,7 +178,7 @@ export default function Guests() {
                   transition-all duration-500 ease-out
                   ${hoveredIndex === index ? 'translate-y-0' : 'translate-y-3'}
                 `}>
-                  <h3 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-tight leading-tight mb-2">
+                  <h3 className="text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light  leading-tight mb-2">
                     {guest.name}
                   </h3>
                   <p className={`

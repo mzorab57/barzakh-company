@@ -80,7 +80,7 @@ export default function PublicEventsShowcase({ excludePath = null }) {
     <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
       <div className="rounded-[2rem] border border-[#e2d4a9]/25 bg-[linear-gradient(180deg,rgba(10,10,16,0.92)_0%,rgba(6,6,12,0.98)_100%)] p-7 shadow-[0_30px_90px_rgba(0,0,0,0.28)] sm:p-10">
         <div className="max-w-3xl">
-          <p className="text-xs uppercase tracking-[0.35em] text-[#cdb77d]">{copy.eyebrow}</p>
+          <p className="text-xs uppercase  text-[#cdb77d]">{copy.eyebrow}</p>
           <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">{copy.title}</h2>
           <p className="mt-4 text-sm leading-7 text-[#e7dcc0]/70 sm:text-base">{copy.description}</p>
         </div>
@@ -101,10 +101,10 @@ export default function PublicEventsShowcase({ excludePath = null }) {
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02)_20%,rgba(0,0,0,0.82)_100%)]" />
                   <div className="absolute left-5 right-5 top-5 flex items-center justify-between">
-                    <span className="rounded-full border border-white/20 bg-black/25 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-white/80 backdrop-blur">
+                    <span className="rounded-full border border-white/20 bg-black/25 px-3 py-1 text-[10px] uppercase  text-white/80 backdrop-blur">
                       {event.countryNameText || 'Global'}
                     </span>
-                    <span className="rounded-full border border-[#d8c78f]/30 bg-[#d8c78f]/10 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-[#f1e5b8]">
+                    <span className="rounded-full border border-[#d8c78f]/30 bg-[#d8c78f]/10 px-3 py-1 text-[10px] uppercase  text-[#f1e5b8]">
                       {event.upcoming ? 'Upcoming' : 'Public'}
                     </span>
                   </div>
@@ -117,21 +117,21 @@ export default function PublicEventsShowcase({ excludePath = null }) {
                   <div className="flex items-start gap-3">
                     <CalendarDays className="mt-0.5 h-4 w-4 text-[#d8c78f]" />
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.date}</p>
+                      <p className="text-[10px] uppercase  text-white/40">{copy.date}</p>
                       <p className="mt-1">{event.date || '-'}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="mt-0.5 h-4 w-4 text-[#d8c78f]" />
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.location}</p>
+                      <p className="text-[10px] uppercase  text-white/40">{copy.location}</p>
                       <p className="mt-1">{event.countryNameText || '-'}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Ticket className="mt-0.5 h-4 w-4 text-[#d8c78f]" />
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.tickets}</p>
+                      <p className="text-[10px] uppercase  text-white/40">{copy.tickets}</p>
                       <p className="mt-1">{event.remainingTickets ?? 0}</p>
                     </div>
                   </div>
