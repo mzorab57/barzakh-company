@@ -4,7 +4,7 @@ import './CosmicParallaxBg.css';
 function CosmicParallaxBg({
   head,
   text,
-  loop = true,
+  loop = false,
   className = '',
   primaryColor = '#88743e', // ڕەنگی ئەسڵی تۆ
   secondaryColor = '#C5B78E', // ڕەنگی دووەمی تۆ
@@ -29,16 +29,11 @@ function CosmicParallaxBg({
     setSmallStars(generateStarBoxShadow(700));
     setMediumStars(generateStarBoxShadow(200));
     setBigStars(generateStarBoxShadow(100));
-
-    document.documentElement.style.setProperty(
-      '--animation-iteration',
-      loop ? 'infinite' : '1'
-    );
   }, [loop]);
 
   return (
     <div
-      className={`cosmic-parallax-container ${className}`}
+      className={` ${className}`}
       style={{
         '--cosmic-primary': primaryColor,
         '--cosmic-secondary': secondaryColor,

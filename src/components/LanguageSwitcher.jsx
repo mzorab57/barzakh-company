@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 const languageItems = [
   { code: 'ku', labelKey: 'common.languages.ku' },
   { code: 'ar', labelKey: 'common.languages.ar' },
-  // { code: 'en', labelKey: 'common.languages.en' },
+  { code: 'en', labelKey: 'common.languages.en' },
 ];
 
 export default function LanguageSwitcher() {

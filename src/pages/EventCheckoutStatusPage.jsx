@@ -7,7 +7,6 @@ import { buildInlineEmailPasses } from '@/lib/printablePasses';
 import { parseEventSlug, resolveLocale } from '@/lib/catalog';
 
 const LOOKUP_STORAGE_KEY = 'nukhbaglobal_last_checkout_lookup';
-const AUTO_EMAIL_STORAGE_PREFIX = 'nukhbaglobal_auto_email_sent_';
 const RETURN_MODAL_STORAGE_PREFIX = 'nukhbaglobal_return_modal_seen_';
 
 const COPY = {
@@ -17,10 +16,10 @@ const COPY = {
     pending: '',
     paid: 'پارەدان سەرکەوتوو بوو. ئێستا دەتوانیت QR پاسەکانت دابەزێنیت یان وەک PDF بیانپارێزیت.',
     failed: 'Payment سەرنەکەوت. دەتوانیت دووبارە status بپشکنیت.',
-    check: 'پشکنینی status',
+    check: 'پشکنینی دۆخی پارەدان',
     download: 'دابەزاندنی PDF / Passes',
     openFib: 'کردنەوەی FIB payment',
-    openFibApp: 'کردنەوەی FIB App',
+    openFibApp: 'کردنەوەی ئەپی FIB کەت ',
     readableCode: 'Readable code',
     passes: 'Passes',
     order: 'Order',
@@ -204,67 +203,49 @@ function TicketsReadyModal({ open, passes, customerName, copy, onClose }) {
         </div>
 
         <div className="max-h-[75vh] overflow-y-auto px-6 py-6 sm:px-8">
-          <div className="space-y-4">
+          <div className="space-y-5">
             {passes.map((passItem, index) => (
-              <div key={passItem.ticketCode || `${passItem.title || 'pass'}-${index}`} className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-4 sm:p-5">
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-                  <div className="mx-auto w-full max-w-[152px] shrink-0 rounded-[1.35rem] border border-white/10 bg-white p-3">
-                    {passItem.qrDataUrl ? (
-                      <img
-                        src={passItem.qrDataUrl}
-                        alt={`${passItem.ticketCode || 'Ticket'} QR`}
-                        className="aspect-square w-full rounded-[1rem] object-contain"
-                      />
-                    ) : (
-                      <div className="flex aspect-square w-full items-center justify-center rounded-[1rem] bg-slate-100 text-slate-500">
-                        <QrCode className="h-10 w-10" />
-                      </div>
-                    )}
-                    <p className="mt-3 truncate text-center text-xs font-semibold tracking-[0.18em] text-slate-800">
-                      {passItem.ticketCode || 'TICKET'}
-                    </p>
+              <div
+                key={passItem.ticketCode || `${passItem.title || 'pass'}-${index}`}
+                className="rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04)_0%,rgba(255,255,255,0.02)_100%)] p-5 text-center shadow-[0_18px_50px_rgba(0,0,0,0.22)]"
+              >
+                <div className="mx-auto w-full max-w-[170px] rounded-[1.5rem] border border-white/10 bg-white p-3 shadow-[0_14px_40px_rgba(0,0,0,0.12)]">
+                  {passItem.qrDataUrl ? (
+                    <img
+                      src={passItem.qrDataUrl}
+                      alt={`${passItem.ticketCode || 'Ticket'} QR`}
+                      className="aspect-square w-full rounded-[1rem] object-contain"
+                    />
+                  ) : (
+                    <div className="flex aspect-square w-full items-center justify-center rounded-[1rem] bg-slate-100 text-slate-500">
+                      <QrCode className="h-10 w-10" />
+                    </div>
+                  )}
+                  <p className="mt-3 truncate text-center text-xs font-semibold tracking-[0.18em] text-slate-800">
+                    {passItem.ticketCode || 'TICKET'}
+                  </p>
+                </div>
+
+                <div className="mt-5">
+                  <div className="mx-auto flex w-fit items-center gap-2 text-[#d8c78f]">
+                    <Ticket className="h-4 w-4 shrink-0" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.28em]">{copy.passes}</span>
                   </div>
 
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start gap-3">
-                      <Ticket className="mt-0.5 h-5 w-5 shrink-0 text-[#d8c78f]" />
-                      <div className="min-w-0">
-                        <h3 className="font-semibold text-white">{passItem.title || 'Event Pass'}</h3>
-                        <p className="text-sm text-white/55">{passItem.subtitle || passItem.subEventTitle || ''}</p>
-                      </div>
+                  <h3 className="mt-3 text-xl font-semibold text-white">{passItem.title || 'Event Pass'}</h3>
+                  {(passItem.subtitle || passItem.subEventTitle) ? (
+                    <p className="mt-2 text-sm text-white/58">{passItem.subtitle || passItem.subEventTitle}</p>
+                  ) : null}
+
+                  {passItem.scheduleText ? (
+                    <div className="mx-auto mt-5 inline-flex max-w-full items-center justify-center rounded-full border border-[#d8c78f]/20 bg-[#d8c78f]/10 px-4 py-2 text-sm font-medium text-[#f2e4b2]">
+                      {passItem.scheduleText}
                     </div>
+                  ) : null}
 
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                      {passItem.subEventTitle ? (
-                        <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
-                          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.subEventLabel}</p>
-                          <p className="mt-2 text-sm text-white">{passItem.subEventTitle}</p>
-                        </div>
-                      ) : null}
-
-                      {passItem.scheduleText ? (
-                        <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
-                          <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.scheduleLabel}</p>
-                          <p className="mt-2 text-sm text-white">{passItem.scheduleText}</p>
-                        </div>
-                      ) : null}
-
-                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.codeLabel}</p>
-                        <p className="mt-2 text-sm text-white">{passItem.ticketCode || '-'}</p>
-                      </div>
-
-                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3">
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.passengerLabel}</p>
-                        <p className="mt-2 text-sm text-white">{passItem.passengerName || customerName || 'Guest'}</p>
-                      </div>
-
-                      <div className="rounded-2xl border border-white/8 bg-black/20 px-4 py-3 sm:col-span-2">
-                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40">{copy.statusLabel}</p>
-                        <p className="mt-2 text-sm text-white">{passItem.status || 'valid'}</p>
-                      </div>
-                    </div>
-                  </div>
+                  {passItem.passengerName || customerName ? (
+                    <p className="mt-4 text-sm text-white/48">{passItem.passengerName || customerName}</p>
+                  ) : null}
                 </div>
               </div>
             ))}
@@ -288,7 +269,6 @@ export default function EventCheckoutStatusPage() {
   const [trackingPayload, setTrackingPayload] = useState(null);
   const [passesPayload, setPassesPayload] = useState(null);
   const [printablePayload, setPrintablePayload] = useState(null);
-  const [sharingChannel, setSharingChannel] = useState(null);
   const [showTicketsModal, setShowTicketsModal] = useState(false);
   const [modalPasses, setModalPasses] = useState([]);
   const [currentPaymentId, setCurrentPaymentId] = useState(() => searchLookup?.paymentId || lookup?.paymentId || null);
@@ -304,6 +284,10 @@ export default function EventCheckoutStatusPage() {
   const customer_phone = activeLookup?.customerPhone || null;
   const customer_email = activeLookup?.customerEmail || null;
   const customer_name = activeLookup?.customerName || null;
+  const passesEmailedAt = trackingPayload?.order?.passesEmailedAt
+    || passesPayload?.order?.passesEmailedAt
+    || printablePayload?.order?.passesEmailedAt
+    || null;
 
   const refreshStatus = useCallback(async () => {
     if (!orderNumber || (!customer_phone && !customer_email)) {
@@ -422,28 +406,6 @@ export default function EventCheckoutStatusPage() {
     readableCode: paymentLinksOverride?.readableCode || trackingPayload?.payment?.links?.readableCode || activeLookup?.paymentLinks?.readableCode || null,
   };
   const canShowFibMobileButton = !isPaid && Boolean(paymentLinks.redirectionLink || paymentLinks.qrCode || paymentId);
-  const shareUrl = useMemo(() => {
-    if (!orderNumber || (!customer_phone && !customer_email) || typeof window === 'undefined') {
-      return '';
-    }
-
-    const params = new URLSearchParams({ order: orderNumber });
-    if (paymentId) {
-      params.set('payment', paymentId);
-    }
-    if (customer_phone) {
-      params.set('phone', customer_phone);
-    }
-    if (customer_email) {
-      params.set('email', customer_email);
-    }
-    if (activeLookup?.customerName) {
-      params.set('name', activeLookup.customerName);
-    }
-
-    return `${window.location.origin}/events/${slug}/checkout/status?${params.toString()}`;
-  }, [activeLookup?.customerName, customer_email, customer_phone, orderNumber, paymentId, slug]);
-
   const handleOpenFibPayment = useCallback(() => {
     const openLink = async () => {
       if (typeof window === 'undefined') {
@@ -523,37 +485,6 @@ export default function EventCheckoutStatusPage() {
     void openLink();
   }, [customer_email, customer_name, customer_phone, orderNumber, paymentId, paymentLinks?.qrCode, paymentLinks?.readableCode, paymentLinks?.redirectionLink, slug]);
 
-  const handleSharePasses = useCallback(async (channel) => {
-    if (!orderNumber || (!customer_phone && !customer_email)) {
-      return;
-    }
-
-    try {
-      setError('');
-      setSuccessMessage('');
-      setSharingChannel(channel);
-      const inlinePasses = channel === 'email' && printablePayload?.printablePasses?.length
-        ? await buildInlineEmailPasses(printablePayload)
-        : [];
-      await apiRequest('/api/customer/orders/passes/share', {
-        method: 'POST',
-        body: {
-          order_number: orderNumber,
-          customer_phone,
-          customer_email,
-          channel,
-          share_url: shareUrl || null,
-          inline_passes: inlinePasses,
-        },
-      });
-      setSuccessMessage(copy.emailSent);
-    } catch (requestError) {
-      setError(requestError instanceof ApiError ? requestError.message : 'Unable to share passes right now.');
-    } finally {
-      setSharingChannel(null);
-    }
-  }, [copy.emailSent, customer_email, customer_phone, orderNumber, printablePayload, shareUrl]);
-
   useEffect(() => {
     let cancelled = false;
 
@@ -613,35 +544,12 @@ export default function EventCheckoutStatusPage() {
   }, [isPaid, orderNumber, passes.length, searchParams]);
 
   useEffect(() => {
-    if (!isPaid || !customer_email || !orderNumber || !printablePayload?.printablePasses?.length) {
+    if (!isPaid || !customer_email || !passesEmailedAt) {
       return;
     }
 
-    const emailStorageKey = `${AUTO_EMAIL_STORAGE_PREFIX}${orderNumber}`;
-
-    try {
-      if (sessionStorage.getItem(emailStorageKey) === '1') {
-        return;
-      }
-    } catch {
-      // Ignore session storage access issues.
-    }
-
-    if (sharingChannel !== null) {
-      return;
-    }
-
-    void handleSharePasses('email')
-      .then(() => {
-        try {
-          sessionStorage.setItem(emailStorageKey, '1');
-        } catch {
-          // Ignore session storage access issues.
-        }
-        setSuccessMessage(copy.emailAutoSent);
-      })
-      .catch(() => {});
-  }, [copy.emailAutoSent, customer_email, handleSharePasses, isPaid, orderNumber, printablePayload?.printablePasses?.length, sharingChannel]);
+    setSuccessMessage(copy.emailAutoSent);
+  }, [copy.emailAutoSent, customer_email, isPaid, passesEmailedAt]);
 
   if (!eventId) {
     return <Navigate to="/" replace />;
@@ -659,7 +567,7 @@ export default function EventCheckoutStatusPage() {
     <div className="bg-[#06070b] text-white">
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
 
-        <section className="mt-6 rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 sm:p-9">
+        <section className="mt-0 rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 sm:p-9">
           <div className="flex flex-col items-center text-center">
             <div className={`inline-flex h-14 w-14 items-center justify-center rounded-full ${
               isPaid ? 'bg-emerald-500/15 text-emerald-300' : isFailed ? 'bg-rose-500/15 text-rose-300' : 'bg-[#d8c78f]/15 text-[#eadcae]'
@@ -671,7 +579,7 @@ export default function EventCheckoutStatusPage() {
           </div>
 
           {!isPaid && paymentLinks?.qrCode ? (
-            <div className="mx-auto mt-8 max-w-md rounded-[1.7rem] border border-[#d8c78f]/20 bg-[#d8c78f]/8 p-6">
+            <div className="mx-auto mt-2 max-w-md rounded-[1.7rem] border border-[#d8c78f]/20 bg-[#d8c78f]/8 p-6">
               <div className="flex items-center justify-center gap-3">
                 <QrCode className="h-5 w-5 text-[#eadcae]" />
                 <p className="text-sm text-white/80">FIB QR</p>
@@ -699,9 +607,9 @@ export default function EventCheckoutStatusPage() {
             </div>
           ) : null}
 
-          {isPaid && customer_email && (sharingChannel === 'email' || successMessage) ? (
+          {isPaid && customer_email && successMessage ? (
             <p className="mt-6 text-sm text-emerald-300">
-              {sharingChannel === 'email' ? copy.emailAutoSending : successMessage}
+              {successMessage}
             </p>
           ) : successMessage ? <p className="mt-6 text-sm text-emerald-300">{successMessage}</p> : null}
           {error ? <p className="mt-3 text-sm text-rose-300">{error}</p> : null}

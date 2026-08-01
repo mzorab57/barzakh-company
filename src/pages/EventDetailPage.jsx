@@ -15,7 +15,7 @@ const COPY = {
     back: 'گەڕانەوە',
     loading: 'چاوەڕێی زانیارییەکانی event...',
     notFound: 'ئەم event ـە نەدۆزرایەوە.',
-    about: 'دەربارەی event',
+    about: 'دەربارەی چالاکی :',
     schedule: 'Sub-events',
     noSubEvents: 'هێشتا sub-event دانەنراوە.',
     booking: 'دەستپێکردنی booking',
@@ -238,7 +238,7 @@ export default function EventDetailPage() {
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,5,9,0.34)_0%,rgba(4,5,9,0.62)_38%,rgba(4,5,9,0.96)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(216,199,143,0.18),transparent_24%)]" />
 
-        <div className="relative mx-auto flex min-h-[72vh] max-w-7xl items-end px-4 pb-16 pt-10 sm:px-6 lg:px-8">
+        <div className="relative mx-auto flex min-h-[72vh] max-w-7xl items-end px-4   sm:px-6 lg:px-8">
           <div className="max-w-4xl">
             {/* <Link
               to="/"
@@ -257,7 +257,7 @@ export default function EventDetailPage() {
             <h1 className="mt-4 text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">{title}</h1>
 
             {heroSubEvents.length > 0 ? (
-              <div className="mt-6 inline-flex max-w-xl flex-col rounded-[2rem]  bg-[linear-gradient(180deg,rgba(5,7,12,0.72)_0%,rgba(5,7,12,0.55)_100%)] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.28)] backdrop-blur-md sm:p-5">
+              <div className="mt-6 inline-flex max-w-xl flex-col rounded-[2rem]   p-4   sm:p-5">
                 <p className="text-lg border-b border-[#d8c78f]/35 font-medium text-[#d8c78f]  sm:text-base">{copy.chooseCity}</p>
                 <div className="mt-4 flex flex-col gap-3">
                   {heroSubEvents.map((item) =>
@@ -291,8 +291,10 @@ export default function EventDetailPage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:py-20">
-        <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 sm:p-9">
+
+      {/* Event Description */}
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6  lg:px-8 lg:py-20">
+        <div className="rounded-[2rem]  bg-white/[0.02] p-7 sm:p-9">
           <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.about}</p>
           <div
             className={`mt-6 max-w-none text-base leading-8 text-white/78 [&_p]:mb-6 [&_p]:font-normal [&_p:last-child]:mb-0 [&_br]:block [&_strong]:font-bold [&_strong]:text-white [&_b]:font-bold [&_b]:text-white [&_em]:italic [&_i]:italic [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:space-y-3 [&_ul]:pr-6 [&_li]:font-normal [&_li]:leading-8 ${locale === 'ku' ? 'event-description-ku' : ''}`}
@@ -300,7 +302,7 @@ export default function EventDetailPage() {
           />
         </div>
 
-        <aside className="rounded-[2rem] border border-[#d8c78f]/20 bg-[linear-gradient(180deg,rgba(216,199,143,0.06)_0%,rgba(255,255,255,0.02)_100%)] p-0 sm:p-9">
+        {/* <aside className="rounded-[2rem] border border-[#d8c78f]/20 bg-[linear-gradient(180deg,rgba(216,199,143,0.06)_0%,rgba(255,255,255,0.02)_100%)] p-0 sm:p-9">
           <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.schedule}</p>
 
           {subEvents.length > 0 ? (
@@ -365,7 +367,7 @@ export default function EventDetailPage() {
               {copy.noSubEvents}
             </div>
           )}
-        </aside>
+        </aside> */}
       </section>
     </div>
   );

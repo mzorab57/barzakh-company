@@ -88,59 +88,59 @@ export default function Footer() {
   };
 
   // GSAP Animations
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      gsap.fromTo(
-        brandRef.current,
-        { opacity: 0, x: -80 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: footerRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
+  // useLayoutEffect(() => {
+  //   let ctx = gsap.context(() => {
+  //     gsap.fromTo(
+  //       brandRef.current,
+  //       { opacity: 0, x: -80 },
+  //       {
+  //         opacity: 1,
+  //         x: 0,
+  //         duration: 1.2,
+  //         ease: 'power3.out',
+  //         scrollTrigger: {
+  //           trigger: footerRef.current,
+  //           start: 'top 80%',
+  //         },
+  //       }
+  //     );
 
-      linksRef.current.forEach((link, index) => {
-        gsap.fromTo(
-          link,
-          { opacity: 0, y: 40 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            delay: index * 0.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: footerRef.current,
-              start: 'top 75%',
-            },
-          }
-        );
-      });
+  //     linksRef.current.forEach((link, index) => {
+  //       gsap.fromTo(
+  //         link,
+  //         { opacity: 0, y: 40 },
+  //         {
+  //           opacity: 1,
+  //           y: 0,
+  //           duration: 0.8,
+  //           delay: index * 0.1,
+  //           ease: 'power3.out',
+  //           scrollTrigger: {
+  //             trigger: footerRef.current,
+  //             start: 'top 75%',
+  //           },
+  //         }
+  //       );
+  //     });
 
-      gsap.fromTo(
-        statsRef.current,
-        { opacity: 0, scale: 0.9 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 1,
-          ease: 'back.out(1.4)',
-          scrollTrigger: {
-            trigger: footerRef.current,
-            start: 'top 70%',
-          },
-        }
-      );
-    }, footerRef);
+  //     gsap.fromTo(
+  //       statsRef.current,
+  //       { opacity: 0, scale: 0.9 },
+  //       {
+  //         opacity: 1,
+  //         scale: 1,
+  //         duration: 1,
+  //         ease: 'back.out(1.4)',
+  //         scrollTrigger: {
+  //           trigger: footerRef.current,
+  //           start: 'top 70%',
+  //         },
+  //       }
+  //     );
+  //   }, footerRef);
 
-    return () => ctx.revert();
-  }, []);
+  //   return () => ctx.revert();
+  // }, []);
 
   const handleDonate = async () => {
     const normalizedAmount = sanitizeDonationAmount(donationAmount);
