@@ -142,6 +142,32 @@ function buildLookupFromSearchParams(searchParams) {
   };
 }
 
+function normalizeTicketTime(value) {
+  const raw = String(value || '').trim();
+
+  if (!raw) {
+    return '';
+  }
+
+  return raw.slice(0, 5);
+}
+
+function buildTicketScheduleText(eventDate, startTime, endTime) {
+  const dateText = String(eventDate || '').trim();
+  const startText = normalizeTicketTime(startTime);
+  const endText = normalizeTicketTime(endTime);
+
+  if (dateText && startText && endText) {
+    return `${dateText} | ${startText} - ${endText}`;
+  }
+
+  if (dateText && startText) {
+    return `${dateText} | ${startText}`;
+  }
+
+  return dateText;
+}
+
 function buildFibReturnUrl({ slug, customerPhone, customerEmail, customerName }) {
   if (typeof window === 'undefined') {
     return null;
@@ -393,7 +419,11 @@ export default function EventCheckoutStatusPage() {
         subtitle: passItem.ticketTitleText || passItem.subEventTitleText || '',
         subEventTitle: passItem.subEventTitleText || '',
         passengerName: passItem.passengerName || customer_name || 'Guest',
-        scheduleText: '',
+        scheduleText: buildTicketScheduleText(
+          passItem.subEventDate || passItem.eventDate || '',
+          passItem.subEventStartTime || '',
+          passItem.subEventEndTime || '',
+        ),
         ticketCode: passItem.ticketCode || '',
         qrDataUrl: '',
         status: passItem.status || 'valid',

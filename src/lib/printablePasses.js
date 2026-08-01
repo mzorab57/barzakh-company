@@ -67,7 +67,7 @@ async function buildQrEntries(payload) {
   );
 }
 
-function buildPassCardViewModel(passItem, index, total, orderNumber) {
+function buildPassCardViewModel(passItem, index, total) {
   const display = passItem.display || {};
   const ticketIndex = Number(passItem.ticketIndex || index + 1);
   const ticketCount = Number(passItem.ticketCount || total || 1);
@@ -77,7 +77,6 @@ function buildPassCardViewModel(passItem, index, total, orderNumber) {
     subtitle: display.subtitle || 'Ticket',
     subEventTitle: display.subEventTitle || '',
     passengerName: display.passengerName || 'Guest',
-    orderNumber: display.orderNumber || orderNumber || '',
     eventDate: display.eventDate || 'N/A',
     startTime: display.startTime || '',
     endTime: display.endTime || '',
@@ -88,8 +87,8 @@ function buildPassCardViewModel(passItem, index, total, orderNumber) {
   };
 }
 
-function createPdfCardNode({ passItem, qrDataUrl, orderNumber }, index, total) {
-  const view = buildPassCardViewModel(passItem, index, total, orderNumber);
+function createPdfCardNode({ passItem, qrDataUrl }, index, total) {
+  const view = buildPassCardViewModel(passItem, index, total);
   const wrapper = document.createElement('article');
 
   wrapper.style.cssText = [
@@ -124,11 +123,7 @@ function createPdfCardNode({ passItem, qrDataUrl, orderNumber }, index, total) {
           ${escapeHtml(view.passengerName)}
         </p>
         <p style="margin:0;display:grid;gap:4px;font-size:14px;text-align:left;">
-          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">ORDER</span>
-          ${escapeHtml(view.orderNumber)}
-        </p>
-        <p style="margin:0;display:grid;gap:4px;font-size:14px;text-align:left;">
-          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">EVENT DATE</span>
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:#6b7280;">DATE & TIME</span>
           ${escapeHtml(view.scheduleText)}
         </p>
         ${view.location ? `
@@ -217,11 +212,10 @@ function triggerPdfDownload(pdfBlob, fileName) {
 
 export async function buildInlineEmailPasses(payload) {
   const qrEntries = await buildQrEntries(payload);
-  const orderNumber = payload?.order?.orderNumber || 'Order';
   const total = qrEntries.length;
 
   return qrEntries.map(({ passItem, qrDataUrl }, index) => {
-    const view = buildPassCardViewModel(passItem, index, total, orderNumber);
+    const view = buildPassCardViewModel(passItem, index, total);
 
     return {
       sequenceLabel: view.sequenceLabel,
@@ -229,7 +223,6 @@ export async function buildInlineEmailPasses(payload) {
       subtitle: view.subtitle,
       subEventTitle: view.subEventTitle,
       passengerName: view.passengerName,
-      orderNumber: view.orderNumber,
       eventDate: view.eventDate,
       startTime: view.startTime,
       endTime: view.endTime,
@@ -244,11 +237,9 @@ export async function buildInlineEmailPasses(payload) {
 export async function downloadPrintablePassesPdf(payload, options = {}) {
   const qrEntries = await buildQrEntries(payload);
   const captureRoot = createPdfCaptureRoot();
-  const orderNumber = payload?.order?.orderNumber || 'Order';
-
   try {
     qrEntries.forEach((entry, index) => {
-      captureRoot.appendChild(createPdfCardNode({ ...entry, orderNumber }, index, qrEntries.length));
+      captureRoot.appendChild(createPdfCardNode(entry, index, qrEntries.length));
     });
 
     await waitForImages(captureRoot);
