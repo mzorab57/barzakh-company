@@ -551,7 +551,7 @@ export default function EventCheckoutPage() {
                         onFocus={() => setShowDonationPresets(true)}
                         onBlur={() => setTimeout(() => setShowDonationPresets(false), 200)}
                         placeholder={copy.donationCustomPlaceholder}
-                        className="relative z-40 h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 pe-16 text-white placeholder:text-white/30 outline-none transition focus:border-[#C5B78E]/60 focus:bg-white/[0.06]"
+                        className="relative z-40 h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 pe-16 text-base text-white placeholder:text-white/30 outline-none transition focus:border-[#C5B78E]/60 focus:bg-white/[0.06]"
                       />
                       <span className="pointer-events-none absolute inset-y-0 end-4 z-40 flex items-center text-[11px] font-semibold uppercase tracking-[0.22em] text-white/34">
                         IQD
@@ -661,7 +661,7 @@ export default function EventCheckoutPage() {
                         autoComplete={field === 'customer_name' ? 'name' : field === 'customer_phone' ? 'tel' : field === 'customer_email' ? 'email' : 'off'}
                         autoCapitalize={field === 'customer_email' ? 'none' : 'sentences'}
                         spellCheck={field === 'customer_email' ? false : true}
-                        className="h-12 w-full rounded-2xl border border-primary/10 text-right bg-white/[0.04] px-4 text-white outline-none"
+                        className="h-12 w-full rounded-2xl border border-primary/10 text-right bg-white/[0.04] px-4 text-base text-white outline-none"
                       />
                     )}
                   </label>

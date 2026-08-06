@@ -1,6 +1,7 @@
-import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
-import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.webp';
-import migrationPosterMobileImg from '../assets/images/event/regay-koch-mobile.webp';
+// import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
+// import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.webp';
+// import migrationPosterMobileImg from '../assets/images/event/regay-koch-mobile.webp';
+// import migrationPosterImg from '../assets/images/event/regay-koch.webp';
 import migrationRouteImg1 from '../assets/images/migrationRoute/img1.webp';
 import migrationRouteImg2 from '../assets/images/migrationRoute/img2.webp';
 import migrationRouteImg3 from '../assets/images/migrationRoute/img3.webp';
@@ -8,7 +9,6 @@ import migrationRouteImg4 from '../assets/images/migrationRoute/img4.webp';
 import migrationRouteImg5 from '../assets/images/migrationRoute/img5.webp';
 import aboutBgImg from '../assets/images/about/about-bg.jpeg';
 import aboutEventImg from '../assets/images/about/about.jpeg';
-import migrationPosterImg from '../assets/images/event/regay-koch.webp';
 
 const mergeItems = (translatedItems = [], staticItems = []) =>
   translatedItems.map((item, index) => ({
@@ -34,8 +34,8 @@ const getPastEventsStaticItems = () => ([
   
   {
     slug: 'migration-route',
-    image: migrationPosterImg,
-    mobileImage: migrationPosterMobileImg,
+    // image: migrationPosterImg,
+    // mobileImage: migrationPosterMobileImg,
     year: '2025',
     category: 'medina',
     videos: [
@@ -47,8 +47,8 @@ const getPastEventsStaticItems = () => ([
   },
   {
     slug: 'route-of-hajj',
-    image: eventTurkiaDesktop,
-    mobileImage: eventTurkiaMobile,
+    // image: eventTurkiaDesktop,
+    // mobileImage: eventTurkiaMobile,
     year: '2025',
     category: 'makkah',
     videos: [
@@ -169,8 +169,8 @@ export const getTurkeyEventPageContent = t => ({
   ...t('pages.turkeyEvent', { returnObjects: true }),
   hero: {
     ...t('pages.turkeyEvent.hero', { returnObjects: true }),
-    centerImage: eventTurkiaDesktop,
-    mobileCenterImage: eventTurkiaMobile,
+    // centerImage: eventTurkiaDesktop,
+    // mobileCenterImage: eventTurkiaMobile,
     parallaxImages: [
       {
         src: '/assets/images/hero1.jpg',

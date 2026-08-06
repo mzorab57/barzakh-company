@@ -33,7 +33,7 @@ function CosmicParallaxBg({
 
   return (
     <div
-      className={` ${className}`}
+      className={`cosmic-parallax-container ${className}`}
       style={{
         '--cosmic-primary': primaryColor,
         '--cosmic-secondary': secondaryColor,

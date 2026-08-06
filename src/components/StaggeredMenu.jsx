@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { useTranslation } from 'react-i18next';
 import './StaggeredMenu.css';
@@ -249,7 +250,7 @@ export const StaggeredMenu = ({
                   }}>
                     <span className="sm-panel-itemLabel text-xl lg:text-4xl">
                       {item.label} 
-                      {item.isParent && <span className="sm-item-arrow"> ↗ </span>}
+                      {item.isParent && <ArrowUpRight className="inline-block sm-item-arrow" size={20} />}
                     </span>
                   </a>
                 </li>

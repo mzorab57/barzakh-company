@@ -8,14 +8,9 @@ const HeroVideoSection = () => {
   return (
     <section className="relative min-h-screen bg-[#050403] px-4 py-16 sm:px-6 lg:px-8 lg:py-24 flex items-center justify-center font-sans overflow-hidden">
       
-      {/* Background Grid Pattern & Ambient Glow */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] opacity-20" />
-      
-      {/* Giant Ambient Glow behind the video */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] max-w-[1000px] max-h-[1000px] bg-[#E6D6A3] rounded-full blur-[180px] opacity-10 animate-pulse-slow pointer-events-none" />
-
+    
       {/* Cinematic Video Container */}
-      <div className="relative w-full max-w-[95rem] h-[60vh] sm:h-[75vh] lg:h-[85vh] mx-auto z-10 group cursor-default">
+      <div className="relative w-full max-w-[75rem] h-[60vh]  sm:h-[75vh] lg:h-[65vh] mx-auto z-10 group cursor-default">
         
         {/* Main Frame */}
         <div className="absolute inset-0 overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-[#0a0805] shadow-[0_30px_100px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.1)] border border-white/10 transition-all duration-1000 hover:border-[#E6D6A3]/30 hover:shadow-[0_40px_120px_rgba(230,214,163,0.2)]">
@@ -38,19 +33,6 @@ const HeroVideoSection = () => {
 
           {/* Film Grain Overlay */}
           <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay bg-[url('/noise.svg')] pointer-events-none" />
-
-          {/* Cinematic Corner Accents */}
-          {/* Top Left */}
-          <div className="absolute top-6 left-6 sm:top-10 sm:left-10 w-12 h-12 sm:w-20 sm:h-20 border-t-2 border-l-2 border-[#E6D6A3]/20 rounded-tl-3xl pointer-events-none transition-all duration-700 group-hover:border-[#E6D6A3]/60 group-hover:w-24 group-hover:h-24" />
-          
-          {/* Top Right */}
-          <div className="absolute top-6 right-6 sm:top-10 sm:right-10 w-12 h-12 sm:w-20 sm:h-20 border-t-2 border-r-2 border-[#E6D6A3]/20 rounded-tr-3xl pointer-events-none transition-all duration-700 group-hover:border-[#E6D6A3]/60 group-hover:w-24 group-hover:h-24" />
-          
-          {/* Bottom Left */}
-          <div className="absolute bottom-6 left-6 sm:bottom-10 sm:left-10 w-12 h-12 sm:w-20 sm:h-20 border-b-2 border-l-2 border-[#E6D6A3]/20 rounded-bl-3xl pointer-events-none transition-all duration-700 group-hover:border-[#E6D6A3]/60 group-hover:w-24 group-hover:h-24" />
-          
-          {/* Bottom Right */}
-          <div className="absolute bottom-6 right-6 sm:bottom-10 sm:right-10 w-12 h-12 sm:w-20 sm:h-20 border-b-2 border-r-2 border-[#E6D6A3]/20 rounded-br-3xl pointer-events-none transition-all duration-700 group-hover:border-[#E6D6A3]/60 group-hover:w-24 group-hover:h-24" />
 
           {/* Cinematic Progress Bar & Timecode */}
           <div className="absolute bottom-6 left-10 right-10 sm:bottom-10 sm:left-16 sm:right-16 flex items-center gap-4 sm:gap-6 z-20 opacity-70 transition-opacity duration-500 group-hover:opacity-100">

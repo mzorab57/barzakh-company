@@ -1,7 +1,7 @@
-import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
-import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.jpeg';
-import migrationPosterImg from '../assets/images/event/regay-koch.webp';
-import migrationPosterMobileImg from '../assets/images/event/regay-koch-mobile.webp';
+// import eventTurkiaDesktop from '../assets/images/event/event-turkia.webp';
+// import eventTurkiaMobile from '../assets/images/event/event-turkia-mobile.jpeg';
+// import migrationPosterImg from '../assets/images/event/regay-koch.webp';
+// import migrationPosterMobileImg from '../assets/images/event/regay-koch-mobile.webp';
 
 const mergeItems = (translatedItems = [], staticItems = []) =>
   translatedItems.map((item, index) => ({
@@ -50,8 +50,8 @@ export const getGuestsSectionContent = t => ({
 export const getPastEventsSectionContent = t => ({
   ...t('components.pastEvents', { returnObjects: true }),
   pastEvents: mergeItems(t('components.pastEvents.pastEvents', { returnObjects: true }), [
-    { image: eventTurkiaDesktop, mobileImage: eventTurkiaMobile, href: '/past-events/route-of-hajj' },
-    { image: migrationPosterImg, mobileImage: migrationPosterMobileImg, href: '/past-events/migration-route' },
+    // { image: eventTurkiaDesktop, mobileImage: eventTurkiaMobile, href: '/past-events/route-of-hajj' },
+    // { image: migrationPosterImg, mobileImage: migrationPosterMobileImg, href: '/past-events/migration-route' },
   ]),
 });
 
@@ -178,15 +178,15 @@ export const getHeroSliderContent = t => ({
   slides: [
     {
       id: 1,
-      desktopImg: eventTurkiaDesktop,
-      mobileImg: eventTurkiaMobile,
+      // desktopImg: eventTurkiaDesktop,
+      // mobileImg: eventTurkiaMobile,
       title: '',
       category: '',
     },
     {
       id: 2,
-      desktopImg: migrationPosterImg,
-      mobileImg: migrationPosterMobileImg,
+      // desktopImg: migrationPosterImg,
+      // mobileImg: migrationPosterMobileImg,
       title: '',
       category: '',
     },
