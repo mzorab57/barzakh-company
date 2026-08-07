@@ -295,7 +295,7 @@ export default function EventDetailPage() {
       {/* Event Description */}
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6  lg:px-8 lg:py-20">
         <div className="rounded-[2rem]  bg-white/[0.02] p-7 sm:p-9">
-          <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.about}</p>
+          <p className="text-xs uppercase  text-[#d8c78f]">{copy.about}</p>
           <div
             className={`mt-6 max-w-none text-base leading-8 text-white/78 [&_p]:mb-6 [&_p]:font-normal [&_p:last-child]:mb-0 [&_br]:block [&_strong]:font-bold [&_strong]:text-white [&_b]:font-bold [&_b]:text-white [&_em]:italic [&_i]:italic [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:space-y-3 [&_ul]:pr-6 [&_li]:font-normal [&_li]:leading-8 ${locale === 'ku' ? 'event-description-ku' : ''}`}
             dangerouslySetInnerHTML={{ __html: renderRichText(description) }}
@@ -303,7 +303,7 @@ export default function EventDetailPage() {
         </div>
 
         {/* <aside className="rounded-[2rem] border border-[#d8c78f]/20 bg-[linear-gradient(180deg,rgba(216,199,143,0.06)_0%,rgba(255,255,255,0.02)_100%)] p-0 sm:p-9">
-          <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.schedule}</p>
+          <p className="text-xs uppercase  text-[#d8c78f]">{copy.schedule}</p>
 
           {subEvents.length > 0 ? (
             <div className="mt-5 space-y-3">
@@ -333,7 +333,7 @@ export default function EventDetailPage() {
                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                       <div>
                       
-                        <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.22em] text-white/45">
+                        <div className="flex flex-wrap gap-3 text-xs uppercase  text-white/45">
                           {venueText ? (
                             <span className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/[0.04] px-3 py-2">
                               <MapPin className="h-3.5 w-3.5 text-[#d8c78f]" />

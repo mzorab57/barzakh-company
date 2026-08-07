@@ -101,7 +101,7 @@ export default function VolunteerRegistrationPage() {
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="overflow-hidden rounded-[2rem] bg-[#1d160b] text-white shadow-[0_30px_80px_rgba(49,31,0,0.22)]">
             <div className="border-b border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(197,183,142,0.28),transparent_35%),linear-gradient(135deg,#1d160b,#31230f)] px-6 py-10 sm:px-8 lg:px-10">
-              <h1 className="text-4xl  font-semibold uppercase tracking-[0.35em] text-[#d9c999]">{hero.eyebrow}</h1>
+              <h1 className="text-4xl  font-semibold uppercase  text-[#d9c999]">{hero.eyebrow}</h1>
               <h1 className="mt-4 text-3xl font-black uppercase leading-none sm:text-5xl lg:text-6xl">{hero.title}</h1>
               <p className="mt-5 max-w-2xl text-base leading-8 text-white/78">{hero.description}</p>
             </div>
@@ -146,14 +146,14 @@ export default function VolunteerRegistrationPage() {
                 <Users className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#8a6f36]">{formContent.badge}</p>
+                <p className="text-sm font-semibold uppercase  text-[#8a6f36]">{formContent.badge}</p>
                 <h2 className="mt-1 text-2xl font-bold text-[#2d230f]">{formContent.title}</h2>
               </div>
             </div>
 
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-[0.25em] text-[#8a6f36]">{formContent.personalInformationTitle}</h3>
+                <h3 className="text-sm font-bold uppercase  text-[#8a6f36]">{formContent.personalInformationTitle}</h3>
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   <input name="firstName" value={form.firstName} onChange={handleChange} placeholder={formContent.fields.firstName} className="rounded-2xl border border-[#eadfc6] bg-[#fcfaf4] px-4 py-3 text-[#2d230f] outline-none transition focus:border-[#b59a62]" />
                   <input name="lastName" value={form.lastName} onChange={handleChange} placeholder={formContent.fields.lastName} className="rounded-2xl border border-[#eadfc6] bg-[#fcfaf4] px-4 py-3 text-[#2d230f] outline-none transition focus:border-[#b59a62]" />
@@ -166,7 +166,7 @@ export default function VolunteerRegistrationPage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-[0.25em] text-[#8a6f36]">{formContent.volunteerInformationTitle}</h3>
+                <h3 className="text-sm font-bold uppercase  text-[#8a6f36]">{formContent.volunteerInformationTitle}</h3>
                 <div className="mt-4 space-y-4">
                   <textarea name="reason" value={form.reason} onChange={handleChange} rows={4} placeholder={formContent.fields.reason} className="w-full rounded-[1.5rem] border border-[#eadfc6] bg-[#fcfaf4] px-4 py-3 text-[#2d230f] outline-none transition focus:border-[#b59a62]" />
                   <div>
@@ -185,7 +185,7 @@ export default function VolunteerRegistrationPage() {
               </div>
 
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-[0.25em] text-[#8a6f36]">{formContent.confirmationTitle}</h3>
+                <h3 className="text-sm font-bold uppercase  text-[#8a6f36]">{formContent.confirmationTitle}</h3>
                 <div className="mt-4 space-y-3 rounded-[1.5rem] border border-[#efe5cf] bg-[#fcfaf4] p-5">
                   <label className="flex items-start gap-3 text-sm leading-7 text-[#433617]">
                     <input type="checkbox" name="confirmCorrect" checked={form.confirmCorrect} onChange={handleChange} className="mt-1" />
@@ -201,7 +201,7 @@ export default function VolunteerRegistrationPage() {
               {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
               {info ? <p className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{info}</p> : null}
 
-              <button type="submit" disabled={submitting} className="inline-flex w-full items-center justify-center gap-3 rounded-[1.25rem] bg-[#1f7a44] px-6 py-4 text-sm font-bold uppercase tracking-[0.3em] text-white transition hover:bg-[#176438] disabled:cursor-not-allowed disabled:opacity-60">
+              <button type="submit" disabled={submitting} className="inline-flex w-full items-center justify-center gap-3 rounded-[1.25rem] bg-[#1f7a44] px-6 py-4 text-sm font-bold uppercase text-white transition hover:bg-[#176438] disabled:cursor-not-allowed disabled:opacity-60">
                 {/* <MessageCircle className="h-5 w-5" /> */}
                 {submitting ? '...' : formContent.submitLabel}
               </button>

@@ -54,7 +54,7 @@ export default function PastEventsPage() {
         <div className="relative overflow-hidden rounded-[2.5rem]  bg-[radial-gradient(circle_at_top,rgba(197,183,142,0.18),transparent_35%),linear-gradient(180deg,#12100c_0%,#080705_100%)] px-6 py-8 lg:py-14 shadow-[0_24px_90px_rgba(0,0,0,0.35)] sm:px-10 lg:px-14">
           <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.03] mix-blend-overlay" />
           <div className="relative">
-            <p className=" text-3xl sm:text-5xl font-semibold uppercase tracking-[0.35em] text-[#d9c999]">
+            <p className=" text-3xl sm:text-5xl font-semibold uppercase  text-[#d9c999]">
               {content.eyebrow}
             </p>
             <br/>
@@ -88,14 +88,14 @@ export default function PastEventsPage() {
 
               <div className="relative flex min-h-[20rem] flex-col justify-between p-6 sm:p-8">
                 <div className="flex items-start justify-between gap-4">
-                  {/* <span className="inline-flex rounded-full border border-white/15 bg-black/25 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#e4d4a0] backdrop-blur-md">
+                  {/* <span className="inline-flex rounded-full border border-white/15 bg-black/25 px-4 py-2 text-xs font-semibold uppercase  text-[#e4d4a0] backdrop-blur-md">
                     {content.eventBadge} {String(index + 1).padStart(2, '0')}
                   </span> */}
               
                 </div>
 
                 <div className='flex justify-between items-end'>
-                  <div className=" flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
+                  <div className=" flex flex-wrap gap-3 text-xs font-semibold uppercase  text-white/70">
                     <span className="inline-flex items-center gap-0.5 rounded-full bg-white/5 px-3  backdrop-blur">
                       <CalendarDays className="h-4 w-4 text-[#d8c78f]" />
                       {event.year}
@@ -110,7 +110,7 @@ export default function PastEventsPage() {
                   </h2>
                   
                  
-                  <div className="mt-6 inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#e7d9a7]">
+                  <div className="mt-6 inline-flex items-center gap-3 text-sm font-semibold uppercase  text-[#e7d9a7]">
                   <div> <span className='text-xs flex text-nowrap' >{content.ctaLabel}   <ArrowRight className="h-4 w-4 transition-transform mx-2 -rotate-45 duration-300 group-hover:translate-x-1" /></span></div> 
                   
                   </div>

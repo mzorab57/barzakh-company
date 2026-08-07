@@ -7,34 +7,46 @@ import { getLocalizedText, resolveLocale, resolvePublicEventRoute } from '@/lib/
 
 const FALLBACK_COPY = {
   ku: {
-    eyebrow: 'چالاکییە گشتییەکان',
-    title: 'چالاکییە public و upcoming ـەکان',
-    description: 'هەموو event ـە چالاکەکان لە بنکەی زانیارییەوە خۆکارانە دێن بۆ ئەوەی خێراتر بگەیتە booking.',
-    cta: 'بینینی وردەکاری',
+    eyebrow: 'چالاکییەکان',
+    title: 'چالاکییە نوێکان  ',
+    description: 'هەر چالاکییەک لێرە وەک card پیشان دەدرێت تا بە ئاسانی بچیتە ناو وردەکاری و حجزکردن.',
+    cta: 'بچۆ بۆ چالاکی',
     empty: 'هێشتا هیچ چالاکییەکی public نەدۆزرایەوە.',
     date: 'بەروار',
     location: 'شوێن',
     tickets: 'بەردەست',
+    upcomingBadge: 'داهاتوو',
+    publicBadge: 'گشتی',
+    startingFrom: 'لە',
+    countLabel: 'چالاکییەی چالاک',
   },
   ar: {
-    eyebrow: 'الفعاليات العامة',
-    title: 'جميع الفعاليات العامة والقادمة',
-    description: 'هذه القائمة تُجلب مباشرة من قاعدة البيانات حتى يصل الزائر بسرعة إلى صفحة الحجز.',
-    cta: 'عرض التفاصيل',
+    eyebrow: 'الفعاليات',
+    title: 'فعاليات جاهزة للحجز',
+    description: 'كل فعالية تظهر هنا كبطاقة أنيقة حتى ينتقل الزائر مباشرة إلى صفحة الفعالية والحجز.',
+    cta: 'اذهب إلى الفعالية',
     empty: 'لا توجد فعاليات عامة متاحة حالياً.',
     date: 'التاريخ',
     location: 'الموقع',
     tickets: 'المتبقي',
+    upcomingBadge: 'قادمة',
+    publicBadge: 'عامة',
+    startingFrom: 'من',
+    countLabel: 'فعاليات متاحة',
   },
   en: {
-    eyebrow: 'Public Events',
-    title: 'All public and upcoming events',
-    description: 'This section is connected to the database so visitors can move straight into the booking flow.',
-    cta: 'View details',
+    eyebrow: 'Events',
+    title: 'Current events ready to book',
+    description: 'Each live event appears here as a clean card so visitors can jump straight into the event page and booking flow.',
+    cta: 'Open event',
     empty: 'No public events are available right now.',
     date: 'Date',
     location: 'Location',
     tickets: 'Remaining',
+    upcomingBadge: 'Upcoming',
+    publicBadge: 'Public',
+    startingFrom: 'From',
+    countLabel: 'live events',
   },
 };
 
@@ -71,80 +83,86 @@ export default function PublicEventsShowcase({ excludePath = null }) {
         route: resolvePublicEventRoute(event, locale),
         title: getLocalizedText(event.title, locale, event.titleText || 'Event'),
         description: getLocalizedText(event.description, locale, event.descriptionText || ''),
+        image: event.desktopImage || event.mobileImage || '/assets/images/hero1.jpg',
       }))
       .filter((event) => event.route !== excludePath),
     [events, excludePath, locale],
   );
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-      <div className="rounded-[2rem] border border-[#e2d4a9]/25 bg-[linear-gradient(180deg,rgba(10,10,16,0.92)_0%,rgba(6,6,12,0.98)_100%)] p-7 shadow-[0_30px_90px_rgba(0,0,0,0.28)] sm:p-10">
-        <div className="max-w-3xl">
-          <p className="text-xs uppercase  text-[#cdb77d]">{copy.eyebrow}</p>
-          <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">{copy.title}</h2>
-          <p className="mt-4 text-sm leading-7 text-[#e7dcc0]/70 sm:text-base">{copy.description}</p>
+    <section className="relative bg-[#090806] py-20 sm:py-28 overflow-hidden">
+      {/* Subtle background glow */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-500/10 to-transparent" />
+      <div className="absolute -top-40 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-[120px] pointer-events-none" />
+      
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-16">
+          <div className="max-w-2xl">
+            <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-primary mb-3">{copy.eyebrow}</p>
+            <h2 className="text-3xl font-light tracking-tight text-white sm:text-4xl lg:text-5xl">{copy.title}</h2>
+          </div>
+         
         </div>
 
         {items.length > 0 ? (
-          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {items.map((event) => (
               <Link
                 key={event.id}
                 to={event.route}
-                className="group overflow-hidden rounded-[1.7rem] border border-white/10 bg-white/[0.03] transition duration-500 hover:-translate-y-1 hover:border-[#d8c78f]/35"
+                className="group flex flex-col rounded-3xl bg-[#0b0d12] border border-white/5 transition-all duration-300 hover:bg-white/[0.03] hover:border-white/10 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
               >
-                <div className="relative h-64 overflow-hidden">
+                {/* Image Section */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-black">
                   <img
-                    src={event.desktopImage}
+                    src={event.image}
                     alt={event.title}
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
                   />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02)_20%,rgba(0,0,0,0.82)_100%)]" />
-                  <div className="absolute left-5 right-5 top-5 flex items-center justify-between">
-                    <span className="rounded-full border border-white/20 bg-black/25 px-3 py-1 text-[10px] uppercase  text-white/80 backdrop-blur">
-                      {event.countryNameText || 'Global'}
-                    </span>
-                    <span className="rounded-full border border-[#d8c78f]/30 bg-[#d8c78f]/10 px-3 py-1 text-[10px] uppercase  text-[#f1e5b8]">
-                      {event.upcoming ? 'Upcoming' : 'Public'}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-5 left-5 right-5">
-                    <h3 className="text-2xl font-bold text-white">{event.title}</h3>
-                    <p className="mt-2 line-clamp-2 text-sm leading-6 text-white/72">{event.description || event.countryNameText || ''}</p>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0d12] via-[#0b0d12]/20 to-transparent" />
+                  
+                 
+                  
+                  {/* Price */}
+                  {/* <div className="absolute bottom-4 left-5">
+                     <p className="text-[10px] font-medium uppercase tracking-widest text-white/60 mb-0.5">{copy.startingFrom}</p>
+                     <p className="text-xl font-semibold text-primary">
+                       {Number(event.minimumPrice || 0).toLocaleString()} <span className="text-sm font-normal text-primary/70">IQD</span>
+                     </p>
+                  </div> */}
                 </div>
-                <div className="grid gap-4 p-5 text-sm text-[#e7dcc0]/78 sm:grid-cols-3">
-                  <div className="flex items-start gap-3">
-                    <CalendarDays className="mt-0.5 h-4 w-4 text-[#d8c78f]" />
-                    <div>
-                      <p className="text-[10px] uppercase  text-white/40">{copy.date}</p>
-                      <p className="mt-1">{event.date || '-'}</p>
+
+                {/* Content Section */}
+                <div className="flex flex-col flex-1 px-5 pb-5 pt-2">
+                  <h3 className="text-xl font-medium text-white mb-2 line-clamp-1">{event.title}</h3>
+                  {/* <p className="text-sm text-white/50 line-clamp-2 mb-6 flex-1">
+                    {event.description || event.countryNameText || ''}
+                  </p> */}
+
+                  {/* Meta Info */}
+                  <div className="grid grid-cols-2 gap-y-3 text-[13px] text-white/40 mb-6">
+                    <div className="flex items-center gap-2.5">
+                      <CalendarDays className="h-4 w-4 text-zinc-700" />
+                      <span>{event.date || '-'}</span>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <MapPin className="mt-0.5 h-4 w-4 text-[#d8c78f]" />
-                    <div>
-                      <p className="text-[10px] uppercase  text-white/40">{copy.location}</p>
-                      <p className="mt-1">{event.countryNameText || '-'}</p>
+                    <div className="flex items-center gap-2.5">
+                      <MapPin className="h-4 w-4 text-zinc-600" />
+                      <span className="truncate">{event.countryNameText || '-'}</span>
                     </div>
+                    
                   </div>
-                  <div className="flex items-start gap-3">
-                    <Ticket className="mt-0.5 h-4 w-4 text-[#d8c78f]" />
-                    <div>
-                      <p className="text-[10px] uppercase  text-white/40">{copy.tickets}</p>
-                      <p className="mt-1">{event.remainingTickets ?? 0}</p>
-                    </div>
+
+                  {/* Footer / CTA */}
+                  <div className="flex items-center justify-between pt-4 border-t border-white/5 text-sm font-medium text-white/80 group-hover:text-primary transition-colors">
+                    <span>{copy.cta}</span>
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
-                </div>
-                <div className="flex items-center justify-between border-t border-white/8 px-5 py-4 text-sm text-white">
-                  <span>{copy.cta}</span>
-                  <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                 </div>
               </Link>
             ))}
           </div>
         ) : (
-          <div className="mt-10 rounded-[1.6rem] border border-white/10 bg-white/[0.03] px-6 py-10 text-center text-sm text-white/62">
+          <div className="rounded-3xl border border-white/5 bg-white/[0.02] px-6 py-20 text-center text-sm text-white/40">
             {copy.empty}
           </div>
         )}

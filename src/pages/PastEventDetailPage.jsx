@@ -211,13 +211,13 @@ export default function PastEventDetailPage() {
             <div className="max-w-4xl pt-24 sm:pt-32">
               <div className="flex flex-wrap gap-3">
                 {event.year ? (
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/85 backdrop-blur-md">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-xs font-semibold uppercase  text-white/85 backdrop-blur-md">
                     <CalendarDays className="h-4 w-4 text-[#d8c78f]" />
                     {event.year}
                   </span>
                 ) : null}
                 {event.category ? (
-                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/85 backdrop-blur-md">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-xs font-semibold uppercase  text-white/85 backdrop-blur-md">
                     <Tag className="h-4 w-4 text-[#d8c78f]" />
                     {event.category}
                   </span>
@@ -279,7 +279,7 @@ export default function PastEventDetailPage() {
                       </div>
                     </div>
                     <div className="p-6">
-                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#d8c78f]">
+                      <p className="text-xs font-semibold uppercase  text-[#d8c78f]">
                         {/* {content.videoLabel} {String(index + 1).padStart(2, '0')} */}
                       </p>
                       <h3 className=" text-xl font-bold leading-8 text-white">

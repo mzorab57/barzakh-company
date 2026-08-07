@@ -44,6 +44,13 @@ const COPY = {
     donationHelp: 'چەند دەتوانیت ببەخشە بۆ بەردەوام بونمان جزاک اللە خیرا',
     donationPresetLabel: 'بڕی خێرا هەڵبژێرە',
     donationCustomPlaceholder: 'یان بڕی خۆت بنووسە',
+    discountCode: 'کۆدی داشکاندن',
+    discountPlaceholder: 'کۆد بنووسە',
+    applyDiscount: 'دڵنیابوونەوەی کۆد',
+    removeDiscount: 'لابردن',
+    discountApplied: 'داشکاندن جێبەجێکرا',
+    discountAmount: 'داشکاندن',
+    discountHelp: '',
     total: 'کۆی گشتی',
     ticketsLabel: 'تیکەت',
     required: 'تکایە ticket و زانیاری سەرەکیەکان پڕبکەرەوە.',
@@ -86,6 +93,13 @@ const COPY = {
     donationHelp: 'تبرّع بما تستطيع، وجزاكم الله خيرًا على دعمكم المستمر.',
     donationPresetLabel: 'اختر مبلغًا سريعًا',
     donationCustomPlaceholder: 'أو اكتب مبلغك',
+    discountCode: 'كود الخصم',
+    discountPlaceholder: 'أدخل الكود',
+    applyDiscount: 'تطبيق',
+    removeDiscount: 'إزالة',
+    discountApplied: 'تم تطبيق الخصم',
+    discountAmount: 'الخصم',
+    discountHelp: '',
     total: 'الإجمالي',
     ticketsLabel: 'التذاكر',
     required: 'يرجى اختيار تذكرة واحدة على الأقل وإكمال البيانات الأساسية.',
@@ -128,6 +142,13 @@ const COPY = {
     donationHelp: 'Donate whatever you can. Jazakum Allahu Khayran for your continued support.',
     donationPresetLabel: 'Choose a quick amount',
     donationCustomPlaceholder: 'Or enter your own amount',
+    discountCode: 'Discount code',
+    discountPlaceholder: 'Enter code',
+    applyDiscount: 'Apply',
+    removeDiscount: 'Remove',
+    discountApplied: 'Discount applied',
+    discountAmount: 'Discount',
+    discountHelp: '',
     total: 'Total',
     ticketsLabel: 'Tickets',
     required: 'Please select at least one ticket and complete the required fields.',
@@ -228,6 +249,9 @@ export default function EventCheckoutPage() {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [showDonationPresets, setShowDonationPresets] = useState(false);
+  const [discountCode, setDiscountCode] = useState('');
+  const [discountPreview, setDiscountPreview] = useState(null);
+  const [applyingDiscount, setApplyingDiscount] = useState(false);
 
   useEffect(() => {
     if (!eventId) {
@@ -290,8 +314,10 @@ export default function EventCheckoutPage() {
     () => selectedItems.reduce((sum, entry) => sum + (Number(entry.ticket.price || 0) * entry.quantity), 0),
     [selectedItems],
   );
+  const appliedDiscountAmount = Math.max(0, Number(discountPreview?.discountAmount || 0));
+  const discountedTicketsTotal = Math.max(0, ticketsTotal - appliedDiscountAmount);
   const donationAmount = Math.max(0, Number(customer.donation_amount || 0));
-  const totalAmount = ticketsTotal + donationAmount;
+  const totalAmount = discountedTicketsTotal + donationAmount;
   const formattedDonationAmount = formatDonationAmount(customer.donation_amount);
   const hasCustomerDetails = customer.customer_name.trim() !== ''
     && customer.customer_phone.trim() !== ''
@@ -316,6 +342,15 @@ export default function EventCheckoutPage() {
 
     return '';
   }, [copy.detailsStepRequired, copy.invalidEmail, copy.invalidName, copy.invalidPhone, customer.customer_email, customer.customer_name, customer.customer_phone, hasCustomerDetails]);
+
+  const selectedItemsSignature = useMemo(
+    () => selectedItems.map((entry) => `${entry.ticket.id}:${entry.quantity}`).join('|'),
+    [selectedItems],
+  );
+
+  useEffect(() => {
+    setDiscountPreview(null);
+  }, [selectedItemsSignature]);
 
   if (!eventId) {
     return <Navigate to="/" replace />;
@@ -369,6 +404,15 @@ export default function EventCheckoutPage() {
     setError('');
 
     try {
+      let activeDiscount = discountPreview;
+      const normalizedDiscountCode = discountCode.trim().toUpperCase();
+
+      if (normalizedDiscountCode && (!activeDiscount || activeDiscount.discountCode !== normalizedDiscountCode)) {
+        activeDiscount = await requestDiscountPreview(normalizedDiscountCode);
+      }
+
+      const resolvedDiscountAmount = Math.max(0, Number(activeDiscount?.discountAmount || 0));
+      const resolvedTotalAmount = Math.max(0, ticketsTotal - resolvedDiscountAmount) + donationAmount;
       const eventSlug = buildEventSlug(event);
       const returnUrl = buildFibReturnUrl({
         eventSlug,
@@ -385,7 +429,8 @@ export default function EventCheckoutPage() {
           customer_gender: customer.customer_gender.trim(),
           customer_address: customer.customer_address.trim() || null,
           donation_amount: donationAmount,
-          total_amount: totalAmount,
+          discount_code: normalizedDiscountCode || null,
+          total_amount: resolvedTotalAmount,
           return_url: returnUrl,
           items: selectedItems.map((entry) => ({
             ticket_id: entry.ticket.id,
@@ -437,6 +482,68 @@ export default function EventCheckoutPage() {
       donation_amount: String(amount),
     }));
     setShowDonationPresets(false);
+  };
+
+  const requestDiscountPreview = async (rawCode = discountCode) => {
+    const normalizedCode = String(rawCode || '').trim().toUpperCase();
+
+    if (!normalizedCode) {
+      setDiscountPreview(null);
+      return null;
+    }
+
+    if (selectedItems.length === 0) {
+      throw new ApiError(copy.ticketStepRequired, 422);
+    }
+
+    const response = await apiRequest(`/api/catalog/events/${eventId}/discounts/apply`, {
+      method: 'POST',
+      body: {
+        discount_code: normalizedCode,
+        items: selectedItems.map((entry) => ({
+          ticket_id: entry.ticket.id,
+          quantity: entry.quantity,
+        })),
+      },
+    });
+
+    const preview = response?.data?.discount || null;
+
+    if (!preview) {
+      throw new ApiError('Discount preview failed.', 422);
+    }
+
+    const normalizedPreview = {
+      discountCodeId: preview.discountCodeId || null,
+      discountCode: preview.discountCode || normalizedCode,
+      discountAmount: Number(preview.discountAmount || 0),
+      discountedTicketsTotalAmount: Number(preview.discountedTicketsTotalAmount || ticketsTotal),
+    };
+
+    setDiscountCode(normalizedCode);
+    setDiscountPreview(normalizedPreview);
+
+    return normalizedPreview;
+  };
+
+  const handleApplyDiscount = async () => {
+    setApplyingDiscount(true);
+    setError('');
+
+    try {
+      await requestDiscountPreview();
+    } catch (requestError) {
+      setDiscountPreview(null);
+      setError(requestError instanceof ApiError ? requestError.message : 'Discount validation failed.');
+    } finally {
+      setApplyingDiscount(false);
+    }
+  };
+
+  const handleRemoveDiscount = () => {
+    setDiscountCode('');
+    setDiscountPreview(null);
+    setError('');
   };
   return (
     <div className=" text-white   w-full justify-center mb-44 lg:mb-0  ">
@@ -553,7 +660,7 @@ export default function EventCheckoutPage() {
                         placeholder={copy.donationCustomPlaceholder}
                         className="relative z-40 h-12 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 pe-16 text-base text-white placeholder:text-white/30 outline-none transition focus:border-[#C5B78E]/60 focus:bg-white/[0.06]"
                       />
-                      <span className="pointer-events-none absolute inset-y-0 end-4 z-40 flex items-center text-[11px] font-semibold uppercase tracking-[0.22em] text-white/34">
+                      <span className="pointer-events-none absolute inset-y-0 end-4 z-40 flex items-center text-[11px] font-semibold uppercase  text-white/34">
                         IQD
                       </span>
 
@@ -584,7 +691,50 @@ export default function EventCheckoutPage() {
                 </label>
                 </div>
 
+{/*------------- Discount codes ----------------- */}
+                {/* <div className='mt-5 border-t border-[#26241b] pt-5'>
+                  <label className="space-y-3 text-sm text-white/76">
+                    <div className='text-primary'>{copy.discountCode}</div>
+                    <p className="text-xs text-white/70">{copy.discountHelp}</p>
+                    <div className="flex flex-col gap-3 sm:flex-row">
+                      <input
+                        type="text"
+                        value={discountCode}
+                        onChange={(event) => {
+                          setDiscountCode(event.target.value.toUpperCase().replace(/[^A-Z0-9_-]/g, ''));
+                          setDiscountPreview(null);
+                        }}
+                        placeholder={copy.discountPlaceholder}
+                        className="h-12  rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-base uppercase  text-white placeholder:text-white/30 outline-none transition focus:border-[#C5B78E]/60 focus:bg-white/[0.06]"
+                      />
+                      {discountPreview ? (
+                        <button
+                          type="button"
+                          onClick={handleRemoveDiscount}
+                          className="h-12 rounded-2xl border border-white/10 bg-white/[0.03] px-5 text-sm font-medium text-white/80 transition hover:bg-white/[0.07]"
+                        >
+                          {copy.removeDiscount}
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={handleApplyDiscount}
+                          disabled={applyingDiscount || !discountCode.trim()}
+                          className="h-12 rounded-2xl bg-[#d8c78f] px-5 text-sm font-semibold text-[#1b1607] transition hover:bg-[#e6d7a1] disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                          {applyingDiscount ? '...' : copy.applyDiscount}
+                        </button>
+                      )}
+                    </div>
+                    {discountPreview ? (
+                      <div className="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200">
+                        {copy.discountApplied}: <span className="font-semibold">{discountPreview.discountCode}</span> · {appliedDiscountAmount.toLocaleString()} IQD
+                      </div>
+                    ) : null}
+                  </label>
+                </div> */}
 
+{/*------------- Discount codes ----------------- */}
 
               </div>
             ) : null}
@@ -685,6 +835,9 @@ export default function EventCheckoutPage() {
                   <p className='text-white/80'><span className='text-white'>{copy.customerName} :&nbsp; </span> {customer.customer_name || '-'}</p>
                   <p className="mt-2 text-white/80"><span className='text-white'>{copy.customerPhone} :&nbsp; </span> {customer.customer_phone || '-'}</p>
                   <p className="mt-2 text-white/80"><span className='text-white'>{copy.customerEmail} :&nbsp; </span> {customer.customer_email || '-'}</p>
+                  {discountPreview ? (
+                    <p className="mt-2 text-emerald-200"><span className='text-white'>{copy.discountAmount} :&nbsp; </span> -{appliedDiscountAmount.toLocaleString()} IQD ({discountPreview.discountCode})</p>
+                  ) : null}
                   {/* <p className="mt-2">{copy.customerGender}: {getGenderLabel(customer.customer_gender, copy)}</p> */}
                   {/* <p className="mt-2">{copy.customerAddress}: {customer.customer_address || '-'}</p> */}
                 </div>

@@ -2,10 +2,10 @@ import React from 'react'
 
 
 import Hero from '../components/Hero';
-import UpcomingEvents from '../components/UpcomingEvents';
 import PastEvents from '../components/PastEvents';
 import HeroVideoSection from '../components/VideoSection';
 import AboutSection from '../components/AboutSection';
+import PublicEventsShowcase from '../components/PublicEventsShowcase';
 
 const Home = () => {
   
@@ -14,6 +14,7 @@ const Home = () => {
       <Hero />
    
       <AboutSection />
+      <PublicEventsShowcase />
       {/* <UpcomingEvents /> */}
       <HeroVideoSection />
       <PastEvents />

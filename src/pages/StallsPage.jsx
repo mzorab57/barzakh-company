@@ -77,9 +77,9 @@ export default function StallsPage() {
         <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="overflow-hidden rounded-[2rem] bg-[#1d160b] text-white shadow-[0_30px_80px_rgba(49,31,0,0.22)]">
             <div className="border-b border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(197,183,142,0.28),transparent_35%),linear-gradient(135deg,#1d160b,#31230f)] px-6 py-10 sm:px-8 lg:px-10">
-              <p className="text-5xl  font-semibold uppercase tracking-[0.35em] text-[#d9c999]">{hero.eyebrow}</p>
-              <h1 className="mt-4 text-3xl leading-[1.2] tracking-[0.02em] ">{hero.title}</h1>
-              <h1 className="mt-4 text-2xl leading-[1.2] tracking-[0.02em] ">{hero.title2}</h1>
+              <p className="text-5xl  font-semibold uppercase  text-[#d9c999]">{hero.eyebrow}</p>
+              <h1 className="mt-4 text-3xl leading-[1.2]  ">{hero.title}</h1>
+              <h1 className="mt-4 text-2xl leading-[1.2]  ">{hero.title2}</h1>
               <p className="mt-5 max-w-2xl text-base leading-8 text-white/78">{hero.description}</p>
             </div>
 
@@ -123,7 +123,7 @@ export default function StallsPage() {
                 <Store className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#8a6f36]">{formContent.badge}</p>
+                <p className="text-sm font-semibold uppercase  text-[#8a6f36]">{formContent.badge}</p>
                 <h2 className="mt-1 text-2xl font-bold text-[#2d230f]">{formContent.title}</h2>
               </div>
             </div>
@@ -178,7 +178,7 @@ export default function StallsPage() {
               {error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
               {info ? <p className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{info}</p> : null}
 
-              <button type="submit" disabled={submitting} className="inline-flex w-full items-center justify-center gap-3 rounded-[1.25rem] bg-[#1f7a44] px-6 py-4 text-sm font-bold uppercase tracking-[0.3em] text-white transition hover:bg-[#176438] disabled:cursor-not-allowed disabled:opacity-60">
+              <button type="submit" disabled={submitting} className="inline-flex w-full items-center justify-center gap-3 rounded-[1.25rem] bg-[#1f7a44] px-6 py-4 text-sm font-bold uppercase text-white transition hover:bg-[#176438] disabled:cursor-not-allowed disabled:opacity-60">
                 <MessageCircle className="h-5 w-5" />
                 {submitting ? '...' : formContent.submitLabel}
               </button>

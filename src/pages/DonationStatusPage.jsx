@@ -257,7 +257,7 @@ export default function DonationStatusPage() {
         <section className="mt-6 rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 sm:p-9">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.title}</p>
+              <p className="text-xs uppercase  text-[#d8c78f]">{copy.title}</p>
               <h1 className="mt-4 text-3xl font-bold text-white">{donationNumber}</h1>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-white/68">{message}</p>
             </div>
@@ -270,19 +270,19 @@ export default function DonationStatusPage() {
 
           <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <div className="rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/40">{copy.donation}</p>
+              <p className="text-[10px] uppercase  text-white/40">{copy.donation}</p>
               <p className="mt-2 text-sm text-white">{donationNumber}</p>
             </div>
             <div className="rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/40">{copy.amount}</p>
+              <p className="text-[10px] uppercase  text-white/40">{copy.amount}</p>
               <p className="mt-2 text-sm text-white">{Number(trackingPayload?.donation?.amount || activeLookup?.amount || 0).toLocaleString()} {trackingPayload?.donation?.currency || activeLookup?.currency || 'IQD'}</p>
             </div>
             <div className="rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/40">{copy.payment}</p>
+              <p className="text-[10px] uppercase  text-white/40">{copy.payment}</p>
               <p className="mt-2 text-sm text-white">{trackingPayload?.payment?.status || '-'}</p>
             </div>
             <div className="rounded-[1.4rem] border border-white/8 bg-black/20 p-4">
-              <p className="text-[10px] uppercase tracking-[0.24em] text-white/40">{copy.readableCode}</p>
+              <p className="text-[10px] uppercase  text-white/40">{copy.readableCode}</p>
               <p className="mt-2 text-sm text-white">{paymentLinks?.readableCode || '-'}</p>
             </div>
           </div>

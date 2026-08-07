@@ -222,7 +222,7 @@ function TicketsReadyModal({ open, passes, customerName, copy, onClose }) {
         </button>
 
         <div className="border-b border-white/10 px-6 py-6 sm:px-8">
-          <p className="text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.passes}</p>
+          <p className="text-xs uppercase  text-[#d8c78f]">{copy.passes}</p>
           <h2 className="mt-3 text-2xl font-bold text-white">{copy.ticketsReadyTitle}</h2>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-white/70">{copy.ticketsReadyHint}</p>
           {customerName ? <p className="mt-3 text-sm text-white/55">{customerName}</p> : null}
@@ -247,7 +247,7 @@ function TicketsReadyModal({ open, passes, customerName, copy, onClose }) {
                       <QrCode className="h-10 w-10" />
                     </div>
                   )}
-                  <p className="mt-3 truncate text-center text-xs font-semibold tracking-[0.18em] text-slate-800">
+                  <p className="mt-3 truncate text-center text-xs font-semibold  text-slate-800">
                     {passItem.ticketCode || 'TICKET'}
                   </p>
                 </div>
@@ -255,7 +255,7 @@ function TicketsReadyModal({ open, passes, customerName, copy, onClose }) {
                 <div className="mt-5">
                   <div className="mx-auto flex w-fit items-center gap-2 text-[#d8c78f]">
                     <Ticket className="h-4 w-4 shrink-0" />
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.28em]">{copy.passes}</span>
+                    <span className="text-[11px] font-semibold uppercase ">{copy.passes}</span>
                   </div>
 
                   <h3 className="mt-3 text-xl font-semibold text-white">{passItem.title || 'Event Pass'}</h3>
@@ -604,7 +604,7 @@ export default function EventCheckoutStatusPage() {
             }`}>
               {isPaid ? <CheckCircle2 className="h-7 w-7" /> : isFailed ? <XCircle className="h-7 w-7" /> : <Clock3 className="h-7 w-7" />}
             </div>
-            <p className="mt-5 text-xs uppercase tracking-[0.35em] text-[#d8c78f]">{copy.title}</p>
+            <p className="mt-5 text-xs uppercase  text-[#d8c78f]">{copy.title}</p>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-white/68">{message}</p>
           </div>
 

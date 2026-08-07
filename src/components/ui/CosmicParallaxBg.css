@@ -27,12 +27,11 @@
   width: 1px;
   height: 1px;
   background: transparent;
-  animation: animStar 150s linear infinite;
   z-index: 1; /* ئەستێرەکان لە پشتەوەن */
 }
 
-.cosmic-stars-medium { width: 2px; height: 2px; animation-duration: 40s; }
-.cosmic-stars-large { width: 3px; height: 3px; animation-duration: 100s; }
+.cosmic-stars-medium { width: 2px; height: 2px; }
+.cosmic-stars-large { width: 3px; height: 3px; }
 
 /* ڕووناکی ناوەڕاست (Glow behind the sphere) */
 .cosmic-nebula-center {
