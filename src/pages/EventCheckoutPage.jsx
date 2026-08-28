@@ -31,6 +31,7 @@ const COPY = {
     summary: 'پوختە',
     ticketSubtitle: 'ئەم دەقە لە داشبۆردەوە دێت',
     ticketPriceQty: 'ژمارەی تیکەت     /    نرخەکەی',
+    freeTicketAvailable: 'تیکەتی خۆڕایی بەردەستە',
     customerName: 'ناوی دووانی',
     customerPhone: 'ژمارە/ وەتس ئەپ',
     customerEmail: 'ئیمەیڵ',
@@ -58,6 +59,9 @@ const COPY = {
     ticketQty: 'دانە',
     selectedSubEvent: 'Sub-event هەڵبژێردراو',
     soldOut: 'ئەم ticket ـە تەواو بووە',
+    freeLabel: 'فری',
+    freeRemaining: 'ماوەی فری',
+    issueFreeTickets: 'دەرکردنی تیکەتی فری',
     ticketStepRequired: 'تکایە لانیکەم یەک ticket هەڵبژێرە پێش چوونە هەنگاوی داهاتوو.',
     detailsStepRequired: 'تکایە ناو، مۆبایل، ئیمەیڵ و ڕەگەز پڕبکەرەوە پێش چوونە Payment.',
     invalidName: 'ناو تەنها دەق و بۆشایی و نیشانە سادەکان وەک - و \' وەردەگرێت.',
@@ -80,6 +84,7 @@ const COPY = {
     summary: 'الملخص',
     ticketSubtitle: 'هذا النص يأتي من لوحة التحكم',
     ticketPriceQty: 'عدد التذاكر / السعر',
+    freeTicketAvailable: 'تذكرة مجانية متاحة',
     customerName: 'اسم العميل',
     customerPhone: 'رقم الهاتف',
     customerEmail: 'البريد الإلكتروني',
@@ -107,6 +112,9 @@ const COPY = {
     ticketQty: 'الكمية',
     selectedSubEvent: 'الجلسة المختارة',
     soldOut: 'هذه التذكرة نفدت',
+    freeLabel: 'مجاني',
+    freeRemaining: 'المتبقي المجاني',
+    issueFreeTickets: 'إصدار التذاكر المجانية',
     ticketStepRequired: 'يرجى اختيار تذكرة واحدة على الأقل قبل الانتقال إلى الخطوة التالية.',
     detailsStepRequired: 'يرجى إدخال الاسم ورقم الهاتف والبريد الإلكتروني والجنس قبل الانتقال إلى الدفع.',
     invalidName: 'يجب أن يحتوي الاسم على أحرف فقط مع المسافات والرموز البسيطة مثل - و \'.',
@@ -129,6 +137,7 @@ const COPY = {
     summary: 'Summary',
     ticketSubtitle: 'This text comes from the dashboard',
     ticketPriceQty: 'Ticket quantity / Price',
+    freeTicketAvailable: 'Free ticket available',
     customerName: 'Customer name',
     customerPhone: 'Phone number',
     customerEmail: 'Email address',
@@ -156,6 +165,9 @@ const COPY = {
     ticketQty: 'Quantity',
     selectedSubEvent: 'Selected sub-event',
     soldOut: 'This ticket is sold out',
+    freeLabel: 'Free',
+    freeRemaining: 'Free remaining',
+    issueFreeTickets: 'Issue free tickets',
     ticketStepRequired: 'Please select at least one ticket before continuing to the next step.',
     detailsStepRequired: 'Please fill in name, phone, email, and gender before continuing to Payment.',
     invalidName: 'Name can contain letters, spaces, and simple characters like - and \'.',
@@ -305,13 +317,17 @@ export default function EventCheckoutPage() {
       .map((ticket) => ({
         ticket,
         quantity: Number(quantities[ticket.id] || 0),
+        freeQuantity: Math.min(Number(quantities[ticket.id] || 0), Number(ticket.freeRemainingCount || 0)),
       }))
       .filter((entry) => entry.quantity > 0),
     [tickets, quantities],
   );
 
   const ticketsTotal = useMemo(
-    () => selectedItems.reduce((sum, entry) => sum + (Number(entry.ticket.price || 0) * entry.quantity), 0),
+    () => selectedItems.reduce(
+      (sum, entry) => sum + (Number(entry.ticket.price || 0) * Math.max(0, entry.quantity - entry.freeQuantity)),
+      0,
+    ),
     [selectedItems],
   );
   const appliedDiscountAmount = Math.max(0, Number(discountPreview?.discountAmount || 0));
@@ -584,6 +600,9 @@ export default function EventCheckoutPage() {
                 {tickets.length > 0 ? tickets.map((ticket) => {
                   const quantity = Number(quantities[ticket.id] || 0);
                   const isSoldOut = Number(ticket.remainingCount || 0) <= 0;
+                  const freeRemainingCount = Number(ticket.freeRemainingCount || 0);
+                  const hasFreeTickets = freeRemainingCount > 0;
+                  const isSelectionFullyFree = hasFreeTickets && (quantity === 0 || quantity <= freeRemainingCount);
                   return (
                     <div key={ticket.id} className="rounded-[1.5rem] my-7 border border-white/10 bg-black/20 p-5">
                       <div className="flex flex-wrap flex-col items-start justify-between ">
@@ -603,7 +622,9 @@ export default function EventCheckoutPage() {
                           </div>
                         </div>
                         <div className="flex  flex-col items-start text-left">
-                          <p className="text-xs font-medium text-white/50">{copy.ticketPriceQty}</p>
+                          <p className={`text-xs font-medium ${hasFreeTickets ? 'text-emerald-300' : 'text-white/50'}`}>
+                            {hasFreeTickets ? `${copy.freeTicketAvailable} (${freeRemainingCount.toLocaleString()} ${copy.ticketQty})` : copy.ticketPriceQty}
+                          </p>
                           <div className="mt-3 flex  w-full items-center gap-4">
 
                             {/* quantity */}
@@ -628,7 +649,9 @@ export default function EventCheckoutPage() {
                             </div>
 
                             {/* price */}
-                            <p className="text-xl font-bold text-[#eadcae]">{Number(ticket.price || 0).toLocaleString()} IQD</p>
+                            <p className={`text-xl font-bold ${isSelectionFullyFree ? 'text-white/25 line-through decoration-2 decoration-emerald-300/70' : 'text-[#eadcae]'}`}>
+                              {Number(ticket.price || 0).toLocaleString()} IQD
+                            </p>
                             
                           </div>
                         </div>
@@ -826,9 +849,14 @@ export default function EventCheckoutPage() {
                   <div key={entry.ticket.id} className="flex items-center justify-between rounded-[1.5rem] border border-white/10 bg-black/20 px-5 py-4">
                     <div>
                       <p className="font-medium text-white">{getLocalizedText(entry.ticket.title, locale, entry.ticket.titleText || 'Ticket')}</p>
-                      <p className="mt-1 text-sm text-white/55">{Number(entry.ticket.price || 0).toLocaleString()} &#215; {entry.quantity}  </p>
+                      <p className="mt-1 text-sm text-white/55">
+                        {Number(entry.ticket.price || 0).toLocaleString()} &#215; {Math.max(0, entry.quantity - entry.freeQuantity)}
+                        {entry.freeQuantity > 0 ? ` + ${entry.freeQuantity} ${copy.freeLabel.toLowerCase()}` : ''}
+                      </p>
                     </div>
-                    <p className="text-lg font-semibold text-[#eadcae]">{(entry.quantity * Number(entry.ticket.price || 0)).toLocaleString()} IQD</p>
+                    <p className="text-lg font-semibold text-[#eadcae]">
+                      {(Math.max(0, entry.quantity - entry.freeQuantity) * Number(entry.ticket.price || 0)).toLocaleString()} IQD
+                    </p>
                   </div>
                 ))}
                 <div className="rounded-[1.5rem] border border-[#d8c78f]/20 bg-[#d8c78f]/8 p-5 text-sm text-white/72">
@@ -873,7 +901,7 @@ export default function EventCheckoutPage() {
                   className="inline-flex items-center gap-2 rounded-full bg-[#d8c78f] px-5 py-3 text-sm font-semibold text-[#1b1607] transition hover:bg-[#e6d7a1] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <Wallet className="h-4 w-4" />
-                  {submitting ? '...' : copy.createPayment}
+                  {submitting ? '...' : totalAmount <= 0 ? copy.issueFreeTickets : copy.createPayment}
                 </button>
               )}
               {step > 0 ? (

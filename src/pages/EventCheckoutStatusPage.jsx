@@ -15,11 +15,13 @@ const COPY = {
     missing: 'زانیارییەکانی ئەم order ـە لەسەر ئەم device ـە نەدۆزرایەوە.',
     pending: '',
     paid: 'پارەدان سەرکەوتوو بوو. ئێستا دەتوانیت QR پاسەکانت دابەزێنیت یان وەک PDF بیانپارێزیت.',
+    freePaid: 'تیکەتەکانت ئامادەن. ئێستا دەتوانیت QR تیکەتەکانت ببینیت و screenshot بگریت.',
     failed: 'Payment سەرنەکەوت. دەتوانیت دووبارە status بپشکنیت.',
     check: 'پشکنینی دۆخی پارەدان',
     download: 'دابەزاندنی PDF / Passes',
     openFib: 'کردنەوەی FIB payment',
     openFibApp: 'کردنەوەی ئەپی FIB کەت ',
+    openTickets: 'کردنەوەی QR تیکەتەکان',
     readableCode: 'Readable code',
     passes: 'Passes',
     order: 'Order',
@@ -31,7 +33,7 @@ const COPY = {
     downloading: 'چاوەڕێی دروستکردنی PDF...',
     sendingEmail: 'چاوەڕێی ناردنی email...',
     emailSent: 'تیکەتەکان بە سەرکەوتوویی نێردران بۆ ئیمەیڵی customer.',
-    emailAutoSent: 'تیکەتەکان بە شێوەی خۆکار بۆ ئیمەیڵی customer نێردران.',
+    emailAutoSent: '',
     emailAutoSending: 'تیکەتەکان بە شێوەی خۆکار بۆ ئیمەیڵ دەنێردرێن...',
     fibMobileHint: '',
     openingFib: 'چاوەڕێی ئامادەکردنی لینکی FIB...',
@@ -49,11 +51,13 @@ const COPY = {
     missing: 'لم يتم العثور على معلومات هذا الطلب على هذا الجهاز.',
     pending: 'الدفع ما زال معلقاً. بعد الإكمال في FIB ستقوم هذه الصفحة بتحديث الحالة تلقائياً.',
     paid: 'تم الدفع بنجاح. يمكنك الآن تنزيل التذاكر مع QR أو حفظها كملف PDF.',
+    freePaid: 'تذاكرك جاهزة الآن. يمكنك عرض رموز QR وأخذ لقطة شاشة لها.',
     failed: 'فشل الدفع. يمكنك إعادة التحقق من الحالة.',
     check: 'التحقق من الحالة',
     download: 'تنزيل PDF / التذاكر',
     openFib: 'فتح دفع FIB',
     openFibApp: 'فتح تطبيق FIB',
+    openTickets: 'فتح تذاكر QR',
     readableCode: 'الرمز المقروء',
     passes: 'التذاكر',
     order: 'الطلب',
@@ -65,7 +69,7 @@ const COPY = {
     downloading: 'جاري إنشاء ملف PDF...',
     sendingEmail: 'جاري إرسال البريد...',
     emailSent: 'تم إرسال التذاكر بنجاح إلى بريد العميل.',
-    emailAutoSent: 'تم إرسال التذاكر تلقائياً إلى بريد العميل.',
+    emailAutoSent: '',
     emailAutoSending: 'يتم الآن إرسال التذاكر تلقائياً إلى البريد...',
     fibMobileHint: '',
     openingFib: 'جارٍ تجهيز رابط FIB...',
@@ -83,11 +87,13 @@ const COPY = {
     missing: 'This order lookup was not found on this device.',
     pending: 'Payment is still pending. After you complete it in FIB, this page will refresh the status automatically.',
     paid: 'Payment succeeded. You can now download the QR passes or save them as PDF.',
+    freePaid: 'Your tickets are ready. You can now view the QR tickets and take a screenshot.',
     failed: 'Payment did not succeed. You can check the status again.',
     check: 'Check status',
     download: 'Download PDF / Passes',
     openFib: 'Open FIB payment',
     openFibApp: 'Open FIB App',
+    openTickets: 'Open QR tickets',
     readableCode: 'Readable code',
     passes: 'Passes',
     order: 'Order',
@@ -99,7 +105,7 @@ const COPY = {
     downloading: 'Preparing PDF...',
     sendingEmail: 'Sending email...',
     emailSent: 'Tickets were sent successfully to the customer email.',
-    emailAutoSent: 'Tickets were sent automatically to the customer email.',
+    emailAutoSent: '',
     emailAutoSending: 'Sending tickets automatically by email...',
     fibMobileHint: '',
     openingFib: 'Preparing the FIB link...',
@@ -301,7 +307,6 @@ export default function EventCheckoutStatusPage() {
   const [paymentLinksOverride, setPaymentLinksOverride] = useState(null);
   const [openingFib, setOpeningFib] = useState(false);
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const refreshInFlightRef = useRef(false);
   const activeLookup = searchLookup || lookup;
 
@@ -310,10 +315,6 @@ export default function EventCheckoutStatusPage() {
   const customer_phone = activeLookup?.customerPhone || null;
   const customer_email = activeLookup?.customerEmail || null;
   const customer_name = activeLookup?.customerName || null;
-  const passesEmailedAt = trackingPayload?.order?.passesEmailedAt
-    || passesPayload?.order?.passesEmailedAt
-    || printablePayload?.order?.passesEmailedAt
-    || null;
 
   const refreshStatus = useCallback(async () => {
     if (!orderNumber || (!customer_phone && !customer_email)) {
@@ -410,7 +411,8 @@ export default function EventCheckoutStatusPage() {
   const localPaymentStatus = normalizedPaymentStatus;
   const isPaid = ['success', 'paid', 'completed'].includes(String(localPaymentStatus).toLowerCase());
   const isFailed = ['failed', 'cancelled'].includes(String(localPaymentStatus).toLowerCase());
-  const message = isPaid ? copy.paid : isFailed ? copy.failed : copy.pending;
+  const isFreeCheckout = isPaid && !paymentId;
+  const message = isPaid ? (isFreeCheckout ? copy.freePaid : copy.paid) : isFailed ? copy.failed : copy.pending;
   const passes = Array.isArray(passesPayload?.passes) ? passesPayload.passes : [];
   const fallbackModalPasses = useMemo(
     () =>
@@ -555,7 +557,9 @@ export default function EventCheckoutStatusPage() {
   }, [fallbackModalPasses, passes, printablePayload]);
 
   useEffect(() => {
-    if (!isPaid || !searchParams.get('returned') || passes.length === 0 || !orderNumber) {
+    const shouldAutoOpenModal = Boolean(searchParams.get('returned')) || isFreeCheckout;
+
+    if (!isPaid || !shouldAutoOpenModal || passes.length === 0 || !orderNumber) {
       return;
     }
 
@@ -571,15 +575,7 @@ export default function EventCheckoutStatusPage() {
     }
 
     setShowTicketsModal(true);
-  }, [isPaid, orderNumber, passes.length, searchParams]);
-
-  useEffect(() => {
-    if (!isPaid || !customer_email || !passesEmailedAt) {
-      return;
-    }
-
-    setSuccessMessage(copy.emailAutoSent);
-  }, [copy.emailAutoSent, customer_email, isPaid, passesEmailedAt]);
+  }, [isFreeCheckout, isPaid, orderNumber, passes.length, searchParams]);
 
   if (!eventId) {
     return <Navigate to="/" replace />;
@@ -637,11 +633,17 @@ export default function EventCheckoutStatusPage() {
             </div>
           ) : null}
 
-          {isPaid && customer_email && successMessage ? (
-            <p className="mt-6 text-sm text-emerald-300">
-              {successMessage}
-            </p>
-          ) : successMessage ? <p className="mt-6 text-sm text-emerald-300">{successMessage}</p> : null}
+          {isPaid && modalPasses.length > 0 ? (
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => setShowTicketsModal(true)}
+                className="inline-flex items-center justify-center rounded-full bg-[#56bfb7] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#66c7bf]"
+              >
+                {copy.openTickets}
+              </button>
+            </div>
+          ) : null}
           {error ? <p className="mt-3 text-sm text-rose-300">{error}</p> : null}
         </section>
       </div>
